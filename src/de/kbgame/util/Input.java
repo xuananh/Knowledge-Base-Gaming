@@ -45,8 +45,8 @@ public class Input {
 	
 		MouseInput = new MouseAdapter() {
 			public void mousePressed(MouseEvent e){
-				clickx=x;
-				clicky=y;
+				clickx=e.getX();//x;
+				clicky=e.getY();//y;
 				switch (e.getButton()){
 				case MouseEvent.NOBUTTON:{System.out.println("Warning: Pressed Button, but not NOBUTTON recieved.");break;}
 				case MouseEvent.BUTTON1:{mouse1=true;newclick=1;break;}

@@ -1,0 +1,22 @@
+px(1..800).
+py(1..600).
+fw(50..255).
+1{x(X):px(X),X > xo-10,X < xo+10}1.
+1{y(Y):py(Y),Y > yo-10,Y < yo+10}1.
+:- |X-xo|+|Y-yo| < 5, x(X), y(Y).
+1{r(W):fw(W),W != ro, |W-ro| > 5}1.
+1{g(W):fw(W),W != go, |W-go| > 5}1.
+1{b(W):fw(W),W != bo, |W-bo| > 5}1.
+:- |R-ro| > 15, r(R).
+:- |G-go| > 15, g(G).
+:- |B-bo| > 15, b(B).
+#const xo=100.
+#const yo=200.
+#const ro=50.
+#const go=100.
+#const bo=150.
+#show y/1.
+#show x/1.
+#show r/1.
+#show g/1.
+#show b/1.

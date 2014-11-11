@@ -64,6 +64,16 @@ public class Game extends Thread{
 		controller.control(p);
 		level = new Level(15, 5);
 		
+		// add 2 dummy platforms
+		int bw = level.blockwidth;
+		int bh = level.blockheight;
+		
+		Platform pf = new Platform(this, 10 * bw, 2 * bh, bw, bh, 2, 5, true);
+		list.add((Entity) pf);
+		pf = new Platform(this, 2 * bw, 2 * bh, bw, bh, 2, 7, false);
+		list.add((Entity) pf);
+		
+		
 		this.start();
 	}
 	

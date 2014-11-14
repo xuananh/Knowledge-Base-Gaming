@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 
 public class Controller {
 	
-	public int viewX=0, viewY=0;
+	public int viewX, viewY;
 	
 	public Entity controlledOne = null;
 	public boolean testing = true;
@@ -74,13 +74,6 @@ public class Controller {
 				g.input.dontAlertTillKeyUp(KeyEvent.VK_N);
 				g.sounds.setAllVolume(1f);
 			}
-			
-			if (g.input.getKey(KeyEvent.VK_V)){ // Toggle Objekt Boxes
-				g.input.dontAlertTillKeyUp(KeyEvent.VK_V);
-				g.drawEntityBorders = !g.drawEntityBorders;
-			}
-			
-		
 		}
 		
 	}

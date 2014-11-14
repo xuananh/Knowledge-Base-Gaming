@@ -1,5 +1,6 @@
 package de.kbgame.game;
 
+import de.kbgame.util.ImageKey;
 import de.kbgame.util.Physic;
 
 public class Player extends Entity{
@@ -17,7 +18,7 @@ public class Player extends Entity{
 	
 	@Override
 	public void draw(Game g){
-		g.graphic.drawImage("person", x, y, wi, hi, rot);
+		g.graphic.drawImage(ImageKey.PERSON, x, y, wi, hi, rot);
 	}
 
 }

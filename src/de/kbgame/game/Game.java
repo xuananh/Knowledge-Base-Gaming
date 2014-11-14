@@ -10,15 +10,14 @@ import de.kbgame.util.SoundThread;
 
 public class Game extends Thread{
 	
-	public Graphics graphic;
-	public Input input;
-	public Controller controller;
-	public SoundThread sounds;
+	public final Graphics graphic;
+	public final Input input;
+	public final Controller controller;
+	public final SoundThread sounds;
 	
-	public boolean drawEntityBorders = false; 
 	public boolean shouldApplicationExit = false;
-	public LinkedList<Entity> list = new LinkedList<Entity>();
-	public Level level;
+	public final LinkedList<Entity> list = new LinkedList<Entity>();
+	public final Level level;
 	
 	public int x = 50, y = 50;
 	public int r = 50, g = 100, b = 150;
@@ -54,12 +53,11 @@ public class Game extends Thread{
 	public Game(){
 		input = new Input(); // Init Input before Graphic, because Graphics uses Input!
 		graphic = new Graphics(this);
-		graphic.loadImages();
 		controller = new Controller();
 		sounds = new SoundThread();
 		for (int i=0;i<20;i++) list.add((Entity)new Rectangle(50+i*15, 50+i*15,10,10));
 		list.add((Entity) new Circle(300, 150, 70, 50));
-		Player p = new Player(25, 25, 50, 50);
+		Player p = new Player(300, 400, 50, 50);
 		list.add((Entity)p);
 		controller.control(p);
 		level = MapLoader.LoadMapOutOfBitmap(this, "Levels/testmap.bmp");
@@ -79,11 +77,8 @@ public class Game extends Thread{
 	public void update(){
 		level.update(this);
 		controller.update(this);
-		for (Entity ent : list) ent.update(this);
-		//clingo.exampleCall(this);
-		//x = (x + 1) % graphic.Width;
-		//y = (y + 2) % graphic.Height;
-	
+		for (Entity ent : list) 
+			ent.update(this);
 	}
 	
 	public void draw(){
@@ -93,7 +88,6 @@ public class Game extends Thread{
 		level.draw(this);
 		for (Entity e : list){
 			e.draw(this);
-			if (drawEntityBorders) e.drawBox(this);
 		}
 		
 		graphic.endDrawNewFrame();

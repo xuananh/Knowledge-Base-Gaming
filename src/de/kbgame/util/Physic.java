@@ -47,7 +47,7 @@ public class Physic {
 			}
 			int nx = (int) (hlp/ blockwidth); // Aktuelle Position
 			if (hlp < 0) nx -= 1;// Sonst gibt es zwischen 0 und -1  einen Rundungsfehler... ( (int)1.6 == 1; (int)0.6 == 0; (int)-0.6 == 0 statt -1). Daher -1
-			System.out.println("nx "+nx+", "+hlp);
+//			System.out.println("nx "+nx+", "+hlp);
 			
 			if (vy >= 0){
 				hlp = e.dy + vy;
@@ -56,7 +56,7 @@ public class Physic {
 			}
 			int ny = (int) (hlp / blockheight);
 			if (hlp < 0) ny -= 1;
-			System.out.println("ny "+ny+", "+hlp);
+//			System.out.println("ny "+ny+", "+hlp);
 			
 			// LEFT <- -> RIGHT PHYSIC
 			for (int loopy=e.uy; loopy<e.dy; loopy += blockheight){
@@ -93,7 +93,7 @@ public class Physic {
 			for (int loopx=e.lx; loopx<e.rx; loopx += blockwidth){
 				int mx = loopx / blockwidth;
 				if (loopx < 0) mx -= 1;
-				System.out.println("loopx "+loopx+", mx "+mx+", ny "+ny+", y "+y);
+//				System.out.println("loopx "+loopx+", mx "+mx+", ny "+ny+", y "+y);
 				if (ny != y && g.level.getMap(mx,ny) == 1){
 					// if your size would be > 1 Block, this check is more complex...
 					// Then you would adjust vx instead of e.x directly...
@@ -108,7 +108,7 @@ public class Physic {
 			if (vy != 0){
 				int loopx=e.rx;int mx = loopx / blockwidth;
 				if (loopx < 0) mx -= 1;
-				System.out.println("loopx "+loopx+", mx "+mx+", ny "+ny+", y "+y);
+//				System.out.println("loopx "+loopx+", mx "+mx+", ny "+ny+", y "+y);
 				if (ny != y && g.level.getMap(mx,ny) == 1){
 					// if your size would be > 1 Block, this check is more complex...
 					// Then you would adjust vx instead of e.x directly...

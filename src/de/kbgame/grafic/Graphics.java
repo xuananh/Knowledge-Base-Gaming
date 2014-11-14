@@ -19,28 +19,33 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import de.kbgame.game.Game;
+import de.kbgame.util.ImageKey;
 
 public class Graphics extends JFrame {
 
 	private static final long serialVersionUID = -8990501035231822716L;
 
-	public int viewX = 0, viewY = 0;
-	public int Width = 800, Height = 600;
-	public Dimension currentWindowSize, realWindowSize;
-	
-	double rotation = 0;
+	private static final String GAME_TITLE = "Mario";
 
-	Font TimesSmall, TimesSmaller;
-	Cursor transparentCursor, basicCursor;
+	private static final String TIMES_NEW_ROMAN = "Times New Roman";
+
+	private final HashMap<ImageKey, BufferedImage> images = new HashMap<ImageKey, BufferedImage>();
+	private final Game g;
+	private double rotation = 0;
+
+	public int viewX = 0, viewY = 0;
+	public final int Width = 800, Height = 600;
+	public final Dimension currentWindowSize, realWindowSize;
+	public final Font TimesSmall, TimesSmaller;
+	public final Cursor transparentCursor, basicCursor;
 	
 	BufferedImage currentScreen;
 	Graphics2D currentGrafic;
-	private final HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 	
 	public Graphics(Game game) {
-		
-		TimesSmall = new Font("Times New Roman", Font.PLAIN, 15);
-		TimesSmaller = new Font("Times New Roman", Font.PLAIN, 12);
+		this.g = game;
+		TimesSmall = new Font(TIMES_NEW_ROMAN, Font.PLAIN, 15);
+		TimesSmaller = new Font(TIMES_NEW_ROMAN, Font.PLAIN, 12);
 		
 		setUndecorated(true);
 		setIgnoreRepaint(true);
@@ -48,18 +53,18 @@ public class Graphics extends JFrame {
 		graphicsDevice.setFullScreenWindow(this);
 		
 		realWindowSize = getSize();
-		currentWindowSize = new Dimension(800,600);
+		currentWindowSize = new Dimension(Width,Height);
 		createBufferStrategy(2);
 		
-		this.setTitle("Game Example");
+		this.setTitle(GAME_TITLE);
 		this.setBackground(Color.white);
 		this.setForeground(Color.black);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		basicCursor = Cursor.getDefaultCursor();
 		
-		int[] pixels = new int[16 * 16];
-		Image image = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(16, 16, pixels, 0, 16));
+		final int[] pixels = new int[16 * 16];
+		final Image image = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(16, 16, pixels, 0, 16));
 		transparentCursor = Toolkit.getDefaultToolkit().createCustomCursor(image, new Point(0, 0), "invisibleCursor");
 		this.setCursor(transparentCursor);
 		
@@ -69,15 +74,17 @@ public class Graphics extends JFrame {
 		addMouseListener(game.input.MouseInput);
 		addMouseMotionListener(game.input.MouseMove);
 		addMouseWheelListener(game.input.MouseWheel);
+		
+		loadImages();
 	}
 	
-	public void loadImages(){
+	private void loadImages(){
 		try {
-			images.put("background",
+			images.put(ImageKey.BACKGROUND,
 					ImageIO.read(new File("Images/background.png")));
-			images.put("person",
+			images.put(ImageKey.PERSON,
 					ImageIO.read(new File("Images/person.png")));
-			images.put("block", ImageIO.read(new File("Images/block.png")));
+			images.put(ImageKey.BLOCK, ImageIO.read(new File("Images/block.png")));
 		} catch (IOException e) { 
 			e.printStackTrace();
 		}
@@ -85,7 +92,7 @@ public class Graphics extends JFrame {
 	
 	public void startDrawNewFrame(int viewX, int viewY) {
 		this.viewX = viewX;
-		this.viewY = viewY;
+		this.viewY = viewY - g.level.blockheight*3;
 		currentScreen = new BufferedImage(currentWindowSize.width, currentWindowSize.height, BufferedImage.TYPE_INT_RGB);
 		if (currentGrafic != null) currentGrafic.dispose();
 		currentGrafic = currentScreen.createGraphics();
@@ -102,11 +109,11 @@ public class Graphics extends JFrame {
 	}
 	
 	public void newBackground() {
-		currentGrafic.drawImage(images.get("background"), 0, 0, currentWindowSize.width, currentWindowSize.height, this);
+		currentGrafic.drawImage(images.get(ImageKey.BACKGROUND), 0, 0, currentWindowSize.width, currentWindowSize.height, this);
 	}
 
-	public void drawImage(String key, int x, int y, int width, int height, float rot){drawImage(key, x, y, width, height, rot, true);}
-	public void drawImage(String key, int x, int y, int width, int height, float rot, boolean relative){
+	public void drawImage(ImageKey imageKey, int x, int y, int width, int height, float rot){drawImage(imageKey, x, y, width, height, rot, true);}
+	public void drawImage(ImageKey imageKey, int x, int y, int width, int height, float rot, boolean relative){
 		if (relative){
 			x -= viewX - this.Width/2;
 			y -= viewY - this.Height/2;
@@ -116,18 +123,20 @@ public class Graphics extends JFrame {
 			return; //Draw only if in screen
 		
 		
-		if (rot != 0) currentGrafic.rotate(rot, currentWindowSize.width/2, currentWindowSize.height/2);
+		if (rot != 0) 
+			currentGrafic.rotate(rot, currentWindowSize.width/2, currentWindowSize.height/2);
+		
 		try{
 			x -= width/2;
 			y -= height/2;
-			BufferedImage todraw = images.get(key);
-			//int w = todraw.getWidth();
-			//int h = todraw.getHeight();
+			final BufferedImage todraw = images.get(imageKey);
 			currentGrafic.drawImage(todraw, x, y, width, height, this);
 		}catch(Exception e){
 			e.printStackTrace();
+		
 		}
-		if (rot != 0) currentGrafic.rotate(-rot, currentWindowSize.width/2, currentWindowSize.height/2);//Nicht Vergessen!!
+		if (rot != 0) 
+			currentGrafic.rotate(-rot, currentWindowSize.width/2, currentWindowSize.height/2);//Nicht Vergessen!!
 	}
 
 	public void drawRectangle(int x, int y, int w, int h, Color c){drawRectangle(x, y, w, h, c, true);}
@@ -186,8 +195,8 @@ public class Graphics extends JFrame {
 		if (relative){
 			x -= viewX - this.Width/2;
 			y -= viewY - this.Height/2;
-			x -= viewX - this.Width/2;
-			y -= viewY - this.Height/2;
+			x2 -= viewX - this.Width/2;
+			y2 -= viewY - this.Height/2;
 		}
 		
 		if (Math.max(x, x2) < 0 || Math.min(x, x2) > this.Width || Math.max(y, y2) < 0 || Math.min(y,y2) > this.Width) return; //Draw only if in screen

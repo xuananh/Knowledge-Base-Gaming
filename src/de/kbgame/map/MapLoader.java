@@ -16,30 +16,34 @@ public final class MapLoader {
     }
 
 	public static Level LoadMapOutOfBitmap(Game g, String filename){
-		Level level = null;
-		BufferedImage bi;
 		try {
-			bi = ImageIO.read(new File(filename));
+			final BufferedImage bi = ImageIO.read(new File(filename));
+			final Level level = new Level(bi.getWidth(), bi.getHeight());
+			int pixelColor;
+			
+			for (int x=0;x<bi.getWidth();x++){
+				for (int y=0;y<bi.getHeight();y++){
+					pixelColor = bi.getRGB(x, y);
+					setPixel(g,level, pixelColor, x, y);
+				}
+			}
+			
+			return level;
         } catch (IOException e) {
         	System.err.println("Error: Cannot Read Image '"+filename+"'");
         	return null;
         }
-		if (bi == null) return null;
-		level = new Level(bi.getWidth(), bi.getHeight());
-		for (int x=0;x<bi.getWidth();x++){
-			for (int y=0;y<bi.getHeight();y++){
-				int pixelColor = bi.getRGB(x, y);
-				Byte block = Blocks.Empty;
-				switch(pixelColor){
-					case ColorValues.r0g0b0: { 
-						block = Blocks.Solid;
-						break;
-					} 
-				}
-				level.setMap(x,y,block);
-			}
-		}
-		return level;
 	}
 	
+	private static void setPixel(Game g, Level level, int pixelColor, int x, int y) {
+		switch(pixelColor){
+			case ColorValues.r0g0b0: { 
+				level.setMap(x,y,Blocks.Solid);
+				break;
+			}
+			default :
+				level.setMap(x,y,Blocks.Empty);
+				break;
+		}
+	}
 }

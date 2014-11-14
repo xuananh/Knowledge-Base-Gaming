@@ -4,17 +4,23 @@ import java.awt.event.KeyEvent;
 
 public class Controller {
 	
+	public int viewX=0, viewY=0;
+	
 	public Entity controlledOne = null;
 	public boolean testing = true;
 	
 	public void control(Entity r){
 		if (controlledOne != null) controlledOne.con = null;
 		controlledOne = r;
+		viewX = controlledOne.x;
+		viewY = controlledOne.y;
 		r.con = this;
 	}
 	
 	public void update(Game g){
 		if (controlledOne != null){
+			viewX = controlledOne.x;
+			viewY = controlledOne.y;
 			if (g.input.getKey(KeyEvent.VK_UP)){
 				if (controlledOne.onground) controlledOne.vy -= 5;
 			}else if (g.input.getKey(KeyEvent.VK_DOWN)){

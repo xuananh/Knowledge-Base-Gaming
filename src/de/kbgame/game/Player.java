@@ -17,7 +17,7 @@ public class Player extends Entity{
 	
 	@Override
 	public void draw(Game g){
-		g.graphic.drawImage(1, x, y, wi, hi, rot);
+		g.graphic.drawImage("person", x, y, wi, hi, rot);
 	}
 
 }

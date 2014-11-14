@@ -1,10 +1,10 @@
 package de.kbgame.game;
 
-import java.awt.Color;
 import java.util.LinkedList;
 
 import de.kbgame.grafic.Graphics;
 import de.kbgame.map.Level;
+import de.kbgame.map.MapLoader;
 import de.kbgame.util.Input;
 import de.kbgame.util.SoundThread;
 
@@ -62,7 +62,7 @@ public class Game extends Thread{
 		Player p = new Player(25, 25, 50, 50);
 		list.add((Entity)p);
 		controller.control(p);
-		level = new Level(15, 5);
+		level = MapLoader.LoadMapOutOfBitmap(this, "Levels/testmap.bmp");
 		
 		// add 2 dummy platforms
 		int bw = level.blockwidth;
@@ -72,7 +72,6 @@ public class Game extends Thread{
 		list.add((Entity) pf);
 		pf = new Platform(this, 2 * bw, 2 * bh, bw, bh, 2, 7, false);
 		list.add((Entity) pf);
-		
 		
 		this.start();
 	}
@@ -88,7 +87,7 @@ public class Game extends Thread{
 	}
 	
 	public void draw(){
-		graphic.startDrawNewFrame();
+		graphic.startDrawNewFrame(controller.viewX,controller.viewY);
 		
 		graphic.newBackground();
 		level.draw(this);
@@ -96,9 +95,6 @@ public class Game extends Thread{
 			e.draw(this);
 			if (drawEntityBorders) e.drawBox(this);
 		}
-		
-		//Examples
-		graphic.drawText("TESSSST", 100, 500, Color.white);
 		
 		graphic.endDrawNewFrame();
 	}

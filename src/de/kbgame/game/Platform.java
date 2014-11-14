@@ -3,8 +3,7 @@ package de.kbgame.game;
 
 public class Platform extends Entity {
 	
-	public static final int IMAGE_ID = 2;
-	
+	private static final String BLOCK = "block";
 	private boolean verticalMove = true;
 	private boolean downOrRight = true;
 	private int fromXY;
@@ -49,7 +48,7 @@ public class Platform extends Entity {
 	
 	@Override
 	public void draw(Game g){
-		g.graphic.drawImage(IMAGE_ID, x, y, wi, hi / 2, 0);
+		g.graphic.drawImage(BLOCK, x, y, wi, hi / 2, 0);
 	}
 
 }

@@ -18,6 +18,9 @@ public class Platform extends Entity {
 		fromXY = fromBlockIndex * g.level.blockheight;
 		toXY = toBlockIndex * g.level.blockheight;
 		this.verticalMove = verticalMove;
+		
+		vy = 1;
+		vx = 1;
 	}
 	
 	@Override

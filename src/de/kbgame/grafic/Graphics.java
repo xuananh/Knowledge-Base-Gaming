@@ -129,8 +129,7 @@ public class Graphics extends JFrame {
 		try{
 			x -= width/2;
 			y -= height/2;
-			final BufferedImage todraw = images.get(imageKey);
-			currentGrafic.drawImage(todraw, x, y, width, height, this);
+			currentGrafic.drawImage(images.get(imageKey), x, y, width, height, this);
 		}catch(Exception e){
 			e.printStackTrace();
 		

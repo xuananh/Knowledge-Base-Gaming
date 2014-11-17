@@ -6,7 +6,7 @@ import de.kbgame.util.ImageKey;
 public class Level {
 	
 	public int width, height;
-	public byte[][] map;
+	private final int[][] map;
 	
 	public final int blockwidth = 25, blockheight = 25;
 	
@@ -15,7 +15,7 @@ public class Level {
 		if (hi<10) hi=10;
 		width = wi;
 		height = hi;
-		map = new byte[width][height];
+		map = new int[width][height];
 	}
 	
 	public void update(Game g){
@@ -31,7 +31,7 @@ public class Level {
 		
 		for (int x=left; x<right; x++){
 			for (int y=top; y<bottom; y++){
-				byte val = getMap(x, y);
+				int val = getMap(x, y);
 				switch(val){
 					case Blocks.Solid:{
 						g.graphic.drawImage(ImageKey.BLOCK, x*blockwidth+blockwidth/2, y*blockheight+blockheight/2, blockheight, blockheight, 0f);
@@ -42,13 +42,13 @@ public class Level {
 		}
 	}
 	
-	public byte getMap(int x, int y){
+	public int getMap(int x, int y){
 		if (x >= 0 && y >= 0 && x < width && y < height){
 			return map[x][y];
-		}else return 1;
+		}else return 2;
 	}
 	
-	public void setMap(int x, int y, byte v){
+	public void setMap(int x, int y, int v){
 		if (x >= 0 && y >= 0 && x < width && y < height){
 			map[x][y] = v;
 		}

@@ -7,7 +7,7 @@ public class Controller {
 	public int viewX, viewY;
 	
 	public Entity controlledOne = null;
-	public boolean testing = true;
+	public boolean testing = false;
 	
 	public void control(Entity r){
 		if (controlledOne != null) controlledOne.con = null;
@@ -50,7 +50,8 @@ public class Controller {
 			}
 		}
 
-		if (g.input.getKey(KeyEvent.VK_ESCAPE)) g.shouldApplicationExit = true;
+		if (g.input.getKey(KeyEvent.VK_ESCAPE)) 
+			g.shouldApplicationExit = true;
 		
 		//TEST
 		if (testing){

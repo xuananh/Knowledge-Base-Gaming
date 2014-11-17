@@ -6,7 +6,7 @@ public final class Blocks {
         throw new AssertionError();
     }
 
-	public final static byte Empty = 0;
-	public final static byte Solid = 1;
+	public final static int Empty = 0;
+	public final static int Solid = 1;
 
 }

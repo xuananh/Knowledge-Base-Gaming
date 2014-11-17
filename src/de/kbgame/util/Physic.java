@@ -62,7 +62,7 @@ public class Physic {
 			for (int loopy=e.uy; loopy<e.dy; loopy += blockheight){
 				int my = loopy / blockheight;
 				if (loopy < 0) my -= 1;
-				if (nx != x && g.level.getMap(nx,my) == 1){
+				if (nx != x && g.level.getMap(nx,my) != 0){
 					// if your size would be > 1 Block, this check is more complex...
 					// Then you would adjust vx instead of e.x directly...
 					if (vx > 0) e.x += blockwidth-1-((e.rx) % blockwidth);
@@ -76,7 +76,7 @@ public class Physic {
 				int loopy = e.dy;
 				int my = loopy / blockheight;
 				if (loopy < 0) my -= 1;
-				if (nx != x && g.level.getMap(nx,my) == 1){
+				if (nx != x && g.level.getMap(nx,my) != 0){
 					// if your size would be > 1 Block, this check is more complex...
 					// Then you would adjust vx instead of e.x directly...
 					if (vx > 0) e.x += blockwidth-1-((e.rx) % blockwidth);
@@ -94,7 +94,7 @@ public class Physic {
 				int mx = loopx / blockwidth;
 				if (loopx < 0) mx -= 1;
 //				System.out.println("loopx "+loopx+", mx "+mx+", ny "+ny+", y "+y);
-				if (ny != y && g.level.getMap(mx,ny) == 1){
+				if (ny != y && g.level.getMap(mx,ny) != 0){
 					// if your size would be > 1 Block, this check is more complex...
 					// Then you would adjust vx instead of e.x directly...
 					if (vy > 0){
@@ -109,7 +109,7 @@ public class Physic {
 				int loopx=e.rx;int mx = loopx / blockwidth;
 				if (loopx < 0) mx -= 1;
 //				System.out.println("loopx "+loopx+", mx "+mx+", ny "+ny+", y "+y);
-				if (ny != y && g.level.getMap(mx,ny) == 1){
+				if (ny != y && g.level.getMap(mx,ny) != 0){
 					// if your size would be > 1 Block, this check is more complex...
 					// Then you would adjust vx instead of e.x directly...
 					if (vy > 0){

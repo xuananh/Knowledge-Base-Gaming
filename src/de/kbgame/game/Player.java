@@ -38,7 +38,6 @@ public class Player extends Entity {
 		} 
 
 		PhysicResult result = Physic.doPhysic(g, this);
-		System.out.println(result.y + " " + ny + " // " + result.vy);
 		
 		if (parent != null && result.y < ny) {
 			result.apply(this);

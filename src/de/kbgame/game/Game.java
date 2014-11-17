@@ -25,12 +25,16 @@ public class Game extends Thread{
 	public void run() {
 		shouldApplicationExit = false;
 		
-		while (!shouldApplicationExit){
-			try{
+		long start;
+		long timePerIteration = 1000 / 60; // for 60 FPS
+		
+		
+		while (!shouldApplicationExit) {
+			start = System.currentTimeMillis();
 			
+			try{
 				update();
 				draw();
-			
 			}catch(Exception e){
 				System.err.println("Uncaught Exception in Loop!");
 				e.printStackTrace();
@@ -38,11 +42,10 @@ public class Game extends Thread{
 			}
 			
 			try {
-				Thread.sleep(10);
+				Thread.sleep(Math.max(0, timePerIteration - (System.currentTimeMillis() - start)));
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			
 		}
 		
 		sounds.dispose();
@@ -55,21 +58,29 @@ public class Game extends Thread{
 		graphic = new Graphics(this);
 		controller = new Controller();
 		sounds = new SoundThread();
-		for (int i=0;i<20;i++) list.add((Entity)new Rectangle(50+i*15, 50+i*15,10,10));
-		list.add((Entity) new Circle(300, 150, 70, 50));
-		Player p = new Player(300, 400, 50, 50);
-		list.add((Entity)p);
-		controller.control(p);
+		
+//		for (int i = 0; i < 20; i++) {
+//			list.add((Entity) new Rectangle(50 + i * 15, 50 + i * 15, 10, 10));
+//		}
+//		list.add((Entity) new Circle(300, 150, 70, 50));
+		
 		level = MapLoader.LoadMapOutOfBitmap(this, "Levels/testmap.bmp");
 		
 		// add 2 dummy platforms
-		int bw = level.blockwidth;
-		int bh = level.blockheight;
+		int bw = Level.BLOCK_WIDTH;
+		int bh = Level.BLOCK_HEIGHT;
 		
-		Platform pf = new Platform(this, 10 * bw, 2 * bh, bw, bh, 2, 5, true);
-		list.add((Entity) pf);
-		pf = new Platform(this, 2 * bw, 2 * bh, bw, bh, 2, 7, false);
-		list.add((Entity) pf);
+		Platform pf1 = new Platform(this, 10 * bw + bw / 2, 30 * bh + bh / 2, bw, bh, 30, 40, true);
+		list.add((Entity) pf1);
+		Platform pf2 = new Platform(this, 2 * bw, 2 * bh, bw, bh, 2, 7, false);
+		list.add((Entity) pf2);
+
+		// player (must be instantiated after platforms)
+		Player p = new Player(10 * bw, 30 * bh - 19, 50, 50);
+		list.add((Entity) p);
+		controller.control(p);
+
+		p.setParent(pf1);
 		
 		this.start();
 	}

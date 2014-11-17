@@ -45,7 +45,7 @@ public class Controller {
 				}
 				if (g.input.getKey(KeyEvent.VK_X)){ // Toggle Objekt Boxes
 					g.input.dontAlertTillKeyUp(KeyEvent.VK_X);
-					System.out.println(controlledOne.x % g.level.blockwidth);
+					System.out.println(controlledOne.x % g.level.BLOCK_WIDTH);
 				}
 			}
 		}

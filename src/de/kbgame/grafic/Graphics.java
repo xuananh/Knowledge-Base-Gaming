@@ -92,7 +92,7 @@ public class Graphics extends JFrame {
 	
 	public void startDrawNewFrame(int viewX, int viewY) {
 		this.viewX = viewX;
-		this.viewY = viewY - g.level.blockheight*3;
+		this.viewY = viewY - g.level.BLOCK_HEIGHT*3;
 		currentScreen = new BufferedImage(currentWindowSize.width, currentWindowSize.height, BufferedImage.TYPE_INT_RGB);
 		if (currentGrafic != null) currentGrafic.dispose();
 		currentGrafic = currentScreen.createGraphics();

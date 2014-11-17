@@ -10,7 +10,7 @@ public class Level {
 
 	private int left, right, top, bottom;
 
-	public final int blockwidth = 25, blockheight = 25;
+	public final static int BLOCK_WIDTH = 25, BLOCK_HEIGHT = 25;
 
 	public Level(int wi, int hi) {
 		width = Math.max(10, wi);
@@ -22,10 +22,10 @@ public class Level {
 		int centerX = g.graphic.viewX;
 		int centerY = g.graphic.viewY;
 
-		left = (int) (centerX - g.graphic.Width / 2) / blockwidth - 1;
-		right = (int) (centerX + g.graphic.Width / 2) / blockwidth + 1;
-		top = (int) (centerY - g.graphic.Height / 2 - 0.9) / blockheight - 1;
-		bottom = (int) (centerY + g.graphic.Height / 2 + 0.9) / blockheight + 1;
+		left = (int) (centerX - g.graphic.Width / 2) / BLOCK_WIDTH - 1;
+		right = (int) (centerX + g.graphic.Width / 2) / BLOCK_WIDTH + 1;
+		top = (int) (centerY - g.graphic.Height / 2 - 0.9) / BLOCK_HEIGHT - 1;
+		bottom = (int) (centerY + g.graphic.Height / 2 + 0.9) / BLOCK_HEIGHT + 1;
 	}
 
 	public void draw(Game g) {
@@ -34,10 +34,10 @@ public class Level {
 				byte val = getMap(x, y);
 				switch (val) {
 				case Blocks.Solid: {
-					g.graphic.drawImage(ImageKey.BLOCK, x * blockwidth
-							+ blockwidth / 2,
-							y * blockheight + blockheight / 2, blockheight,
-							blockheight, 0f);
+					g.graphic.drawImage(ImageKey.BLOCK, x * BLOCK_WIDTH
+							+ BLOCK_WIDTH / 2,
+							y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT,
+							BLOCK_HEIGHT, 0f);
 					break;
 				}
 				}

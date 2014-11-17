@@ -1,5 +1,6 @@
 package de.kbgame.game;
 
+import de.kbgame.map.Level;
 import de.kbgame.util.ImageKey;
 
 
@@ -15,8 +16,8 @@ public class Platform extends Entity {
 	public Platform(Game g, int x, int y, int width, int height, int fromBlockIndex, int toBlockIndex, boolean verticalMove) {
 		super(x, y, width, height);
 		
-		fromXY = fromBlockIndex * g.level.blockheight;
-		toXY = toBlockIndex * g.level.blockheight;
+		fromXY = fromBlockIndex * Level.BLOCK_HEIGHT;
+		toXY = toBlockIndex * Level.BLOCK_HEIGHT;
 		this.verticalMove = verticalMove;
 		
 		vy = 1;

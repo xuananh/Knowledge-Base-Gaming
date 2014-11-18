@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import de.kbgame.game.Game;
+import de.kbgame.map.Level;
 import de.kbgame.util.ImageKey;
 
 public class Graphics extends JFrame {
@@ -30,7 +31,6 @@ public class Graphics extends JFrame {
 	private static final String TIMES_NEW_ROMAN = "Times New Roman";
 
 	private final HashMap<ImageKey, BufferedImage> images = new HashMap<ImageKey, BufferedImage>();
-	private final Game g;
 	private double rotation = 0;
 
 	public int viewX = 0, viewY = 0;
@@ -43,7 +43,6 @@ public class Graphics extends JFrame {
 	Graphics2D currentGrafic;
 	
 	public Graphics(Game game) {
-		this.g = game;
 		TimesSmall = new Font(TIMES_NEW_ROMAN, Font.PLAIN, 15);
 		TimesSmaller = new Font(TIMES_NEW_ROMAN, Font.PLAIN, 12);
 		
@@ -85,6 +84,8 @@ public class Graphics extends JFrame {
 			images.put(ImageKey.PERSON,
 					ImageIO.read(new File("Images/person.png")));
 			images.put(ImageKey.BLOCK, ImageIO.read(new File("Images/block.png")));
+			images.put(ImageKey.BODEN, ImageIO.read(new File("Images/grass.png")));
+			images.put(ImageKey.QUESTION_BLOCK, ImageIO.read(new File("Images/questionblock.png")));
 		} catch (IOException e) { 
 			e.printStackTrace();
 		}
@@ -92,7 +93,7 @@ public class Graphics extends JFrame {
 	
 	public void startDrawNewFrame(int viewX, int viewY) {
 		this.viewX = viewX;
-		this.viewY = viewY - g.level.BLOCK_HEIGHT*3;
+		this.viewY = viewY - Level.BLOCK_HEIGHT*3;
 		currentScreen = new BufferedImage(currentWindowSize.width, currentWindowSize.height, BufferedImage.TYPE_INT_RGB);
 		if (currentGrafic != null) currentGrafic.dispose();
 		currentGrafic = currentScreen.createGraphics();

@@ -24,6 +24,11 @@ public class Controller {
 		if (controlledOne != null){
 			viewX = controlledOne.x;
 			viewY = controlledOne.y;
+			
+			if(viewX < g.graphic.Width / 2) {
+				viewX = g.graphic.Width/2;
+			}
+			
 			if (g.input.getKey(KeyEvent.VK_UP)){
 				if (controlledOne.onground) controlledOne.vy -= Physic.JUMP_VELOCITY;
 			} else if (g.input.getKey(KeyEvent.VK_DOWN)){

@@ -33,17 +33,27 @@ public class Level {
 			for (int y = top; y < bottom; y++) {
 				int val = getMap(x, y);
 				switch (val) {
-				case Blocks.Solid: {
-					g.graphic.drawImage(ImageKey.BLOCK, x * BLOCK_WIDTH
-							+ BLOCK_WIDTH / 2,
-							y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT,
-							BLOCK_HEIGHT, 0f);
-					break;
-				}
-				case Blocks.Plattform: {
-					
-					break;
-				}
+					case Blocks.Solid: {
+						g.graphic.drawImage(ImageKey.BLOCK, x * BLOCK_WIDTH
+								+ BLOCK_WIDTH / 2,
+								y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT,
+								BLOCK_HEIGHT, 0f);
+						break;
+					}
+					case Blocks.Boden: {
+						g.graphic.drawImage(ImageKey.BODEN, x * BLOCK_WIDTH
+								+ BLOCK_WIDTH / 2,
+								y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT,
+								BLOCK_HEIGHT, 0f);
+						break;
+					}
+					case Blocks.QuestionBlock: {
+						g.graphic.drawImage(ImageKey.QUESTION_BLOCK, x * BLOCK_WIDTH
+								+ BLOCK_WIDTH / 2,
+								y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT,
+								BLOCK_HEIGHT, 0f);
+						break;
+					}
 				}
 			}
 		}

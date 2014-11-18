@@ -4,5 +4,5 @@ public enum ImageKey {
 
 	BACKGROUND,
 	PERSON,
-	BLOCK
+	BLOCK, BODEN, QUESTION_BLOCK
 }

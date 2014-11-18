@@ -2,6 +2,9 @@ package de.kbgame.game;
 
 import java.awt.event.KeyEvent;
 
+import de.kbgame.map.Level;
+import de.kbgame.util.Physic;
+
 public class Controller {
 	
 	public int viewX, viewY;
@@ -22,15 +25,15 @@ public class Controller {
 			viewX = controlledOne.x;
 			viewY = controlledOne.y;
 			if (g.input.getKey(KeyEvent.VK_UP)){
-				if (controlledOne.onground) controlledOne.vy -= 5;
-			}else if (g.input.getKey(KeyEvent.VK_DOWN)){
+				if (controlledOne.onground) controlledOne.vy -= Physic.JUMP_VELOCITY;
+			} else if (g.input.getKey(KeyEvent.VK_DOWN)){
 				controlledOne.vy += 2;
 			}
 
-			if (g.input.getKey(KeyEvent.VK_LEFT)){
-				controlledOne.vx -= 0.7;
-			}else if (g.input.getKey(KeyEvent.VK_RIGHT)){
-				controlledOne.vx += 0.7;
+			if (g.input.getKey(KeyEvent.VK_LEFT)) {
+				controlledOne.vx -= Physic.WALK_VELOCITY;
+			} else if (g.input.getKey(KeyEvent.VK_RIGHT)) {
+				controlledOne.vx += Physic.WALK_VELOCITY;
 			}
 			
 			//TEST
@@ -45,7 +48,7 @@ public class Controller {
 				}
 				if (g.input.getKey(KeyEvent.VK_X)){ // Toggle Objekt Boxes
 					g.input.dontAlertTillKeyUp(KeyEvent.VK_X);
-					System.out.println(controlledOne.x % g.level.BLOCK_WIDTH);
+					System.out.println(controlledOne.x % Level.BLOCK_WIDTH);
 				}
 			}
 		}

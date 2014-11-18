@@ -10,7 +10,7 @@ public class Level {
 
 	private int left, right, top, bottom;
 
-	public final static int BLOCK_WIDTH = 25, BLOCK_HEIGHT = 25;
+	public final static int BLOCK_WIDTH = 50, BLOCK_HEIGHT = 50;
 
 	public Level(int wi, int hi) {
 		width = Math.max(10, wi);

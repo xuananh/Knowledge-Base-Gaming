@@ -6,7 +6,8 @@ import de.kbgame.map.Level;
 
 public final class Physic {
 
-	public static final double JUMP_VELOCITY = 14;
+	public static final double JUMP_VELOCITY = 6.0;
+	public static final double WALK_VELOCITY = 1.0;
 	public static final double GRAVITY = 0.11;
 	public static final double FRICTION = 0.8;
 

@@ -41,6 +41,10 @@ public final class MapLoader {
 				level.setMap(x,y,Blocks.Solid);
 				break;
 			}
+			case ColorValues.r0g0b255: { 
+				level.setMap(x,y,Blocks.Plattform);
+				break;
+			}
 			default :
 				level.setMap(x,y,Blocks.Empty);
 				break;

@@ -8,5 +8,6 @@ public final class Blocks {
 
 	public final static int Empty = 0;
 	public final static int Solid = 1;
+	public final static int Plattform = 2;
 
 }

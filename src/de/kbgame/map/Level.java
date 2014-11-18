@@ -10,7 +10,7 @@ public class Level {
 
 	private int left, right, top, bottom;
 
-	public final static int BLOCK_WIDTH = 25, BLOCK_HEIGHT = 25;
+	public final static int BLOCK_WIDTH = 50, BLOCK_HEIGHT = 50;
 
 	public Level(int wi, int hi) {
 		width = Math.max(10, wi);
@@ -40,6 +40,10 @@ public class Level {
 							BLOCK_HEIGHT, 0f);
 					break;
 				}
+				case Blocks.Plattform: {
+					
+					break;
+				}
 				}
 			}
 		}
@@ -48,7 +52,7 @@ public class Level {
 	public int getMap(int x, int y){
 		if (x >= 0 && y >= 0 && x < width && y < height){
 			return map[x][y];
-		}else return 1;
+		}else return 2;
 	}
 	
 	public void setMap(int x, int y, int v){

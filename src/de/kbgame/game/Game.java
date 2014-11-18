@@ -16,6 +16,7 @@ public class Game extends Thread{
 	public final SoundThread sounds;
 	
 	public boolean shouldApplicationExit = false;
+	public final LinkedList<Platform> platforms = new LinkedList<Platform>();
 	public final LinkedList<Entity> list = new LinkedList<Entity>();
 	public final Level level;
 	
@@ -58,29 +59,24 @@ public class Game extends Thread{
 		graphic = new Graphics(this);
 		controller = new Controller();
 		sounds = new SoundThread();
-		
-//		for (int i = 0; i < 20; i++) {
-//			list.add((Entity) new Rectangle(50 + i * 15, 50 + i * 15, 10, 10));
-//		}
-//		list.add((Entity) new Circle(300, 150, 70, 50));
-		
-		level = MapLoader.LoadMapOutOfBitmap(this, "Levels/testmap.bmp");
-		
-		// add 2 dummy platforms
+	
 		int bw = Level.BLOCK_WIDTH;
 		int bh = Level.BLOCK_HEIGHT;
 		
-		Platform pf1 = new Platform(this, 10 * bw + bw / 2, 30 * bh + bh / 2, bw, bh, 30, 40, true);
-		list.add((Entity) pf1);
-		Platform pf2 = new Platform(this, 2 * bw, 2 * bh, bw, bh, 2, 7, false);
-		list.add((Entity) pf2);
+		level = MapLoader.LoadMapOutOfBitmap(this, "Levels/testmap.bmp");
 
 		// player (must be instantiated after platforms)
 		Player p = new Player(10 * bw, 30 * bh - 19, 50, 50);
 		list.add((Entity) p);
 		controller.control(p);
+		
+		// add 2 dummy platforms
+		Platform pf1 = new Platform(this, 10 * bw + bw / 2, 30 * bh + bh / 2, bw, bh, 30, 40, true);
+		platforms.add(pf1);
+		Platform pf2 = new Platform(this, 2 * bw, 2 * bh, bw, bh, 2, 7, false);
+		platforms.add(pf2);
 
-		p.setParent(pf1);
+//		p.setParent(pf1);
 		
 		this.start();
 	}
@@ -88,8 +84,14 @@ public class Game extends Thread{
 	public void update(){
 		level.update(this);
 		controller.update(this);
-		for (Entity ent : list) 
+		
+		for (Platform p : platforms) {
+			p.update(this);
+		}
+		
+		for (Entity ent : list) {
 			ent.update(this);
+		}
 	}
 	
 	public void draw(){
@@ -97,6 +99,11 @@ public class Game extends Thread{
 		
 		graphic.newBackground();
 		level.draw(this);
+		
+		for (Platform p : platforms) {
+			p.draw(this);
+		}
+		
 		for (Entity e : list){
 			e.draw(this);
 		}

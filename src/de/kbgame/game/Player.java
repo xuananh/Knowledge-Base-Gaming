@@ -18,26 +18,27 @@ public class Player extends Entity {
 		parent = platform;
 		
 		if (platform != null) {
-			parentOffsetX = this.x - platform.x;
-			parentOffsetY = this.y - platform.y;
+			parentOffsetX = x - platform.x;
+			parentOffsetY = y - platform.y;
 			
-			this.vx = 0;
-			this.vy = 0;
+			vx = 0;
+			vy = 0;
 		}
 	}
 	
 	@Override
 	public void update(Game g) {
 		int nx = 0, ny = 0;
-		
+
+		PhysicResult result = Physic.doPhysic(g, this);
+
 		if (parent != null) {
 			nx = parent.x + parentOffsetX;
 			ny = parent.y + parentOffsetY;
 			
 			vy = parent.vy;
+			return;
 		} 
-
-		PhysicResult result = Physic.doPhysic(g, this);
 		
 		if (parent != null && result.y < ny) {
 			result.apply(this);
@@ -47,11 +48,11 @@ public class Player extends Entity {
 			y = ny;
 		} else {
 			result.apply(this);
-		}		
+		}
 	}
 	
 	@Override
 	public void draw(Game g) {
-		g.graphic.drawImage(ImageKey.PERSON, x, y, wi, hi, rot);
+		g.graphic.drawImage(ImageKey.PERSON, x, y, width, height, rot);
 	}
 }

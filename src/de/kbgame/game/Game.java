@@ -2,6 +2,9 @@ package de.kbgame.game;
 
 import java.util.LinkedList;
 
+import de.kbgame.game.Entity;
+import de.kbgame.game.Platform;
+import de.kbgame.game.Player;
 import de.kbgame.grafic.Graphics;
 import de.kbgame.map.Level;
 import de.kbgame.map.MapLoader;
@@ -71,10 +74,10 @@ public class Game extends Thread{
 		controller.control(p);
 		
 		// add 2 dummy platforms
-		Platform pf1 = new Platform(this, 10 * bw + bw / 2, 30 * bh + bh / 2, bw, bh, 30, 40, true);
+		Platform pf1 = new Platform(this, 8 * bw + bw / 2, 30 * bh + bh / 2, bw, bh, 30, 40, true);
 		platforms.add(pf1);
-		Platform pf2 = new Platform(this, 2 * bw, 2 * bh, bw, bh, 2, 7, false);
-		platforms.add(pf2);
+//		Platform pf2 = new Platform(this, 2 * bw, 2 * bh, bw, bh, 2, 7, false);
+//		platforms.add(pf2);
 
 //		p.setParent(pf1);
 		

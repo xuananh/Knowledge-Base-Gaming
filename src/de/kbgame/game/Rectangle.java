@@ -17,7 +17,7 @@ public class Rectangle extends Entity {
 	}
 	
 	public void draw(Game g){
-		g.graphic.drawRectangle(x-wi/2, y-hi/2, wi, hi, new Color(100,100,100));
+		g.graphic.drawRectangle(x-width/2, y-height/2, width, height, new Color(100,100,100));
 	}
 	
 }

@@ -1,44 +1,50 @@
 package de.kbgame.game;
 
 import java.awt.Color;
+import java.awt.geom.Rectangle2D;
 
 public class Entity {
 
 	public Controller con = null;
-	public int x,y,wi,hi;
-	public int lx,rx,uy,dy;
-	public double vx,vy;
+	public int x, y, width, height;
+	public int lx, rx, uy, dy;
+	public double vx, vy;
 	public boolean onground = false;
-	
-	public Entity(int x, int y, int width, int height){
+
+	public Entity(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
-		wi = width;
-		hi = height;
-		
-		lx = x-wi/2;
-		rx = lx+wi-1; // != x+wi/2
-		uy = y-hi/2;
-		dy = uy+hi-1;
-		
-		vx=0;vy=0;
+		this.width = width;
+		this.height = height;
+
+		lx = x - this.width / 2;
+		rx = lx + this.width - 1; // != x+wi/2
+		uy = y - this.height / 2;
+		dy = uy + this.height - 1;
+
+		vx = 0;
+		vy = 0;
 	}
 	
-	public void updatePos(){
-		lx = x-wi/2;
-		rx = lx+wi-1; // != x+wi/2
-		uy = y-hi/2;
-		dy = uy+hi-1;
+	public de.kbgame.geometry.Rectangle getSurroundingRectangle() {
+		return new de.kbgame.geometry.Rectangle(lx, uy, width, height);
 	}
-	
-	public void update(Game g){
+
+	public void updatePos() {
+		lx = x - width / 2;
+		rx = lx + width - 1; // != x+wi/2
+		uy = y - height / 2;
+		dy = uy + height - 1;
 	}
-	
-	public void draw(Game g){
-		g.graphic.drawOval(x-wi/2, y-hi/2, wi, hi, new Color(200,100,100));
+
+	public void update(Game g) {
 	}
-	
-	public void drawBox(Game g){
-		g.graphic.drawRectangleBorder(x-wi/2, y-hi/2, wi, hi, Color.cyan);
+
+	public void draw(Game g) {
+		g.graphic.drawOval(x - width / 2, y - height / 2, width, height, new Color(200, 100, 100));
+	}
+
+	public void drawBox(Game g) {
+		g.graphic.drawRectangleBorder(x - width / 2, y - height / 2, width, height, Color.cyan);
 	}
 }

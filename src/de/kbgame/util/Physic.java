@@ -1,7 +1,13 @@
 package de.kbgame.util;
 
+import java.awt.geom.Line2D;
+
 import de.kbgame.game.Entity;
 import de.kbgame.game.Game;
+import de.kbgame.game.Platform;
+import de.kbgame.game.Player;
+import de.kbgame.geometry.Point;
+import de.kbgame.geometry.Rectangle;
 import de.kbgame.map.Level;
 
 public final class Physic {
@@ -16,12 +22,19 @@ public final class Physic {
 	}
 
 	public static PhysicResult doPhysic(Game g, Entity e) {
-		// TODO: Different Physic Types
-		return fallPhysic(g, e);
+		// 1. step
+		PhysicResult result = fallPhysic(g, e);
+		
+		// 2. step
+		if (e instanceof Player) {
+			result = platformPhysics(g, (Player) e, result);
+		}
+		
+		return result;
 	}
 
 	public static PhysicResult fallPhysic(Game g, Entity e) {
-		PhysicResult result = new PhysicResult(e.x, e.y, e.vx, e.vy, e.onground, false, false, false, e.lx, e.rx, e.uy, e.dy, e.wi, e.hi);
+		PhysicResult result = new PhysicResult(e.x, e.y, e.vx, e.vy, e.onground, false, false, false, e.lx, e.rx, e.uy, e.dy, e.width, e.height);
 
 		int blockheight = Level.BLOCK_HEIGHT;
 		int blockwidth = Level.BLOCK_WIDTH;
@@ -178,7 +191,7 @@ public final class Physic {
 
 			if (vy != 0) {
 				result.onground = false;
-			}
+			} 
 
 			nvx += vx;
 			nvy += vy;
@@ -197,5 +210,88 @@ public final class Physic {
 		// }
 
 		return result;
+	}
+	
+	public static PhysicResult platformPhysics(Game g, Player player, PhysicResult result) {
+		Rectangle predictedRect = new Rectangle(result.lx, result.uy, result.wi, result.hi);
+		Point moveVec = new Point(result.x - player.x, result.y - player.y);
+		Line2D.Double entityMovement = new Line2D.Double(player.x, player.y, moveVec.x, moveVec.y);
+		
+		Point src = new Point();
+		Point dst = new Point();
+		
+		Rectangle rect;
+		
+		for (Platform platform : g.platforms) {
+			rect = platform.getSurroundingRectangle();
+			
+			if (predictedRect.intersects(rect)) {
+				// collision detected
+				result.setPhysicResult(player);
+				
+				Line2D.Double[] rectLines = rect.getLines();
+				for (int line = 0; line < rectLines.length; line++) {
+					boolean collision = false;
+					
+					src.setLocation(player.lx, player.uy);
+					dst.add(src, moveVec);
+					entityMovement.setLine(src, dst);
+					if (entityMovement.intersectsLine(rectLines[line])) {
+						log("top/left: " + line);
+						collision = true;
+					}
+
+					src.setLocation(player.rx, player.uy);
+					dst.add(src, moveVec);
+					entityMovement.setLine(src, dst);
+					if (entityMovement.intersectsLine(rectLines[line])) {
+						log("top/right: " + line);
+						collision = true;
+					}
+
+					src.setLocation(player.rx, player.dy);
+					dst.add(src, moveVec);
+					entityMovement.setLine(src, dst);
+					if (entityMovement.intersectsLine(rectLines[line])) {
+						log("bottom/right: " + line);
+						collision = true;
+					}
+
+					src.setLocation(player.lx, player.dy);
+					dst.add(src, moveVec);
+					entityMovement.setLine(src, dst);
+					if (entityMovement.intersectsLine(rectLines[line])) {
+						log("bottom/left: " + line);
+						collision = true;
+					}
+					
+					if (collision) {
+						if (line == de.kbgame.geometry.Rectangle.BOTTOM) {
+							log("bottom");
+							result.vy = Math.max(0, platform.vy);
+						} else if (line == de.kbgame.geometry.Rectangle.LEFT || line == de.kbgame.geometry.Rectangle.RIGHT) {
+							log("side");
+							result.vx = platform.vx;
+						} else {	 // TOP
+							player.setParent(platform);
+							log(player.x + " " + player.y);
+							return result;
+						}
+					}
+				}
+				
+				break;
+			}
+		}
+		
+		return result;
+	}
+	
+	public static boolean rectangleOverlap(Rectangle r1, Rectangle r2) {
+		return r1.intersects(r2);
+	}
+	
+	public static void log(String str) {
+		System.out.println(str);
 	}
 }

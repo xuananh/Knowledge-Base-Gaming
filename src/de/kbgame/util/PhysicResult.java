@@ -46,4 +46,19 @@ public class PhysicResult {
 		e.onground = onground;
 		e.updatePos();
 	}
+	
+	public void setPhysicResult(Entity e) {
+		x = e.x;
+		y = e.y;
+		vx = e.vx;
+		vy = e.vy;
+		onground = e.onground;
+		
+		lx = e.lx;
+		rx = e.rx;
+		uy = e.uy;
+		dy = e.dy;
+		wi = e.width;
+		hi = e.height;
+	}
 }

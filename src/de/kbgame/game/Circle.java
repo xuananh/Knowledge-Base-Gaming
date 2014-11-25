@@ -16,7 +16,7 @@ public class Circle extends Entity{
 	}
 	
 	public void draw(Game g){
-		g.graphic.drawOval(x-wi/2, y-hi/2, wi, hi, new Color(200,100,100));
+		g.graphic.drawOval(x-width/2, y-height/2, width, height, new Color(200,100,100));
 	}
 	
 }

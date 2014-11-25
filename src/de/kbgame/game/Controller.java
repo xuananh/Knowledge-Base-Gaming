@@ -23,7 +23,15 @@ public class Controller {
 	public void update(Game g){
 		if (controlledOne != null){
 			viewX = controlledOne.x;
-			viewY = controlledOne.y;
+			int a = controlledOne.y - viewY;
+			
+			if(a > g.graphic.Height/4) {
+				viewY += a-g.graphic.Height/4;
+			}
+			
+			if(a < -g.graphic.Height/4) {
+				viewY -= Math.abs(a+g.graphic.Height/4);
+			}
 			
 			if(viewX < g.graphic.Width / 2) {
 				viewX = g.graphic.Width/2;

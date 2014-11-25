@@ -86,7 +86,7 @@ public final class Physic {
 			// LEFT <- -> RIGHT PHYSIC
 			for (int loopy = result.uy; loopy < result.dy; loopy += blockheight) {
 				int my = loopy / blockheight;
-
+				
 				if (loopy < 0) {
 					my -= 1;
 				}
@@ -208,7 +208,7 @@ public final class Physic {
 		// if (!result.onground){
 		result.vy += GRAVITY;
 		// }
-
+		
 		return result;
 	}
 	

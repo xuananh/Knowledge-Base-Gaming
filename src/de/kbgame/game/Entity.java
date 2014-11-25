@@ -1,7 +1,6 @@
 package de.kbgame.game;
 
 import java.awt.Color;
-import java.awt.geom.Rectangle2D;
 
 public class Entity {
 

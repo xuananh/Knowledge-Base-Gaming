@@ -6,9 +6,9 @@ public final class Blocks {
         throw new AssertionError();
     }
 
-	public final static int Empty = 0;
-	public final static int Solid = 1;
-	public final static int Plattform = 2;
-	public final static int Boden = 3;
-	public final static int QuestionBlock = 4;
+	public final static byte Empty = 0;
+	public final static byte Solid = 1;
+	public final static byte Plattform = 2;
+	public final static byte Boden = 3;
+	public final static byte QuestionBlock = 4;
 }

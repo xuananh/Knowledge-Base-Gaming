@@ -1,7 +1,7 @@
 package de.kbgame.game;
 
+import de.kbgame.geometry.ImageKey;
 import de.kbgame.map.Level;
-import de.kbgame.util.ImageKey;
 
 public class Platform extends Entity {
 

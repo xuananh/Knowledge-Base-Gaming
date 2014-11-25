@@ -1,12 +1,12 @@
 package de.kbgame.map;
 
 import de.kbgame.game.Game;
-import de.kbgame.util.ImageKey;
+import de.kbgame.geometry.ImageKey;
 
 public class Level {
 
 	public int width, height;
-	public int[][] map;
+	public byte[][] map;
 
 	private int left, right, top, bottom;
 
@@ -15,7 +15,7 @@ public class Level {
 	public Level(int wi, int hi) {
 		width = Math.max(10, wi);
 		height = Math.max(10, hi);
-		map = new int[width][height];
+		map = new byte[width][height];
 	}
 
 	public void update(Game g) {
@@ -31,7 +31,7 @@ public class Level {
 	public void draw(Game g) {
 		for (int x = left; x < right; x++) {
 			for (int y = top; y < bottom; y++) {
-				int val = getMap(x, y);
+				byte val = getMap(x, y);
 				switch (val) {
 					case Blocks.Solid: {
 						g.graphic.drawImage(ImageKey.BLOCK, x * BLOCK_WIDTH
@@ -59,13 +59,13 @@ public class Level {
 		}
 	}
 	
-	public int getMap(int x, int y){
+	public byte getMap(int x, int y){
 		if (x >= 0 && y >= 0 && x < width && y < height){
 			return map[x][y];
-		}else return 2;
+		}else return 1;
 	}
 	
-	public void setMap(int x, int y, int v){
+	public void setMap(int x, int y, byte v){
 		if (x >= 0 && y >= 0 && x < width && y < height){
 			map[x][y] = v;
 		}

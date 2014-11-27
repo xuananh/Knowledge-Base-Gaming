@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import de.kbgame.game.Enemy;
 import de.kbgame.game.Game;
 import de.kbgame.util.ColorValues;
 
@@ -45,8 +46,13 @@ public final class MapLoader {
 				level.setMap(x, y, Blocks.Boden);
 				break;
 			}
-			case ColorValues.r0g0b255: { 
+			case ColorValues.r0g0b255: {
 				level.setMap(x, y, Blocks.QuestionBlock);
+				break;
+			}
+			case ColorValues.r255g0b0: {
+				Enemy e = new Enemy((x+1)*Level.BLOCK_WIDTH-50-1, (y+1)*Level.BLOCK_HEIGHT-50-1, 50, 50);
+				g.list.add(e);
 				break;
 			}
 			default :

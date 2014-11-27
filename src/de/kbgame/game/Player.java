@@ -1,20 +1,23 @@
 package de.kbgame.game;
 
+import de.kbgame.grafic.ImageSprite;
 import de.kbgame.util.Physic;
 import de.kbgame.util.PhysicResult;
 import de.kbgame.util.Status;
 
 public class Player extends Entity {
 
+	private final ImageSprite sprite;
+	
 	private Platform parent = null;
 	private int parentOffsetX, parentOffsetY;
 	public float rot = 0;
 
 	private Status status = Status.STANDING;
-	private int sprite = 0;
 
 	public Player(int x, int y, int width, int height) {
 		super(x, y, width, height);
+		sprite = new ImageSprite("Images/sprite.png", 4, 3);
 	}
 
 	public void setParent(Platform platform) {
@@ -58,33 +61,30 @@ public class Player extends Entity {
 
 	@Override
 	public void draw(Game g) {
-		g.graphic.drawImage(sprite, x, y, this.width, this.height, rot);
+		g.graphic.drawImage(sprite.getSprite(), x, y, this.width, this.height, rot, true);
 	}
 
 	private void setSprites(PhysicResult result) {
 		setPlayerStatus(result);
-		if (sprite > 10) {
-			sprite = 0;
-		}
 		switch (status) {
 		case MOVE_LEFT:
-			if (sprite == 5) {
-				sprite = 3;
+			if (sprite.getIndex() == 5) {
+				sprite.setIndex(3);;
 			}
 			break;
 		case MOVE_RIGHT:
-			if (sprite == 8) {
-				sprite = 6;
+			if (sprite.getIndex() == 8) {
+				sprite.setIndex(6);;
 			}
 			break;
 		case JUMP:
-			sprite = 4;
+			sprite.setIndex(4);
 			break;
 		default:
-			sprite = 0;
+			sprite.setIndex(0);
 			break;
 		}
-		sprite++;
+		sprite.setIndexInkrement();
 	}
 
 	private void setPlayerStatus(PhysicResult result) {

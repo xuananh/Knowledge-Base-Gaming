@@ -96,10 +96,6 @@ public class Graphics extends JFrame {
 		drawImage(imageLoader.getImageByKey(imageKey), x, y, width, height, rot, true);
 	}
 	
-	public void drawImage(int spritePosition, int x, int y, int width, int height, float rot){
-		drawImage(imageLoader.getSprite(spritePosition), x, y, width, height, rot, true);
-	}
-	
 	public void drawImage(BufferedImage image, int x, int y, int width, int height, float rot, boolean relative){
 		if (relative){
 			x -= viewX - this.Width/2;

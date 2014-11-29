@@ -9,7 +9,7 @@ public class Player extends Entity {
 
 	private final ImageSprite sprite;
 	
-	private Platform parent = null;
+	public Platform parent = null;
 	private int parentOffsetX, parentOffsetY;
 	public float rot = 0;
 
@@ -43,7 +43,7 @@ public class Player extends Entity {
 			ny = parent.y + parentOffsetY;
 
 			vy = parent.vy;
-			return;
+			vx = parent.vx;
 		}
 
 		if (parent != null && result.y < ny) {
@@ -61,7 +61,12 @@ public class Player extends Entity {
 
 	@Override
 	public void draw(Game g) {
-		g.graphic.drawImage(sprite.getSprite(), x, y, this.width, this.height, rot, true);
+		if (parent == null) {
+			g.graphic.drawImage(sprite.getSprite(), x, y, this.width, this.height, rot, true);
+		} else {
+			int _y = parent.y - height;
+			g.graphic.drawImage(sprite.getSprite(), x, _y, this.width, this.height, rot, true);
+		}
 	}
 
 	private void setSprites(PhysicResult result) {

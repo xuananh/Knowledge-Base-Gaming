@@ -35,21 +35,30 @@ public class Player extends Entity {
 	@Override
 	public void update(Game g) {
 		int nx = 0, ny = 0;
+		int lx = 0, rx = 0;
 
 		PhysicResult result = Physic.doPhysic(g, this);
 
 		if (parent != null) {
-			nx = parent.x + parentOffsetX;
+			parentOffsetX = (int) result.x - parentOffsetX;
+			
+			nx = (int) result.x;
 			ny = parent.y + parentOffsetY;
 
 			vy = parent.vy;
-			vx = parent.vx;
+			vx = result.vx;
+//			vx = parent.vx;
+			
+			lx = x - width / 2;
+			rx = lx + width - 1; // != x+wi/2
 		}
 
-		if (parent != null && result.y < ny) {
+		if (parent != null && (result.y < ny || rx < parent.lx || lx > parent.rx)) {
+			System.out.println("if");
 			result.apply(this);
 			setParent(null);
 		} else if (parent != null) {
+			System.out.println("else if");
 			x = nx;
 			y = ny;
 		} else {

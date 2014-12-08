@@ -23,6 +23,8 @@ public class Game extends Thread{
 	public final LinkedList<Entity> list = new LinkedList<Entity>();
 	public final Level level;
 	
+	public final static boolean DEBUG = false;
+	
 	public int x = 50, y = 50;
 	public int r = 50, g = 100, b = 150;
 	

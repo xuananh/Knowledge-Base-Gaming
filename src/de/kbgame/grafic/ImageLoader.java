@@ -16,6 +16,7 @@ public class ImageLoader {
 	private static final String BLOCK_IMAGE = "Images/block.png";
 	private static final String BODEN_IMAGE = "Images/grass.png";
 	private static final String QUESTIONBLOCK_IMAGE = "Images/questionblock.png";
+	private static final String QUESTIONBLOCK_BOUNCED_IMAGE = "Images/questionblock_bounced.png";
 	private static final String ENEMY_IMAGE = "Images/enemy.png";
 	private final HashMap<ImageKey, BufferedImage> images = new HashMap<ImageKey, BufferedImage>();
 	
@@ -31,6 +32,7 @@ public class ImageLoader {
 			images.put(ImageKey.BODEN, ImageIO.read(new File(BODEN_IMAGE)));
 			images.put(ImageKey.QUESTION_BLOCK, ImageIO.read(new File(QUESTIONBLOCK_IMAGE)));
 			images.put(ImageKey.ENEMY, ImageIO.read(new File(ENEMY_IMAGE)));
+			images.put(ImageKey.QUESTIONBLOCK_BOUNCED_IMAGE, ImageIO.read(new File(QUESTIONBLOCK_BOUNCED_IMAGE)));
 		} catch (IOException e) { 
 			e.printStackTrace();
 		}

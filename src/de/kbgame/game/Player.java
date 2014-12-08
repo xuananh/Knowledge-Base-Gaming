@@ -54,11 +54,9 @@ public class Player extends Entity {
 		}
 
 		if (parent != null && (result.y < ny || rx < parent.lx || lx > parent.rx)) {
-			System.out.println("if");
 			result.apply(this);
 			setParent(null);
 		} else if (parent != null) {
-			System.out.println("else if");
 			x = nx;
 			y = ny;
 		} else {

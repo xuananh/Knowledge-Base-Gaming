@@ -12,4 +12,5 @@ public final class Blocks {
 	public final static byte Boden = 3;
 	public final static byte QuestionBlock = 4;
 	public static final byte ENEMY = 5;
+	public final static byte QUESTION_BLOCK_BOUNCED = 6;
 }

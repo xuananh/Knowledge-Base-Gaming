@@ -8,6 +8,7 @@ import de.kbgame.game.Platform;
 import de.kbgame.game.Player;
 import de.kbgame.geometry.Point;
 import de.kbgame.geometry.Rectangle;
+import de.kbgame.map.Blocks;
 import de.kbgame.map.Level;
 
 public final class Physic {
@@ -57,8 +58,7 @@ public final class Physic {
 					vx = vy / ovy * ovx;
 				}
 			}
-			ovx -= vx; // Remove the currently calculated move from the
-						// "movepool"
+			ovx -= vx; // Remove the currently calculated move from the "movepool"
 			ovy -= vy;
 
 			// if (Math.abs(vx) > blockwidth) vx = blockwidth*Math.signum(vx);
@@ -162,6 +162,9 @@ public final class Physic {
 					} else {
 						result.y -= (result.uy) % blockheight;
 						result.top = true;
+						if (g.level.getMap(blockIndex, newBlockIndexY) == Blocks.QuestionBlock) {
+							g.level.setMap(blockIndex, newBlockIndexY, Blocks.QUESTION_BLOCK_BOUNCED);
+						}
 					}
 					vy = 0;
 					break;
@@ -182,6 +185,9 @@ public final class Physic {
 					} else {
 						result.y -= (result.uy) % blockheight;
 						result.top = true;
+						if (g.level.getMap(mx, newBlockIndexY) == Blocks.QuestionBlock) {
+							g.level.setMap(mx, newBlockIndexY, Blocks.QUESTION_BLOCK_BOUNCED);
+						}
 					}
 					vy = 0;
 				}
@@ -292,6 +298,8 @@ public final class Physic {
 	}
 	
 	public static void log(String str) {
-		System.out.println(str);
+		if (Game.DEBUG) {
+			System.out.println(str);
+		}
 	}
 }

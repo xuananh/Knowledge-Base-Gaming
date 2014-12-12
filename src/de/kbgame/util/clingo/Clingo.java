@@ -1,4 +1,4 @@
-package de.kbgame.util;
+package de.kbgame.util.clingo;
 
 
 
@@ -9,7 +9,7 @@ import java.util.Random;
 
 import de.kbgame.game.Game;
 
-public class clingo {
+public class Clingo {
 
 	public static String callClingo(String[] params){
 		
@@ -22,7 +22,7 @@ public class clingo {
 			e1.printStackTrace();
 			return null;
 		}
-		clingo.ClThread thread = new ClThread(p);
+		Clingo.ClThread thread = new ClThread(p);
 		int res = -1;
 		try {
 			thread.start();

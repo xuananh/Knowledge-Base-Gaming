@@ -1,8 +1,0 @@
-px(1..800).
-py(1..600).
-1{x(X):px(X),X > xo-10,X < xo+10}1.
-1{y(Y):py(Y),Y > yo-10,Y < yo+10}1.
-#const xo=100.
-#const yo=200.
-#show y/1.
-#show x/1.

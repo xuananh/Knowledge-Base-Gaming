@@ -6,12 +6,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import de.kbgame.game.Enemy;
 import de.kbgame.game.Game;
 import de.kbgame.util.ColorValues;
 
 public final class MapLoader {
-
+ 
 	private MapLoader() {
         throw new AssertionError();
     }

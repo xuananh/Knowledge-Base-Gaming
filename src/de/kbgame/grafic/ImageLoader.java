@@ -18,6 +18,8 @@ public class ImageLoader {
 	private static final String QUESTIONBLOCK_IMAGE = "Images/questionblock.png";
 	private static final String QUESTIONBLOCK_BOUNCED_IMAGE = "Images/questionblock_bounced.png";
 	private static final String ENEMY_IMAGE = "Images/enemy.png";
+	private static final String BACKGROUND_1 = "Images/bg-1.jpg";
+	private static final String BACKGROUND_2 = "Images/bg-2.png";
 	private final HashMap<ImageKey, BufferedImage> images = new HashMap<ImageKey, BufferedImage>();
 	
 	public ImageLoader() {
@@ -33,6 +35,8 @@ public class ImageLoader {
 			images.put(ImageKey.QUESTION_BLOCK, ImageIO.read(new File(QUESTIONBLOCK_IMAGE)));
 			images.put(ImageKey.ENEMY, ImageIO.read(new File(ENEMY_IMAGE)));
 			images.put(ImageKey.QUESTIONBLOCK_BOUNCED_IMAGE, ImageIO.read(new File(QUESTIONBLOCK_BOUNCED_IMAGE)));
+			images.put(ImageKey.BACKGROUND_1, ImageIO.read(new File(BACKGROUND_1)));
+			images.put(ImageKey.BACKGROUND_2, ImageIO.read(new File(BACKGROUND_2)));
 		} catch (IOException e) { 
 			e.printStackTrace();
 		}

@@ -2,9 +2,8 @@ package de.kbgame.game;
 
 import java.util.LinkedList;
 
-import de.kbgame.game.Entity;
-import de.kbgame.game.Platform;
-import de.kbgame.game.Player;
+import de.kbgame.geometry.ImageKey;
+import de.kbgame.grafic.Background;
 import de.kbgame.grafic.Graphics;
 import de.kbgame.map.Level;
 import de.kbgame.map.MapLoader;
@@ -22,6 +21,7 @@ public class Game extends Thread{
 	public final LinkedList<Platform> platforms = new LinkedList<Platform>();
 	public final LinkedList<Entity> list = new LinkedList<Entity>();
 	public final Level level;
+	public LinkedList<Background> backgrounds = new LinkedList<Background>();
 	
 	public final static boolean DEBUG = false;
 	
@@ -69,6 +69,9 @@ public class Game extends Thread{
 		int bh = Level.BLOCK_HEIGHT;
 		
 		level = MapLoader.LoadMapOutOfBitmap(this, "Levels/testmap.bmp");
+		
+		backgrounds.add(new Background(ImageKey.BACKGROUND_1, .25f, 1, this));
+		backgrounds.add(new Background(ImageKey.BACKGROUND_2, .5f, 1, this));
 
 		// player (must be instantiated after platforms)
 		Player p = new Player(10 * bw, 30 * bh - 19, 50, 50);
@@ -78,10 +81,6 @@ public class Game extends Thread{
 		// add 2 dummy platforms
 		Platform pf1 = new Platform(this, 8 * bw + bw / 2, 30 * bh + bh / 2, bw, bh, 30, 40, true);
 		platforms.add(pf1);
-//		Platform pf2 = new Platform(this, 2 * bw, 2 * bh, bw, bh, 2, 7, false);
-//		platforms.add(pf2);
-
-//		p.setParent(pf1);
 		
 		this.start();
 	}
@@ -102,7 +101,12 @@ public class Game extends Thread{
 	public void draw(){
 		graphic.startDrawNewFrame(controller.viewX,controller.viewY);
 		
-		graphic.newBackground();
+//		graphic.newBackground();
+		
+		for (Background background : backgrounds) {
+			background.draw(this);
+		}
+		
 		level.draw(this);
 		
 		for (Platform p : platforms) {

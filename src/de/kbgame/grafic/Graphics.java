@@ -33,7 +33,7 @@ public class Graphics extends JFrame {
 	
 	private final ImageLoader imageLoader = new ImageLoader();
 	private BufferedImage currentScreen;
-	private Graphics2D currentGrafic;
+	public Graphics2D currentGrafic;
 	
 	public Graphics(Game game) {
 

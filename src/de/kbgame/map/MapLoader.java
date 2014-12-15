@@ -51,8 +51,8 @@ public final class MapLoader {
 				break;
 			}
 			case ColorValues.r255g0b0: {
-				Enemy e = new Enemy((x+1)*Level.BLOCK_WIDTH-50-1, (y+1)*Level.BLOCK_HEIGHT-50-1, 50, 50);
-				g.list.add(e);
+//				Enemy e = new Enemy((x+1)*Level.BLOCK_WIDTH-50-1, (y+1)*Level.BLOCK_HEIGHT-50-1, 50, 50);
+//				g.list.add(e);
 				break;
 			}
 			default :

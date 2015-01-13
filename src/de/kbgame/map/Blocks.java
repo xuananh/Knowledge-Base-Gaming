@@ -11,6 +11,8 @@ public final class Blocks {
 	public final static byte Plattform = 2;
 	public final static byte Boden = 3;
 	public final static byte QuestionBlock = 4;
-	public static final byte ENEMY = 5;
+	public final static byte ENEMY = 5;
 	public final static byte QUESTION_BLOCK_BOUNCED = 6;
+	public final static byte START = 10;
+	public final static byte GOAL = 11;
 }

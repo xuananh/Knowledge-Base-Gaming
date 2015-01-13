@@ -10,6 +10,7 @@ field(1..width, 1..height).
 
 #const width=20.
 #const height=20.
+
 width(width).
 height(height).
 
@@ -33,7 +34,7 @@ go(X,Y,X-1,Y) :- field(X,Y), field(X-1,Y), not wall(X,Y), not wall(X-1,Y).
 go(X,Y,X,Y+1) :- field(X,Y), field(X,Y+1), aperture(X,Y+1).
 go(X,Y,X,Y-1) :- field(X,Y), field(X,Y-1), aperture(X,Y).
 
-%% go(X,Y) :- field(X,Y), not wall(X,Y).
+%go(X,Y) :- field(X,Y), not wall(X,Y).
 
 
 reachable(X,Y) :- start(X,Y).
@@ -42,18 +43,20 @@ reachable(X,Y) :- go(A,B,X,Y), reachable(A,B).
 
 % minimale Schritte um X,Y zu erreichen
 #const max_length = 100.
+#const min_length = 100.
 
 reachable_in(X,Y,1) :- start(X,Y).
 reachable_in(X,Y,T + 1) :- reachable_in(A,B,T), go(A,B,X,Y), T < max_length.
 reachable_in(T) :- goal(X,Y), T =  #min{ TT : reachable_in(X,Y,TT) }.
 
-#maximize { T : reachable_in(T) }.
+%#maximize { T : reachable_in(T) }.
+:- reachable_in(T), T < min_length.
 
 #show reachable_in/1.
 
 
 % jedes Feld muss erreichbar sein
-%% :- go(X,Y), not reachable(X,Y).
+%:- go(X,Y), not reachable(X,Y).
 
 % Ziel muss erreichbar sein:
 :- goal(X,Y), not reachable(X,Y).
@@ -89,8 +92,8 @@ reachable_in(T) :- goal(X,Y), T =  #min{ TT : reachable_in(X,Y,TT) }.
 
 
 
-%show aperture/2.
-%show wall/2. 
+#show aperture/2.
+#show wall/2. 
 
 
 
@@ -143,8 +146,8 @@ block(X,Y,0) :- ungerade(Y), w(X), not wallX(X,Y).
 block(X,Y,1) :- wallX(X,Y).
 %:- block(X,Y,0), wall(X,Y).
 
-block(X,Y,9) :- startX(X,Y).
-block(X,Y,9) :- goalX(X,Y).
+block(X,Y,10) :- startX(X,Y).
+block(X,Y,11) :- goalX(X,Y).
 
 
 

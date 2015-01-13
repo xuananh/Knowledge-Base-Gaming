@@ -1,6 +1,5 @@
 package de.kbgame.util.clingo;
 
-import java.awt.Color;
 import java.util.List;
 
 public class Main {
@@ -9,18 +8,18 @@ public class Main {
 
 		String[] params = new String[3];
 		params[0] = "clingo";
-		params[1] = "clingo/graeben.txt";
+		params[1] = "clingo/encoding/labyrinth-23.lp";
 		params[2] = "1";
 
 		String res = Clingo.callClingo(params);
 
 		AnswerASP a = AnswerASP.getAnswerASPfromRes(res);
-		List<PredicateASP> pres = a.getPreListFromString("block");
+		List<PredicateASP> pres = a.getPreList();
 		for (PredicateASP p : pres) {
 			System.out.println(p.toString());
 		}
 		
-		new ClingoThread();
+//		new ClingoThread();
 
 //		ClingoGraphic graphic = new ClingoGraphic();
 //		int w = graphic.Width / 30;

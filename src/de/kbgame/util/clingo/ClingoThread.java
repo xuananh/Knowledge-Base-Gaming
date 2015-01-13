@@ -20,7 +20,7 @@ public class ClingoThread extends Thread{
 	public ClingoThread() {
 		String[] params = new String[3];
 		params[0] = "clingo";
-		params[1] = "clingo/graeben.txt";
+		params[1] = "clingo/labyrinth-23.lp";
 		params[2] = "1";
 
 		String res = Clingo.callClingo(params);

@@ -15,4 +15,5 @@ public final class Blocks {
 	public final static byte QUESTION_BLOCK_BOUNCED = 6;
 	public final static byte START = 10;
 	public final static byte GOAL = 11;
+	public final static byte JUMP = 12;
 }

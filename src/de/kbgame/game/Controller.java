@@ -39,14 +39,14 @@ public class Controller {
 			
 			if (g.input.getKey(KeyEvent.VK_UP)){
 				if (controlledOne.onground) {
-					controlledOne.vy -= Physic.JUMP_VELOCITY;
+					controlledOne.jump(g);
 				} else if (controlledOne instanceof Player && ((Player) controlledOne).parent != null) {
 					((Player) controlledOne).setParent(null);
-					controlledOne.vy -= Physic.JUMP_VELOCITY;
+					controlledOne.jump(g);
 				}
-			} else if (g.input.getKey(KeyEvent.VK_DOWN)){
+			} /*else if (g.input.getKey(KeyEvent.VK_DOWN)){
 				controlledOne.vy += 2;
-			}
+			}*/
 
 			if (g.input.getKey(KeyEvent.VK_LEFT)) {
 				controlledOne.vx -= Physic.WALK_VELOCITY;

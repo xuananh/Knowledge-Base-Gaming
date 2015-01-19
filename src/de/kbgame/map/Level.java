@@ -54,6 +54,13 @@ public class Level {
 								BLOCK_HEIGHT, 0f);
 						break;
 					}
+					case Blocks.JUMP: {
+						g.graphic.drawImage(ImageKey.JUMP_BLOCK, x * BLOCK_WIDTH
+								+ BLOCK_WIDTH / 2,
+								y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT,
+								BLOCK_HEIGHT, 0f);
+						break;
+					}
 					case Blocks.QUESTION_BLOCK_BOUNCED:
 						g.graphic.drawImage(ImageKey.QUESTIONBLOCK_BOUNCED_IMAGE, x * BLOCK_WIDTH
 								+ BLOCK_WIDTH / 2,

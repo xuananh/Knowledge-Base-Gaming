@@ -2,6 +2,8 @@ package de.kbgame.game;
 
 import java.awt.Color;
 
+import de.kbgame.util.Physic;
+
 public class Entity {
 
 	public Controller con = null;
@@ -34,6 +36,10 @@ public class Entity {
 		rx = lx + width - 1; // != x+wi/2
 		uy = y - height / 2;
 		dy = uy + height - 1;
+	}
+	
+	public void jump(Game g) {
+		vy -= Physic.JUMP_VELOCITY;
 	}
 
 	public void update(Game g) {

@@ -82,6 +82,9 @@ public class Game extends Thread{
 		Platform pf1 = new Platform(this, 8 * bw + bw / 2, 30 * bh + bh / 2, bw, bh, 30, 40, true);
 		platforms.add(pf1);
 		
+		// jump blocks
+		new JumpBlock(11, 32, level);
+		
 		this.start();
 	}
 	

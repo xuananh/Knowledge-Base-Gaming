@@ -1,6 +1,8 @@
 package de.kbgame.game;
 
 import de.kbgame.grafic.ImageSprite;
+import de.kbgame.map.Blocks;
+import de.kbgame.map.Level;
 import de.kbgame.util.Physic;
 import de.kbgame.util.PhysicResult;
 import de.kbgame.util.Status;
@@ -73,6 +75,19 @@ public class Player extends Entity {
 		} else {
 			int _y = parent.y - height;
 			g.graphic.drawImage(sprite.getSprite(), x, _y, this.width, this.height, rot, true);
+		}
+	}
+	
+	@Override
+	public void jump(Game g) {
+		int blockX = x / Level.BLOCK_WIDTH;
+		int blockY = y / Level.BLOCK_HEIGHT;
+
+		if (g.level.getMap(blockX, blockY + 1) == Blocks.JUMP) {
+			// player's center must be above the jump block
+			
+		} else {
+			super.jump(g);
 		}
 	}
 

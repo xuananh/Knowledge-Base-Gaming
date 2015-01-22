@@ -6,7 +6,7 @@ import de.kbgame.game.Entity;
 import de.kbgame.game.Game;
 import de.kbgame.game.Platform;
 import de.kbgame.game.Player;
-import de.kbgame.geometry.Point;
+import de.kbgame.geometry.MyPoint;
 import de.kbgame.geometry.Rectangle;
 import de.kbgame.map.Blocks;
 import de.kbgame.map.Level;
@@ -220,11 +220,11 @@ public final class Physic {
 	
 	public static PhysicResult platformPhysics(Game g, Player player, PhysicResult result) {
 		Rectangle predictedRect = new Rectangle(result.lx, result.uy, result.wi, result.hi);
-		Point moveVec = new Point(result.x - player.x, result.y - player.y);
+		MyPoint moveVec = new MyPoint(result.x - player.x, result.y - player.y);
 		Line2D.Double entityMovement = new Line2D.Double(player.x, player.y, moveVec.x, moveVec.y);
 		
-		Point src = new Point();
-		Point dst = new Point();
+		MyPoint src = new MyPoint();
+		MyPoint dst = new MyPoint();
 		
 		Rectangle rect;
 		

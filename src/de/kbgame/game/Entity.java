@@ -11,6 +11,7 @@ public class Entity {
 	public int lx, rx, uy, dy;
 	public double vx, vy;
 	public boolean onground = false;
+	public Event event = null;
 
 	public Entity(int x, int y, int width, int height) {
 		this.x = x;

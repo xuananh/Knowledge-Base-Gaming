@@ -1,5 +1,6 @@
 package de.kbgame.game;
 
+import de.kbgame.geometry.MyPoint;
 import de.kbgame.grafic.ImageSprite;
 import de.kbgame.map.Blocks;
 import de.kbgame.map.Level;
@@ -36,36 +37,40 @@ public class Player extends Entity {
 
 	@Override
 	public void update(Game g) {
-		int nx = 0, ny = 0;
-		int lx = 0, rx = 0;
-
-		PhysicResult result = Physic.doPhysic(g, this);
-
-		if (parent != null) {
-			parentOffsetX = (int) result.x - parentOffsetX;
-			
-			nx = (int) result.x;
-			ny = parent.y + parentOffsetY;
-
-			vy = parent.vy;
-			vx = result.vx;
-//			vx = parent.vx;
-			
-			lx = x - width / 2;
-			rx = lx + width - 1; // != x+wi/2
-		}
-
-		if (parent != null && (result.y < ny || rx < parent.lx || lx > parent.rx)) {
-			result.apply(this);
-			setParent(null);
-		} else if (parent != null) {
-			x = nx;
-			y = ny;
+		if (event == null) {
+			int nx = 0, ny = 0;
+			int lx = 0, rx = 0;
+	
+			PhysicResult result = Physic.doPhysic(g, this);
+	
+			if (parent != null) {
+				parentOffsetX = (int) result.x - parentOffsetX;
+				
+				nx = (int) result.x;
+				ny = parent.y + parentOffsetY;
+	
+				vy = parent.vy;
+				vx = result.vx;
+	//			vx = parent.vx;
+				
+				lx = x - width / 2;
+				rx = lx + width - 1; // != x+wi/2
+			}
+	
+			if (parent != null && (result.y < ny || rx < parent.lx || lx > parent.rx)) {
+				result.apply(this);
+				setParent(null);
+			} else if (parent != null) {
+				x = nx;
+				y = ny;
+			} else {
+				result.apply(this);
+			}
+	
+			setSprites(result);
 		} else {
-			result.apply(this);
+			event.update();
 		}
-
-		setSprites(result);
 	}
 
 	@Override
@@ -85,7 +90,9 @@ public class Player extends Entity {
 
 		if (g.level.getMap(blockX, blockY + 1) == Blocks.JUMP) {
 			// player's center must be above the jump block
-			
+			if (event == null) {
+				this.event = new JumpEvent(this, -0.2, -10, 100, new MyPoint(5 * 50, 36 * 50));
+			}
 		} else {
 			super.jump(g);
 		}
@@ -96,12 +103,12 @@ public class Player extends Entity {
 		switch (status) {
 		case MOVE_LEFT:
 			if (sprite.getIndex() == 5) {
-				sprite.setIndex(3);;
+				sprite.setIndex(3);
 			}
 			break;
 		case MOVE_RIGHT:
 			if (sprite.getIndex() == 8) {
-				sprite.setIndex(6);;
+				sprite.setIndex(6);
 			}
 			break;
 		case JUMP:

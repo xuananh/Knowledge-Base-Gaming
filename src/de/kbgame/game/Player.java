@@ -11,6 +11,7 @@ import de.kbgame.util.Status;
 public class Player extends Entity {
 
 	private final ImageSprite sprite;
+	private final static int MAX_COLLISION_STEPS = 10;
 
 	public Platform parent = null;
 	private int parentOffsetX, parentOffsetY;
@@ -42,11 +43,12 @@ public class Player extends Entity {
 		if (hitdelay > 0) {
 			hitdelay--;
 		}
-		
+
 		if (event == null) {
 			int nx = 0, ny = 0;
 			int lx = 0, rx = 0;
 
+			MyPoint before = new MyPoint(x, y), after;
 			PhysicResult result = Physic.doPhysic(g, this);
 
 			if (parent != null) {
@@ -73,9 +75,63 @@ public class Player extends Entity {
 				result.apply(this);
 			}
 
+			after = new MyPoint(x, y);
+
+			// detect enemy collisions
+			for (Entity e : g.list) {
+				if (e instanceof Enemy && hitdelay <= 0) {
+					// first indication via rectangle overlapping
+					if (e.getSurroundingRectangle().intersects(getSurroundingRectangle())) {
+						enemyCollision((Enemy) e, before, after, g);
+					}
+				}
+			}
+
 			setSprites(result);
 		} else {
 			event.update();
+		}
+	}
+	
+	private void enemyCollision(Enemy e, MyPoint before, MyPoint after, Game g) {
+		de.kbgame.geometry.Rectangle enemyRect = e.getSurroundingRectangle();
+		boolean xIn, yIn;
+		MyPoint intermediatePoint = new MyPoint(before);
+		int maxRuns = MAX_COLLISION_STEPS;
+
+		xIn = intermediatePoint.x > enemyRect.x && intermediatePoint.x < (enemyRect.x + enemyRect.width);
+		yIn = intermediatePoint.y > enemyRect.y && intermediatePoint.y < (enemyRect.y + enemyRect.height);
+		if (xIn && yIn) {
+			maxRuns = -1;
+			getHit((Enemy) e);
+		}
+
+		while (--maxRuns > 0) {
+			if (xIn && yIn) {
+				after.copy(intermediatePoint);
+			} else {
+				before.copy(intermediatePoint);
+			}
+			intermediatePoint.add(before, after);
+			intermediatePoint.multiply(.5);
+
+			xIn = intermediatePoint.x > enemyRect.x && intermediatePoint.x < (enemyRect.x + enemyRect.width);
+			yIn = intermediatePoint.y > enemyRect.y && intermediatePoint.y < (enemyRect.y + enemyRect.height);
+
+			if (!xIn && yIn) {
+				// hit from left or right
+				getHit((Enemy) e);
+				maxRuns = -1;
+			} else if (xIn && !yIn) {
+				// TODO no kill from below
+				((Enemy) e).kill(g);
+				maxRuns = -1;
+			}
+		}
+
+		// lucky kill
+		if (maxRuns == 0) {
+			((Enemy) e).kill(g);
 		}
 	}
 

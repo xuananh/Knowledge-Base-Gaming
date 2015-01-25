@@ -34,16 +34,6 @@ public class Enemy extends Entity {
 			facing = false;
 		}
 
-		// detect collisions
-		for (Entity e : g.list) {
-			if (e instanceof Player && ((Player) e).hitdelay <= 0) {
-				// rectangle overlapping
-				if (e.getSurroundingRectangle().intersects(getSurroundingRectangle())) {
-					((Player) e).getHit(this);
-				} 
-			}
-		}
-		
 		setSprites(pr);
 	}
 
@@ -55,20 +45,20 @@ public class Enemy extends Entity {
 	private void setSprites(PhysicResult result) {
 		setPlayerStatus(result);
 		switch (status) {
-			/*case MOVE_LEFT:
-				if (sprite.getIndex() == 4) {
-					sprite.setIndex(3);
-				} else {
-					sprite.setIndex(4);
-				}
-				break;
-			case MOVE_RIGHT:
-				if (sprite.getIndex() == 9) {
-					sprite.setIndex(10);
-				} else {
-					sprite.setIndex(9);
-				}
-				break;*/
+		/*case MOVE_LEFT:
+			if (sprite.getIndex() == 4) {
+				sprite.setIndex(3);
+			} else {
+				sprite.setIndex(4);
+			}
+			break;
+		case MOVE_RIGHT:
+			if (sprite.getIndex() == 9) {
+				sprite.setIndex(10);
+			} else {
+				sprite.setIndex(9);
+			}
+			break;*/
 			default:
 				sprite.setIndex(0);
 				break;
@@ -83,5 +73,9 @@ public class Enemy extends Entity {
 		} else {
 			status = Status.STANDING;
 		}
+	}
+
+	public void kill(Game g) {
+		g.removeFromList.add(this);
 	}
 }

@@ -20,6 +20,7 @@ public class Game extends Thread{
 	public boolean shouldApplicationExit = false;
 	public final LinkedList<Platform> platforms = new LinkedList<Platform>();
 	public final LinkedList<Entity> list = new LinkedList<Entity>();
+	public final LinkedList<Entity> removeFromList = new LinkedList<Entity>();
 	public final Level level;
 	public LinkedList<Background> backgrounds = new LinkedList<Background>();
 	
@@ -91,6 +92,11 @@ public class Game extends Thread{
 	public void update(){
 		level.update(this);
 		controller.update(this);
+		
+		for (Entity e: removeFromList) {
+			list.remove(e);
+		}
+		removeFromList.clear();
 		
 		for (Platform p : platforms) {
 			p.update(this);

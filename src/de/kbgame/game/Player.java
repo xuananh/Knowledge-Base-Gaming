@@ -11,10 +11,12 @@ import de.kbgame.util.Status;
 public class Player extends Entity {
 
 	private final ImageSprite sprite;
-	
+
 	public Platform parent = null;
 	private int parentOffsetX, parentOffsetY;
 	public float rot = 0;
+
+	public int hitdelay = 0;
 
 	private Status status = Status.STANDING;
 
@@ -37,26 +39,30 @@ public class Player extends Entity {
 
 	@Override
 	public void update(Game g) {
+		if (hitdelay > 0) {
+			hitdelay--;
+		}
+		
 		if (event == null) {
 			int nx = 0, ny = 0;
 			int lx = 0, rx = 0;
-	
+
 			PhysicResult result = Physic.doPhysic(g, this);
-	
+
 			if (parent != null) {
 				parentOffsetX = (int) result.x - parentOffsetX;
-				
+
 				nx = (int) result.x;
 				ny = parent.y + parentOffsetY;
-	
+
 				vy = parent.vy;
 				vx = result.vx;
-	//			vx = parent.vx;
-				
+				// vx = parent.vx;
+
 				lx = x - width / 2;
 				rx = lx + width - 1; // != x+wi/2
 			}
-	
+
 			if (parent != null && (result.y < ny || rx < parent.lx || lx > parent.rx)) {
 				result.apply(this);
 				setParent(null);
@@ -66,7 +72,7 @@ public class Player extends Entity {
 			} else {
 				result.apply(this);
 			}
-	
+
 			setSprites(result);
 		} else {
 			event.update();
@@ -82,7 +88,7 @@ public class Player extends Entity {
 			g.graphic.drawImage(sprite.getSprite(), x, _y, this.width, this.height, rot, true);
 		}
 	}
-	
+
 	@Override
 	public void jump(Game g) {
 		int blockX = x / Level.BLOCK_WIDTH;
@@ -101,22 +107,22 @@ public class Player extends Entity {
 	private void setSprites(PhysicResult result) {
 		setPlayerStatus(result);
 		switch (status) {
-		case MOVE_LEFT:
-			if (sprite.getIndex() == 5) {
-				sprite.setIndex(3);
-			}
-			break;
-		case MOVE_RIGHT:
-			if (sprite.getIndex() == 8) {
-				sprite.setIndex(6);
-			}
-			break;
-		case JUMP:
-			sprite.setIndex(4);
-			break;
-		default:
-			sprite.setIndex(0);
-			break;
+			case MOVE_LEFT:
+				if (sprite.getIndex() == 5) {
+					sprite.setIndex(3);
+				}
+				break;
+			case MOVE_RIGHT:
+				if (sprite.getIndex() == 8) {
+					sprite.setIndex(6);
+				}
+				break;
+			case JUMP:
+				sprite.setIndex(4);
+				break;
+			default:
+				sprite.setIndex(0);
+				break;
 		}
 		sprite.setIndexInkrement();
 	}
@@ -129,5 +135,12 @@ public class Player extends Entity {
 		} else {
 			status = Status.STANDING;
 		}
+	}
+
+	public void getHit(Enemy e) {
+		vx = (x > e.x) ? 10 : -10;
+		vy = -3;
+		// TODO: Life & Damage?
+		hitdelay = 50;
 	}
 }

@@ -69,6 +69,7 @@ public class Game extends Thread{
 		int bw = Level.BLOCK_WIDTH;
 		int bh = Level.BLOCK_HEIGHT;
 		
+//		level = MapLoader.LoadMapFromClingo(this, "clingo/encoding/labyrinth-23.lp");
 		level = MapLoader.LoadMapOutOfBitmap(this, "Levels/testmap.bmp");
 		
 		backgrounds.add(new Background(ImageKey.BACKGROUND_1, .25f, 1, this));

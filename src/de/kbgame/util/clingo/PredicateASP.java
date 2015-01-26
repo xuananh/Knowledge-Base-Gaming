@@ -41,7 +41,8 @@ public class PredicateASP {
 		switch (type) {
 		case INTEGER:
 			for(String par : pars) {
-				predicateASP.addParameter(Integer.parseInt(par.trim()));
+				if(par.matches("[0-9]+"))
+					predicateASP.addParameter(Integer.parseInt(par.trim()));
 	 		}
 			break;
 		case STRING:

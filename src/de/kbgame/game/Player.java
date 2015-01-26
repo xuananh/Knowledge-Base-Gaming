@@ -124,6 +124,7 @@ public class Player extends Entity {
 				maxRuns = -1;
 			} else if (xIn && !yIn) {
 				// TODO no kill from below
+				vy = -Physic.JUMP_VELOCITY;
 				((Enemy) e).kill(g);
 				maxRuns = -1;
 			}
@@ -131,6 +132,7 @@ public class Player extends Entity {
 
 		// lucky kill
 		if (maxRuns == 0) {
+			vy = -Physic.JUMP_VELOCITY;
 			((Enemy) e).kill(g);
 		}
 	}

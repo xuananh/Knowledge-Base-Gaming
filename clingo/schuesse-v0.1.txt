@@ -1,0 +1,22 @@
+#const sprunghoehe = 3.
+
+#const height = sprunghoehe*4.
+#const width = 30.
+
+coord(1..width,1..sprunghoehe).
+vier(1..4).
+w(1..width).
+h(1..sprunghoehe).
+
+% Koordinaten ausgehen vom Boden wobei ein Block jeweils 4 Einheiten enthält
+0{ schuss(X*FX,Y*FY) : vier(FY), vier(FX),  h(Y) }1 :- w(X).
+
+% TODO: Sicherstellen, dass der Weg zu bewältigen ist
+
+% TODO: Umrechnen der Koordinaten (?)
+
+% Gesamtanzahl der Schüsse (min. 5)
+% TODO: Angemessene Zahl finden
+:- 0{ schuss(X,Y) }5.
+
+#show schuss/2.

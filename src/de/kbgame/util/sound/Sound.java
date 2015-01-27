@@ -1,4 +1,4 @@
-package de.kbgame.util;
+package de.kbgame.util.sound;
 
 import java.io.File;
 

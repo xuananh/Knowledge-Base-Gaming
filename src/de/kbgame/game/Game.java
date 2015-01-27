@@ -8,7 +8,7 @@ import de.kbgame.grafic.Graphics;
 import de.kbgame.map.Level;
 import de.kbgame.map.MapLoader;
 import de.kbgame.util.Input;
-import de.kbgame.util.SoundThread;
+import de.kbgame.util.sound.SoundThread;
 
 public class Game extends Thread{
 	
@@ -76,7 +76,7 @@ public class Game extends Thread{
 		backgrounds.add(new Background(ImageKey.BACKGROUND_2, .5f, 1, this));
 
 		// player (must be instantiated after platforms)
-		Player p = new Player(10 * bw, 30 * bh - 19, 50, 50);
+		Player p = new Player(1 * bw, 1 * bh - 19, 50, 50);
 		list.add((Entity) p);
 		controller.control(p);
 		

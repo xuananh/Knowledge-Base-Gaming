@@ -11,7 +11,7 @@ import de.kbgame.game.Enemy;
 import de.kbgame.game.Game;
 import de.kbgame.util.ColorValues;
 import de.kbgame.util.clingo.AnswerASP;
-import de.kbgame.util.clingo.Clingo;
+import de.kbgame.util.clingo.ClingoFactory;
 import de.kbgame.util.clingo.PredicateASP;
 
 public final class MapLoader {
@@ -26,9 +26,7 @@ public final class MapLoader {
 		params[1] = filename;
 		params[2] = "1";
 
-		String res = Clingo.callClingo(params);
-
-		AnswerASP answer = AnswerASP.getAnswerASPfromRes(res);
+		final AnswerASP answer = ClingoFactory.getInstance().getAnswerASP(params);
 		final List<PredicateASP> pres = answer.getPreListFromString("block");
 		final int width = (int) answer.getPreListFromString("width").get(0).getParameterOfIndex(0);
 		final int height = (int) answer.getPreListFromString("height").get(0).getParameterOfIndex(0);
@@ -89,10 +87,22 @@ public final class MapLoader {
 		final int blockType = (int) pre.getParameterOfIndex(2);
 		final int x = (int) pre.getParameterOfIndex(0);
 		final int y = (int) pre.getParameterOfIndex(1);
-		int color = ColorValues.r255g255b255;
-		if(blockType == 1) {
-			color = ColorValues.r128g128b128;
+		switch (blockType) {
+		case 1:
+			level.setMap(x, y, Blocks.Boden);
+			break;
+		case 2:
+			level.setMap(x, y, Blocks.QuestionBlock);
+			break;
+		case 10:
+			
+			break;
+		case 11:
+			
+			break;
+		default:
+			level.setMap(x,y,Blocks.Empty);
+			break;
 		}
-		setPixel(g, level, color, x, y);
 	}
 }

@@ -30,31 +30,6 @@ public class PredicateASP {
 	public void addParameter(Object par) {
 		parameter.add(par);
 	}
-	
-	public static PredicateASP getPredicate(String pre, ParameterType type) {
-		final PredicateASP predicateASP = new PredicateASP();
-		
-		pre = pre.trim();
-		predicateASP.setPre(pre.substring(0,pre.indexOf("(")));
-		final String[] pars = pre.substring(pre.indexOf("(")+1,pre.indexOf(")")).trim().split(",");
-		
-		switch (type) {
-		case INTEGER:
-			for(String par : pars) {
-				if(par.matches("[0-9]+"))
-					predicateASP.addParameter(Integer.parseInt(par.trim()));
-	 		}
-			break;
-		case STRING:
-			for(String par : pars) {
-				predicateASP.addParameter(par.trim());
-			}
-			break;
-		default:
-			break;
-		}
-		return predicateASP;
-	}
 
 	@Override
 	public String toString() {

@@ -1,4 +1,4 @@
-package de.kbgame.util;
+package de.kbgame.util.sound;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -27,7 +27,9 @@ public class SoundThread extends Thread{
 	LinkedList<Integer> toStopMusic = new LinkedList<Integer>();
 	
 	public SoundThread(){
-		music.add(new Sound("test.wav"));
+		Sound s = new Sound("sound/SunnyDay.wav");
+		s.playRepeated();
+		s.play();
 		//soundloop.run();
 		this.start();
 	}
@@ -103,6 +105,7 @@ public class SoundThread extends Thread{
 					incToStopMusic.remove(i);
 				}
 				for (Integer i:toPlayMusic){
+					System.out.println(incToPlayMusic.size());
 					music.get(i).play();
 					incToPlayMusic.remove(i);
 				}

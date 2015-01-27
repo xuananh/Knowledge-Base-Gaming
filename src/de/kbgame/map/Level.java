@@ -6,7 +6,7 @@ import de.kbgame.geometry.ImageKey;
 public class Level {
 
 	public int width, height;
-	public final byte[][] map;
+	private final byte[][] map;
 
 	private int left, right, top, bottom;
 

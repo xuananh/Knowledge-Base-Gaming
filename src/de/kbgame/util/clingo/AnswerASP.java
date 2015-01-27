@@ -17,25 +17,13 @@ public class AnswerASP {
 	
 	public List<PredicateASP> getPreListFromString(String pre){
 		final List<PredicateASP> preLs = new ArrayList<PredicateASP>();
-		for(PredicateASP p : preList) {
-			if(p.getPre().equals(pre)) {
-				preLs.add(p);
+		if(pre != null && !("").equals(pre)) {
+			for(PredicateASP p : preList) {
+				if(p.getPre().equals(pre)) {
+					preLs.add(p);
+				}
 			}
 		}
 		return preLs;
-	}
-	
-	private static AnswerASP getAnswerASP(String answer) {
-		final AnswerASP answerASP = new AnswerASP();
-		final String[] pres = answer.split(" ");
-		for(String pre : pres) {
-			answerASP.addPredicate(PredicateASP.getPredicate(pre, ParameterType.INTEGER));
-		}
-		return answerASP;
-	}
-	
-	public static AnswerASP getAnswerASPfromRes(String res) {
-		final String[] q = res.substring(res.indexOf("Answer"), res.indexOf("SATISFIABLE")).split("\n\r|\r");
-		return AnswerASP.getAnswerASP(q[1].trim());
 	}
 }

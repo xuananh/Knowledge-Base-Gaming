@@ -1,0 +1,77 @@
+%% Version nur mit Graeben
+
+#program base.
+
+#const width=30.
+#const height=10.
+
+#const sprungweite = 4.
+#const sprungweiteMin = 2.
+
+#const grabenanzahl = 4.
+
+#const plattformMin = 2. % Breite der Schutzbereiche zwischen den Feuerschluchten
+
+% #const proportionFire = width*2/3.
+
+w(1..width).
+h(1..height).
+w2(2..width-1). % erster und letzter Block sollen begehbar sein.
+h2(2..height-1).
+v(0..3).
+
+start(1).
+end(21).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Genierung der Abschnitte aus Feuergräben (x-Achse) %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% fire(X1,X2): erster und letzter Punkt einer Feuerschlucht
+
+different(A1,A2,B1,B2) :- fire(A1,A2), fire(B1,B2), A1!=B1.  
+different(A1,A2,B1,B2) :- fire(A1,A2), fire(B1,B2), A2!=B2. 
+
+% Generiere eine bestimmte Anzahl von Feuergräben
+grabenanzahl{ fire(X1,X2): w2(X1;X2), X1<X2, X2-X1<=sprungweite, X2-X1>=sprungweiteMin }grabenanzahl.
+
+% Eigenschaften der Bereiche, so dass sie sich nicht überlappen
+notOverlapping(A,B,C,D) :- fire(A,B), fire(C,D), different(A,B,C,D), B+plattformMin<C, A<C.
+notOverlapping(A,B,C,D) :- fire(C,D), fire(A,B), different(A,B,C,D), D+plattformMin<A, C<A.
+
+:- fire(A, B), fire(C,D),different(A,B,C,D), not notOverlapping(A,B,C,D).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Übersetzung in Blöcke %
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+insidefire(X) :- fire(A,B), X>=A, X<=B, w(X).
+safe(X) :- not insidefire(X), w(X). 
+
+% Code für Blockmaterialien:
+% Nichts/Luft = 0
+% normaler Block/solid = 1
+% Feuer = 9
+
+% Unterste Blöcke (height) bestehen aus Feuer 
+block(X,Y,9) :- w(X), fire(A,B), X>=A, X<=B, Y=height.
+marked(X,Y)  :- w(X), fire(A,B), X>=A, X<=B, Y=height.
+
+% Sichere Bereiche sind 3 Blöcke hoch
+block(X,Y,1) :- safe(X), w(Y), Y>=height-3.
+marked(X,Y)  :- safe(X), w(Y), Y>=height-3.
+
+% Rest wird mit Luft gefüllt
+% Funktioniert das?
+block(X,Y,0) :- not marked(X,Y), w(X),h(Y). 
+
+
+
+#show fire/2.
+#show block/3.
+%#show marked/2.
+%#show safe/1.

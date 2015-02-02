@@ -12,10 +12,7 @@ field(1..width, 1..height).
 #const height=20.
 
 width(width).
-height(height).
-
-#show width/1.
-#show height/1.
+height(height * 2).
 
 w(1..width).
 h(1..height).
@@ -51,8 +48,6 @@ reachable_in(T) :- goal(X,Y), T =  #min{ TT : reachable_in(X,Y,TT) }.
 
 %#maximize { T : reachable_in(T) }.
 :- reachable_in(T), T < min_length.
-
-#show reachable_in/1.
 
 
 % jedes Feld muss erreichbar sein
@@ -92,8 +87,8 @@ reachable_in(T) :- goal(X,Y), T =  #min{ TT : reachable_in(X,Y,TT) }.
 
 
 
-#show aperture/2.
-#show wall/2. 
+%#show aperture/2.
+%#show wall/2. 
 
 
 
@@ -132,24 +127,28 @@ ungerade(X+2) :- ungerade(X),max(X+2).
 gerade(2). 
 gerade(X+2) :- gerade(X), max(X+2).
 
-startX(X,height*2-Y*2+1) :- start(X,Y).
-goalX(X,height*2-Y*2+1)  :- goal(X,Y).
+startX(X - 1, height * 2 - Y * 2) :- start(X,Y).
+goalX(X - 1, height * 2 - Y * 2)  :- goal(X,Y).
 
 wallX(X,height*2-Y*2+1)  :- wall(X,Y).
 apertureX(X,height*2-Y*2+2) :- aperture(X,Y), field(X,Y).
 
-block(X,Y,1) :- gerade(Y), w(X), not apertureX(X,Y).
-block(X,Y,2) :- apertureX(X,Y).
+block(X-1,Y-1,1) :- gerade(Y), w(X), not apertureX(X,Y).
+block(X-1,Y-1,0) :- apertureX(X,Y).
 %:- block(X,Y,1), aperture(X,Y).
 
-block(X,Y,0) :- ungerade(Y), w(X), not wallX(X,Y).
-block(X,Y,1) :- wallX(X,Y).
+block(X-1,Y-1,0) :- ungerade(Y), w(X), not wallX(X,Y).
+block(X-1,Y-1,1) :- wallX(X,Y).
 %:- block(X,Y,0), wall(X,Y).
 
-block(X,Y,10) :- startX(X,Y).
-block(X,Y,11) :- goalX(X,Y).
+block(X, Y, 10) :- startX(X,Y).
+block(X, Y, 11) :- goalX(X,Y).
 
 
 
 #show block/3. 
-
+#show width/1.
+#show height/1.
+#show startX/2.
+#show goalX/2.
+#show reachable_in/1.

@@ -1,5 +1,6 @@
 package de.kbgame.map;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +21,7 @@ public final class MapLoader {
 		throw new AssertionError();
 	}
 
-	public static Level LoadMapFromClingo(Game g, String filename) {
+	public static Level LoadMapFromClingo(Game g, String filename, Point playerStart) {
 		String[] params = new String[3];
 		params[0] = "clingo";
 		params[1] = filename;
@@ -28,11 +29,16 @@ public final class MapLoader {
 
 		final AnswerASP answer = ClingoFactory.getInstance().getAnswerASP(params);
 		final List<PredicateASP> pres = answer.getPreListFromString("block");
-		final int width = (int) answer.getPreListFromString("width").get(0).getParameterOfIndex(0);
-		final int height = (int) answer.getPreListFromString("height").get(0).getParameterOfIndex(0);
+		final int width = (Integer) answer.getPreListFromString("width").get(0).getParameterOfIndex(0);
+		final int height = (Integer) answer.getPreListFromString("height").get(0).getParameterOfIndex(0);
+		final PredicateASP start = answer.getPreListFromString("startX").get(0);
+		final PredicateASP goal = answer.getPreListFromString("goalX").get(0);
+
+		playerStart.x = (Integer) start.getParameterOfIndex(0);
+		playerStart.y = (Integer) start.getParameterOfIndex(1);
 		
-		final Level level = new Level(width,height);
-		for(PredicateASP pre : pres) {
+		final Level level = new Level(width, height - 1);
+		for (PredicateASP pre : pres) {
 			setMapFromPredicate(g, level, pre);
 		}
 		return level;
@@ -57,14 +63,14 @@ public final class MapLoader {
 			return null;
 		}
 	}
-	
+
 	private static void setPixel(Game g, Level level, int pixelColor, int x, int y) {
-		switch(pixelColor){
-			case ColorValues.r0g0b0: { 
-				level.setMap(x,y,Blocks.Solid);
+		switch (pixelColor) {
+			case ColorValues.r0g0b0: {
+				level.setMap(x, y, Blocks.Solid);
 				break;
 			}
-			case ColorValues.r128g128b128: { 
+			case ColorValues.r128g128b128: {
 				level.setMap(x, y, Blocks.Boden);
 				break;
 			}
@@ -73,36 +79,36 @@ public final class MapLoader {
 				break;
 			}
 			case ColorValues.r255g0b0: {
-				Enemy e = new Enemy((x+1)*Level.BLOCK_WIDTH-50-1, (y+1)*Level.BLOCK_HEIGHT-50-1, 50, 50);
+				Enemy e = new Enemy((x + 1) * Level.BLOCK_WIDTH - 50 - 1, (y + 1) * Level.BLOCK_HEIGHT - 50 - 1, 50, 50);
 				g.list.add(e);
 				break;
 			}
-			default :
-				level.setMap(x,y,Blocks.Empty);
+			default:
+				level.setMap(x, y, Blocks.Empty);
 				break;
 		}
 	}
-	
+
 	private static void setMapFromPredicate(Game g, Level level, PredicateASP pre) {
-		final int blockType = (int) pre.getParameterOfIndex(2);
-		final int x = (int) pre.getParameterOfIndex(0);
-		final int y = (int) pre.getParameterOfIndex(1);
+		final int blockType = (Integer) pre.getParameterOfIndex(2);
+		final int x = (Integer) pre.getParameterOfIndex(0);
+		final int y = (Integer) pre.getParameterOfIndex(1);
 		switch (blockType) {
-		case 1:
-			level.setMap(x, y, Blocks.Boden);
-			break;
-		case 2:
-			level.setMap(x, y, Blocks.QuestionBlock);
-			break;
-		case 10:
-			
-			break;
-		case 11:
-			
-			break;
-		default:
-			level.setMap(x,y,Blocks.Empty);
-			break;
+			case 1:
+				level.setMap(x, y, Blocks.Boden);
+				break;
+			case 2:
+				level.setMap(x, y, Blocks.QuestionBlock);
+				break;
+			case 10:
+
+				break;
+			case 11:
+
+				break;
+			default:
+				level.setMap(x, y, Blocks.Empty);
+				break;
 		}
 	}
 }

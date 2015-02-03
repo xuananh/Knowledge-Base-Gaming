@@ -23,10 +23,16 @@ v(0..3).
 start(1).
 end(21).
 
+startX(0,5).
+goalX(20,5).
+
+width(width).
+height(height).
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Genierung der Abschnitte aus Feuergräben (x-Achse) %
+% Genierung der Abschnitte aus Feuergrï¿½ben (x-Achse) %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % fire(X1,X2): erster und letzter Punkt einer Feuerschlucht
@@ -34,10 +40,10 @@ end(21).
 different(A1,A2,B1,B2) :- fire(A1,A2), fire(B1,B2), A1!=B1.  
 different(A1,A2,B1,B2) :- fire(A1,A2), fire(B1,B2), A2!=B2. 
 
-% Generiere eine bestimmte Anzahl von Feuergräben
+% Generiere eine bestimmte Anzahl von Feuergrï¿½ben
 grabenanzahl{ fire(X1,X2): w2(X1;X2), X1<X2, X2-X1<=sprungweite, X2-X1>=sprungweiteMin }grabenanzahl.
 
-% Eigenschaften der Bereiche, so dass sie sich nicht überlappen
+% Eigenschaften der Bereiche, so dass sie sich nicht ï¿½berlappen
 notOverlapping(A,B,C,D) :- fire(A,B), fire(C,D), different(A,B,C,D), B+plattformMin<C, A<C.
 notOverlapping(A,B,C,D) :- fire(C,D), fire(A,B), different(A,B,C,D), D+plattformMin<A, C<A.
 
@@ -46,32 +52,34 @@ notOverlapping(A,B,C,D) :- fire(C,D), fire(A,B), different(A,B,C,D), D+plattform
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
-% Übersetzung in Blöcke %
+% ï¿½bersetzung in Blï¿½cke %
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 insidefire(X) :- fire(A,B), X>=A, X<=B, w(X).
 safe(X) :- not insidefire(X), w(X). 
 
-% Code für Blockmaterialien:
+% Code fï¿½r Blockmaterialien:
 % Nichts/Luft = 0
 % normaler Block/solid = 1
 % Feuer = 9
 
-% Unterste Blöcke (height) bestehen aus Feuer 
-block(X,Y,9) :- w(X), fire(A,B), X>=A, X<=B, Y=height.
+% Unterste Blï¿½cke (height) bestehen aus Feuer 
+block(X-1,Y-1,9) :- w(X), fire(A,B), X>=A, X<=B, Y=height.
 marked(X,Y)  :- w(X), fire(A,B), X>=A, X<=B, Y=height.
 
-% Sichere Bereiche sind 3 Blöcke hoch
-block(X,Y,1) :- safe(X), w(Y), Y>=height-3.
+% Sichere Bereiche sind 3 Blï¿½cke hoch
+block(X-1,Y-1,1) :- safe(X), w(Y), Y>=height-3.
 marked(X,Y)  :- safe(X), w(Y), Y>=height-3.
 
-% Rest wird mit Luft gefüllt
+% Rest wird mit Luft gefï¿½llt
 % Funktioniert das?
-block(X,Y,0) :- not marked(X,Y), w(X),h(Y). 
+block(X-1,Y-1,0) :- not marked(X,Y), w(X),h(Y). 
 
 
 
 #show fire/2.
 #show block/3.
-%#show marked/2.
-%#show safe/1.
+#show width/1.
+#show height/1.
+#show startX/2.
+#show goalX/2.

@@ -21,7 +21,7 @@ public final class MapLoader {
 		throw new AssertionError();
 	}
 
-	public static Level LoadMapFromClingo(Game g, String filename, Point playerStart) {
+	public static Level LoadMapFromClingo(Game g, String filename, Point playerStart, Point goalPoint) {
 		String[] params = new String[3];
 		params[0] = "clingo";
 		params[1] = filename;
@@ -36,6 +36,9 @@ public final class MapLoader {
 
 		playerStart.x = (Integer) start.getParameterOfIndex(0);
 		playerStart.y = (Integer) start.getParameterOfIndex(1);
+		
+		goalPoint.x = (Integer) goal.getParameterOfIndex(0);
+		goalPoint.y = (Integer) goal.getParameterOfIndex(1);
 		
 		final Level level = new Level(width, height - 1);
 		for (PredicateASP pre : pres) {

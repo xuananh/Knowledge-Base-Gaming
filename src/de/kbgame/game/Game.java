@@ -24,9 +24,12 @@ public class Game extends Thread{
 	public final LinkedList<Entity> removeFromList = new LinkedList<Entity>();
 	public final Level level;
 	public LinkedList<Background> backgrounds = new LinkedList<Background>();
+	public Player player;
 	
 	public final static boolean DEBUG = false;
 	public final static boolean LOAD_CLINGO = false;
+	
+	public Point goal = new Point(-1, -1);
 	
 	public int x = 50, y = 50;
 	public int r = 50, g = 100, b = 150;
@@ -76,7 +79,7 @@ public class Game extends Thread{
 		Point playerStart = new Point(1, 1);
 		
 		if (LOAD_CLINGO) {
-			level = MapLoader.LoadMapFromClingo(this, "clingo/encoding/labyrinth-23.lp", playerStart);
+			level = MapLoader.LoadMapFromClingo(this, "clingo/encoding/labyrinth-23.lp", playerStart, goal);
 		} else {
 			level = MapLoader.LoadMapOutOfBitmap(this, "Levels/testmap.bmp");
 			
@@ -91,9 +94,9 @@ public class Game extends Thread{
 		backgrounds.add(new Background(ImageKey.BACKGROUND_1, .25f, 1, this));
 		backgrounds.add(new Background(ImageKey.BACKGROUND_2, .5f, 1, this));
 
-		Player p = new Player(playerStart.x * bw + (playerWidth / 2), playerStart.y * bh + (playerHeight / 2), playerWidth, playerHeight);
-		list.add((Entity) p);
-		controller.control(p);
+		player = new Player(playerStart.x * bw + (playerWidth / 2), playerStart.y * bh + (playerHeight / 2), playerWidth, playerHeight);
+		list.add((Entity) player);
+		controller.control(player);
 		
 		this.start();
 	}
@@ -113,6 +116,13 @@ public class Game extends Thread{
 		
 		for (Entity ent : list) {
 			ent.update(this);
+		}
+		
+		if (goal.x > -1) {
+			if (player.getSurroundingRectangle().intersects(goal.x * Level.BLOCK_WIDTH, goal.y * Level.BLOCK_HEIGHT, Level.BLOCK_WIDTH, Level.BLOCK_HEIGHT)) {
+				// TODO
+				shouldApplicationExit = true;
+			}
 		}
 	}
 	

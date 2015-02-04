@@ -7,6 +7,8 @@ import de.kbgame.map.Level;
 import de.kbgame.util.Physic;
 import de.kbgame.util.PhysicResult;
 import de.kbgame.util.Status;
+import de.kbgame.util.hud.HUD;
+import de.kbgame.util.hud.LifeHearts;
 
 public class Player extends Entity {
 
@@ -20,10 +22,13 @@ public class Player extends Entity {
 	public int hitdelay = 0;
 
 	private Status status = Status.STANDING;
+	private LifeHearts lifes = new LifeHearts(2);
 
-	public Player(int x, int y, int width, int height) {
+	public Player(int x, int y, int width, int height, HUD hud) {
 		super(x, y, width, height);
 		sprite = new ImageSprite("Images/sprite.png", 4, 3);
+		
+		hud.add(lifes);
 	}
 
 	public void setParent(Platform platform) {
@@ -103,7 +108,7 @@ public class Player extends Entity {
 		yIn = intermediatePoint.y > enemyRect.y && intermediatePoint.y < (enemyRect.y + enemyRect.height);
 		if (xIn && yIn) {
 			maxRuns = -1;
-			getHit((Enemy) e);
+			getHit((Enemy) e, g);
 		}
 
 		while (--maxRuns > 0) {
@@ -120,7 +125,7 @@ public class Player extends Entity {
 
 			if (!xIn && yIn) {
 				// hit from left or right
-				getHit((Enemy) e);
+				getHit((Enemy) e, g);
 				maxRuns = -1;
 			} else if (xIn && !yIn) {
 				// TODO no kill from below
@@ -195,10 +200,14 @@ public class Player extends Entity {
 		}
 	}
 
-	public void getHit(Enemy e) {
+	public void getHit(Enemy e, Game g) {
 		vx = (x > e.x) ? 10 : -10;
 		vy = -3;
-		// TODO: Life & Damage?
 		hitdelay = 50;
+		
+		if (--lifes.hearts <= 0) {
+			// TODO
+			g.shouldApplicationExit = true;
+		}
 	}
 }

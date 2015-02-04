@@ -9,6 +9,7 @@ import de.kbgame.grafic.Graphics;
 import de.kbgame.map.Level;
 import de.kbgame.map.MapLoader;
 import de.kbgame.util.Input;
+import de.kbgame.util.hud.HUD;
 import de.kbgame.util.sound.SoundThread;
 
 public class Game extends Thread{
@@ -25,6 +26,7 @@ public class Game extends Thread{
 	public final Level level;
 	public LinkedList<Background> backgrounds = new LinkedList<Background>();
 	public Player player;
+	public HUD hud = new HUD();
 	
 	public final static boolean DEBUG = false;
 	public final static boolean LOAD_CLINGO = false;
@@ -94,7 +96,7 @@ public class Game extends Thread{
 		backgrounds.add(new Background(ImageKey.BACKGROUND_1, .25f, 1, this));
 		backgrounds.add(new Background(ImageKey.BACKGROUND_2, .5f, 1, this));
 
-		player = new Player(playerStart.x * bw + (playerWidth / 2), playerStart.y * bh + (playerHeight / 2), playerWidth, playerHeight);
+		player = new Player(playerStart.x * bw + (playerWidth / 2), playerStart.y * bh + (playerHeight / 2), playerWidth, playerHeight, hud);
 		list.add((Entity) player);
 		controller.control(player);
 		
@@ -142,6 +144,8 @@ public class Game extends Thread{
 		for (Entity e : list){
 			e.draw(this);
 		}
+		
+		hud.draw(this);
 		
 		graphic.endDrawNewFrame();
 	}

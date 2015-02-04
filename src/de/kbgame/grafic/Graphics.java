@@ -31,7 +31,7 @@ public class Graphics extends JFrame {
 	public final Font TimesSmall, TimesSmaller;
 	public final Cursor transparentCursor, basicCursor;
 	
-	private final ImageLoader imageLoader = new ImageLoader();
+	public final ImageLoader imageLoader = ImageLoader.getInstance();
 	private BufferedImage currentScreen;
 	public Graphics2D currentGrafic;
 	

@@ -10,6 +10,8 @@ import javax.imageio.ImageIO;
 import de.kbgame.geometry.ImageKey;
 
 public class ImageLoader {
+	
+	private static ImageLoader instance = new ImageLoader();
 
 	private static final String BACKGROUND_IMAGE = "Images/background.png";
 	private static final String PERSON_IMAGE = "Images/person.png";
@@ -21,9 +23,10 @@ public class ImageLoader {
 	private static final String ENEMY_IMAGE = "Images/enemy.png";
 	private static final String BACKGROUND_1 = "Images/bg-1.jpg";
 	private static final String BACKGROUND_2 = "Images/bg-2.png";
+	private static final String HUD_HEART = "Images/heart.png";
 	private final HashMap<ImageKey, BufferedImage> images = new HashMap<ImageKey, BufferedImage>();
 	
-	public ImageLoader() {
+	private ImageLoader() {
 		loadImages();
 	}
 	
@@ -39,6 +42,7 @@ public class ImageLoader {
 			images.put(ImageKey.QUESTIONBLOCK_BOUNCED_IMAGE, ImageIO.read(new File(QUESTIONBLOCK_BOUNCED_IMAGE)));
 			images.put(ImageKey.BACKGROUND_1, ImageIO.read(new File(BACKGROUND_1)));
 			images.put(ImageKey.BACKGROUND_2, ImageIO.read(new File(BACKGROUND_2)));
+			images.put(ImageKey.HUD_HEART, ImageIO.read(new File(HUD_HEART)));
 		} catch (IOException e) { 
 			e.printStackTrace();
 		}
@@ -46,5 +50,9 @@ public class ImageLoader {
 	
 	public BufferedImage getImageByKey(ImageKey key) {
 		return images.get(key);
+	}
+	
+	public static ImageLoader getInstance() {
+		return ImageLoader.instance;
 	}
 }

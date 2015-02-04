@@ -19,7 +19,7 @@ public class Background {
 	private float targetWidth;
 	
 	public Background(ImageKey img, float xFactor, float yFactor, Game g) {
-		ImageLoader imageLoader = new ImageLoader();
+		ImageLoader imageLoader = ImageLoader.getInstance();
 		
 		background = imageLoader.getImageByKey(img);
 		

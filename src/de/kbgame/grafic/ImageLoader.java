@@ -13,13 +13,11 @@ public class ImageLoader {
 	
 	private static ImageLoader instance = new ImageLoader();
 
-	private static final String BACKGROUND_IMAGE = "Images/background.png";
-	private static final String PERSON_IMAGE = "Images/person.png";
 	private static final String BLOCK_IMAGE = "Images/block.png";
 	private static final String BODEN_IMAGE = "Images/grass.png";
 	private static final String QUESTIONBLOCK_IMAGE = "Images/questionblock.png";
 	private static final String QUESTIONBLOCK_BOUNCED_IMAGE = "Images/questionblock_bounced.png";
-	private static final String JUMP_BLOCK = "Images/jump_block.jpg";
+	private static final String JUMP_BLOCK = "Images/jump_block.png";
 	private static final String ENEMY_IMAGE = "Images/enemy.png";
 	private static final String BACKGROUND_1 = "Images/bg-1.jpg";
 	private static final String BACKGROUND_2 = "Images/bg-2.png";
@@ -32,8 +30,6 @@ public class ImageLoader {
 	
 	public void loadImages(){
 		try {
-			images.put(ImageKey.BACKGROUND,ImageIO.read(new File(BACKGROUND_IMAGE)));
-			images.put(ImageKey.PERSON,ImageIO.read(new File(PERSON_IMAGE)));
 			images.put(ImageKey.BLOCK, ImageIO.read(new File(BLOCK_IMAGE)));
 			images.put(ImageKey.BODEN, ImageIO.read(new File(BODEN_IMAGE)));
 			images.put(ImageKey.QUESTION_BLOCK, ImageIO.read(new File(QUESTIONBLOCK_IMAGE)));

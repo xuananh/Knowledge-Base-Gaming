@@ -27,11 +27,7 @@ public class LifeHearts implements HUDElement {
 		for (int i = 0; i < hearts; i++) {
 			offsetLeft = ((i + 1) * OFFSET_LEFT) + i * Level.BLOCK_WIDTH;
 
-			if (i == hearts - 1) {
-				g.graphic.currentGrafic.drawImage(img, offsetLeft, OFFSET_TOP, Level.BLOCK_HEIGHT, Level.BLOCK_HEIGHT, null);
-			} else {
-				g.graphic.currentGrafic.drawImage(img, offsetLeft + 5, OFFSET_TOP + 5, Level.BLOCK_HEIGHT - 10, Level.BLOCK_HEIGHT - 10, null);
-			}
+			g.graphic.currentGrafic.drawImage(img, offsetLeft, OFFSET_TOP, Level.BLOCK_HEIGHT, Level.BLOCK_HEIGHT, null);
 		}
 	}
 

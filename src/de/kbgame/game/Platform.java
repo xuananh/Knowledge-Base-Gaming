@@ -29,17 +29,17 @@ public class Platform extends Entity {
 
 		if (verticalMove) {
 			if (downOrRight) {
-				y = Math.min(toXY, y + speed);
+				y = (int) Math.min(toXY, y + speed * g.gaFactor);
 			} else {
-				y = Math.max(fromXY, y - speed);
+				y = (int) Math.max(fromXY, y - speed * g.gaFactor);
 			}
 
 			xy = y;
 		} else {
 			if (downOrRight) {
-				x = Math.min(toXY, x + speed);
+				x = (int) Math.min(toXY, x + speed * g.gaFactor);
 			} else {
-				x = Math.max(fromXY, x - speed);
+				x = (int) Math.max(fromXY, x - speed * g.gaFactor);
 			}
 
 			xy = x;

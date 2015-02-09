@@ -4,12 +4,12 @@ import de.kbgame.game.Entity;
 
 public class PhysicResult {
 	public double x, y, vx, vy;
-	public int lx, rx, uy, dy;
+	public double lx, rx, uy, dy;
 	public double wi, hi;
 	public boolean onground = false, top = false, left = false, right = false;
 	public boolean turn = false;
 
-	public PhysicResult(double nx, double ny, double nvx, double nvy, boolean gr, boolean to, boolean le, boolean ri, int nlx, int nrx, int nuy, int ndy, int nwi, int nhi) {
+	public PhysicResult(double nx, double ny, double nvx, double nvy, boolean gr, boolean to, boolean le, boolean ri, double nlx, double nrx, double nuy, double ndy, int nwi, int nhi) {
 		x = nx;
 		y = ny;
 		vx = nvx;
@@ -26,12 +26,12 @@ public class PhysicResult {
 		wi = nwi;
 		hi = nhi;
 	}
-
-	public void updatePos() {
-		lx = (int) (x - wi / 2);
-		rx = (int) (lx + wi - 1); // != x+wi/2
-		uy = (int) (y - hi / 2);
-		dy = (int) (uy + hi - 1);
+	
+	public void updatePos(){
+		lx =  (x-wi/2);
+		rx =  (lx+wi-1); // != x+wi/2
+		uy =  (y-hi/2);
+		dy =  (uy+hi-1);
 	}
 
 	public void apply(Entity e) {
@@ -39,10 +39,10 @@ public class PhysicResult {
 		e.y = (int) y;
 		e.vx = vx;
 		e.vy = vy;
-		e.lx = lx;
-		e.rx = rx;
-		e.uy = uy;
-		e.dy = dy;
+		e.lx = (int) lx;
+		e.rx = (int) rx;
+		e.uy = (int) uy;
+		e.dy = (int) dy;
 		e.onground = onground;
 		e.updatePos();
 	}

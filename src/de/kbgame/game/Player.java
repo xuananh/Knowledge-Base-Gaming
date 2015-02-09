@@ -201,8 +201,14 @@ public class Player extends Entity {
 	}
 
 	public void getHit(Enemy e, Game g) {
-		vx = (x > e.x) ? 10 : -10;
-		vy = -3;
+		if (hitdelay > 0) {
+			return;
+		}
+		
+		if (e != null) {
+			vx = (x > e.x) ? 10 : -10;
+			vy = -3;
+		}
 		hitdelay = 50;
 		
 		if (--lifes.hearts <= 0) {

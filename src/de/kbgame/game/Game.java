@@ -2,6 +2,7 @@ package de.kbgame.game;
 
 import java.awt.Point;
 import java.util.LinkedList;
+import java.util.Vector;
 
 import de.kbgame.geometry.ImageKey;
 import de.kbgame.grafic.Background;
@@ -9,6 +10,8 @@ import de.kbgame.grafic.Graphics;
 import de.kbgame.map.Level;
 import de.kbgame.map.MapLoader;
 import de.kbgame.util.Input;
+import de.kbgame.util.Shot;
+import de.kbgame.util.ShotCollection;
 import de.kbgame.util.hud.HUD;
 import de.kbgame.util.sound.SoundThread;
 
@@ -36,15 +39,25 @@ public class Game extends Thread{
 	public int x = 50, y = 50;
 	public int r = 50, g = 100, b = 150;
 	
+	public double gaFactor = 1.0;
+	
+	Vector<ShotCollection> shots = new Vector<ShotCollection>();
+	
+	
 	public void run() {
 		shouldApplicationExit = false;
 		
-		long start;
-		long timePerIteration = 1000 / 60; // for 60 FPS
-		
+		long currentMillisecs, deltaMillisecs;
+		long lastFrameMillisecs = System.currentTimeMillis();
+		double timePerIteration = 1000 / 60; // for 60 FPS
 		
 		while (!shouldApplicationExit) {
-			start = System.currentTimeMillis();
+			currentMillisecs = System.currentTimeMillis();
+			
+	        deltaMillisecs = currentMillisecs - lastFrameMillisecs;
+			
+	        lastFrameMillisecs = currentMillisecs;
+	        gaFactor = Math.max(1.0, (double) deltaMillisecs / timePerIteration);
 			
 			try{
 				update();
@@ -56,7 +69,7 @@ public class Game extends Thread{
 			}
 			
 			try {
-				Thread.sleep(Math.max(0, timePerIteration - (System.currentTimeMillis() - start)));
+				Thread.sleep((long) Math.max(0, timePerIteration - (System.currentTimeMillis() - currentMillisecs)));
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -78,7 +91,7 @@ public class Game extends Thread{
 		int playerWidth = Level.BLOCK_WIDTH - 6;
 		int playerHeight = Level.BLOCK_HEIGHT;
 		
-		Point playerStart = new Point(1, 1);
+		Point playerStart = new Point(1, 40);
 		
 		if (LOAD_CLINGO) {
 			level = MapLoader.LoadMapFromClingo(this, "clingo/encoding/labyrinth-23.lp", playerStart, goal);
@@ -99,6 +112,16 @@ public class Game extends Thread{
 		player = new Player(playerStart.x * bw + (playerWidth / 2), playerStart.y * bh + (playerHeight / 2), playerWidth, playerHeight, hud);
 		list.add((Entity) player);
 		controller.control(player);
+		
+
+		ShotCollection shots = new ShotCollection(20, 5, player);
+		shots.add(new Shot(new Point(600, 2000), 1, 19, shots));
+		shots.add(new Shot(new Point(600, 2000), 2, 3, shots));
+		shots.add(new Shot(new Point(600, 2000), 4, 1, shots));
+		shots.add(new Shot(new Point(600, 2000), 5, 10, shots));
+		shots.add(new Shot(new Point(600, 2000), 9, 1, shots));
+		shots.add(new Shot(new Point(600, 2000), 10, 8, shots));
+		this.shots.add(shots);
 		
 		this.start();
 	}
@@ -126,6 +149,11 @@ public class Game extends Thread{
 				shouldApplicationExit = true;
 			}
 		}
+		
+		for (ShotCollection coll : this.shots) {
+			// TODO remove list when empty
+			coll.update(this);
+		}
 	}
 	
 	public void draw(){
@@ -146,6 +174,10 @@ public class Game extends Thread{
 		}
 		
 		hud.draw(this);
+		
+		for (ShotCollection coll : this.shots) {
+			coll.draw(this);
+		}
 		
 		graphic.endDrawNewFrame();
 	}

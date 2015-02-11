@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Point;
 
 import de.kbgame.game.Game;
+import de.kbgame.map.Blocks;
 import de.kbgame.map.Level;
 
 public class Shot {
@@ -13,6 +14,7 @@ public class Shot {
 	private int timeOffset;
 	private int x, y;
 	private ShotCollection shots;
+	private int yBlock;
 	
 	public Shot(Point origin, int yOffset, int timeOffset, ShotCollection shots) {
 		this.timeOffset = timeOffset;
@@ -20,6 +22,8 @@ public class Shot {
 		
 		x = origin.x;
 		y = origin.y - Level.BLOCK_HEIGHT / 4 * yOffset;
+		
+		yBlock = (int) y / Level.BLOCK_HEIGHT;
 	}
 	
 	public void update(Game g) {
@@ -32,9 +36,10 @@ public class Shot {
 				shots.addToRemoveList(this);
 			}
 			
-			if (x < 0 - RADIUS) {
+			int xBlock = (int) x / Level.BLOCK_WIDTH;
+			if (g.level.getMap(xBlock, yBlock) != Blocks.Empty || x < 0 - RADIUS) {
 				shots.addToRemoveList(this);
-			}
+			} 
 		} else {
 			--timeOffset;
 		}

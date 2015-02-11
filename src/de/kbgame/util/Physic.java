@@ -37,7 +37,7 @@ public final class Physic {
 	}
 
 	public static PhysicResult basicMove(Game g, Entity e) {
-		PhysicResult result = new PhysicResult(e.x, e.y, e.vx, e.vy, e.onground, false, false, false, e.lx, e.rx, e.uy, e.dy, e.width, e.height);
+		PhysicResult result = new PhysicResult(e.x, e.y, e.vx, e.vy, false, false, false, false, e.lx, e.rx, e.uy, e.dy, e.width, e.height);
 
 		int blockheight = Level.BLOCK_HEIGHT;
 		int blockwidth = Level.BLOCK_WIDTH;

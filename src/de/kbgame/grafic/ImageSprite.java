@@ -9,40 +9,34 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 public class ImageSprite {
-
 	private final List<BufferedImage> sprites = new ArrayList<BufferedImage>();
-	private final String imagePath;
 	private final int rows;
 	private final int cols;
 	private int index = 0;
+	private int currentRow = 0;
+	
+	public boolean noUpdate = false;
 
 	public ImageSprite(String imagePath, int rows, int cols) {
-		this.imagePath = imagePath;
 		this.rows = rows;
 		this.cols = cols;
-		setImagePathToSprite();
+		setImagePathToSprite(imagePath);
 	}
 
-	private List<BufferedImage> setImagePathToSprite() {
+	private void setImagePathToSprite(String imagePath) {
 		try {
 			final BufferedImage image = ImageIO.read(new File(imagePath));
-			final int width = (image.getWidth() / cols);
-			final int height = (image.getHeight() / rows);
+			final int width = image.getWidth() / cols;
+			final int height = image.getHeight() / rows;
 
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < cols; j++) {
-					sprites.add(image.getSubimage(j * width, i * height, width,
-							height));
+					sprites.add(image.getSubimage(j * width, i * height, width, height));
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return sprites;
-	}
-
-	public BufferedImage getSprite() {
-		return sprites.get(index);
 	}
 
 	public int getIndex() {
@@ -51,17 +45,30 @@ public class ImageSprite {
 
 	public void setIndex(int index) {
 		this.index = index;
-		checkIndex();
-	}
-	
-	public void setIndexInkrement(){
-		this.index ++;
-		checkIndex();
-	}
-	
-	private void checkIndex() {
+
 		if (this.index >= sprites.size()) {
 			this.index = 0;
+		}
+	}
+
+	public BufferedImage getCurrent() {
+		return sprites.get(index);
+	}
+
+	public void setCurrentRow(int row) {
+		if (row >= 0 && row < rows && row != currentRow) {
+			currentRow = row;
+			index = currentRow * cols;
+		}
+	}
+
+	public void next() {
+		index = currentRow * cols + (index + 1) % cols;
+	}
+	
+	public void update() {
+		if (!noUpdate) {
+			next();
 		}
 	}
 }

@@ -1,7 +1,7 @@
 package de.kbgame.game;
 
 import de.kbgame.geometry.MyPoint;
-import de.kbgame.grafic.ImageSprite;
+import de.kbgame.grafic.TimeBasedImageSprite;
 import de.kbgame.map.Blocks;
 import de.kbgame.map.Level;
 import de.kbgame.util.Physic;
@@ -12,7 +12,7 @@ import de.kbgame.util.hud.LifeHearts;
 
 public class Player extends Entity {
 
-	private final ImageSprite sprite;
+	private final TimeBasedImageSprite sprite;
 	private final static int MAX_COLLISION_STEPS = 10;
 
 	public Platform parent = null;
@@ -26,7 +26,7 @@ public class Player extends Entity {
 
 	public Player(int x, int y, int width, int height, HUD hud) {
 		super(x, y, width, height);
-		sprite = new ImageSprite("Images/sprite.png", 4, 3);
+		sprite = new TimeBasedImageSprite("Images/sprite.png", 4, 3, 100);
 		
 		hud.add(lifes);
 	}
@@ -145,10 +145,10 @@ public class Player extends Entity {
 	@Override
 	public void draw(Game g) {
 		if (parent == null) {
-			g.graphic.drawImage(sprite.getSprite(), x, y, this.width, this.height, rot, true);
+			g.graphic.drawImage(sprite.getCurrent(), x, y, this.width, this.height, rot, true);
 		} else {
 			int _y = parent.y - height;
-			g.graphic.drawImage(sprite.getSprite(), x, _y, this.width, this.height, rot, true);
+			g.graphic.drawImage(sprite.getCurrent(), x, _y, this.width, this.height, rot, true);
 		}
 	}
 
@@ -169,25 +169,26 @@ public class Player extends Entity {
 
 	private void setSprites(PhysicResult result) {
 		setPlayerStatus(result);
+		
+		sprite.noUpdate = false;
+		
 		switch (status) {
 			case MOVE_LEFT:
-				if (sprite.getIndex() == 5) {
-					sprite.setIndex(3);
-				}
+				sprite.setCurrentRow(1);
 				break;
 			case MOVE_RIGHT:
-				if (sprite.getIndex() == 8) {
-					sprite.setIndex(6);
-				}
+				sprite.setCurrentRow(2);
 				break;
-			case JUMP:
-				sprite.setIndex(4);
-				break;
+//			case JUMP:
+//				sprite.setIndex(4);
+//				break;
 			default:
-				sprite.setIndex(0);
+				sprite.noUpdate = true;
+				sprite.setIndex(1);
 				break;
 		}
-		sprite.setIndexInkrement();
+
+		sprite.update();
 	}
 
 	private void setPlayerStatus(PhysicResult result) {

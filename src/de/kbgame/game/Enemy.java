@@ -39,7 +39,7 @@ public class Enemy extends Entity {
 
 	@Override
 	public void draw(Game g) {
-		g.graphic.drawImage(sprite.getSprite(), x, y, width, height, rot, true);
+		g.graphic.drawImage(sprite.getCurrent(), x, y, width, height, rot, true);
 	}
 
 	private void setSprites(PhysicResult result) {

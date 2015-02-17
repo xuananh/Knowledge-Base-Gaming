@@ -15,18 +15,22 @@ public class Shot {
 	private int x, y;
 	private ShotCollection shots;
 	private int yBlock;
+	private int yOffset;
 	
-	public Shot(Point origin, int yOffset, int timeOffset, ShotCollection shots) {
+	public Shot(int yOffset, int timeOffset, ShotCollection shots) {
 		this.timeOffset = timeOffset;
 		this.shots = shots;
-		
-		x = origin.x;
-		y = origin.y - Level.BLOCK_HEIGHT / 4 * yOffset;
-		
-		yBlock = (int) y / Level.BLOCK_HEIGHT;
+		this.yOffset = yOffset;
 	}
 	
 	public void update(Game g) {
+		if (timeOffset == 0) {
+			x = shots.origin.x;
+			y = shots.origin.y - Level.BLOCK_HEIGHT / 4 * yOffset;
+			yBlock = (int) y / Level.BLOCK_HEIGHT;
+			timeOffset--;
+		}
+		
 		if (timeOffset <= 0) {
 			x -= shots.velocity;
 			

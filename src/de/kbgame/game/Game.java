@@ -10,7 +10,6 @@ import de.kbgame.grafic.Graphics;
 import de.kbgame.map.Level;
 import de.kbgame.map.MapLoader;
 import de.kbgame.util.Input;
-import de.kbgame.util.Shot;
 import de.kbgame.util.ShotCollection;
 import de.kbgame.util.hud.HUD;
 import de.kbgame.util.sound.SoundThread;
@@ -41,9 +40,50 @@ public class Game extends Thread{
 	
 	public double gaFactor = 1.0;
 	
+	SuperEnemy superEnemy;
+	
 	Vector<ShotCollection> shots = new Vector<ShotCollection>();
 	
 	
+	public Game() {
+		input = new Input(); // Init Input before Graphic, because Graphics uses Input!
+		graphic = new Graphics(this);
+		controller = new Controller();
+		sounds = new SoundThread();
+	
+		int bw = Level.BLOCK_WIDTH;
+		int bh = Level.BLOCK_HEIGHT;
+		int playerWidth = Level.BLOCK_WIDTH - 6;
+		int playerHeight = Level.BLOCK_HEIGHT;
+		
+		Point playerStart = new Point(1, 40);
+		
+		if (LOAD_CLINGO) {
+			level = MapLoader.LoadMapFromClingo(this, "clingo/encoding/labyrinth-23.lp", playerStart, goal);
+		} else {
+			level = MapLoader.LoadMapOutOfBitmap(this, "Levels/testmap.bmp");
+			
+			// add 2 dummy platforms
+			Platform pf1 = new Platform(this, 8 * bw + bw / 2, 30 * bh + bh / 2, bw, bh, 30, 40, true);
+			platforms.add(pf1);
+			
+			// jump blocks
+			new JumpBlock(11, 32, level);
+		}
+		
+		backgrounds.add(new Background(ImageKey.BACKGROUND_1, .25f, 1, this));
+		backgrounds.add(new Background(ImageKey.BACKGROUND_2, .5f, 1, this));
+	
+		player = new Player(playerStart.x * bw + (playerWidth / 2), playerStart.y * bh + (playerHeight / 2), playerWidth, playerHeight, hud);
+		list.add((Entity) player);
+		controller.control(player);
+		
+		superEnemy = new SuperEnemy(553, 2025, Level.BLOCK_WIDTH, Level.BLOCK_HEIGHT, player);
+		list.add(superEnemy);
+		
+		this.start();
+	}
+
 	public void run() {
 		shouldApplicationExit = false;
 		
@@ -78,74 +118,6 @@ public class Game extends Thread{
 		sounds.dispose();
 		graphic.dispose();
 		System.exit(0);
-	}
-	
-	public Game() {
-		input = new Input(); // Init Input before Graphic, because Graphics uses Input!
-		graphic = new Graphics(this);
-		controller = new Controller();
-		sounds = new SoundThread();
-	
-		int bw = Level.BLOCK_WIDTH;
-		int bh = Level.BLOCK_HEIGHT;
-		int playerWidth = Level.BLOCK_WIDTH - 6;
-		int playerHeight = Level.BLOCK_HEIGHT;
-		
-		Point playerStart = new Point(1, 40);
-		
-		if (LOAD_CLINGO) {
-			level = MapLoader.LoadMapFromClingo(this, "clingo/encoding/labyrinth-23.lp", playerStart, goal);
-		} else {
-			level = MapLoader.LoadMapOutOfBitmap(this, "Levels/testmap.bmp");
-			
-			// add 2 dummy platforms
-			Platform pf1 = new Platform(this, 8 * bw + bw / 2, 30 * bh + bh / 2, bw, bh, 30, 40, true);
-			platforms.add(pf1);
-			
-			// jump blocks
-			new JumpBlock(11, 32, level);
-		}
-		
-		backgrounds.add(new Background(ImageKey.BACKGROUND_1, .25f, 1, this));
-		backgrounds.add(new Background(ImageKey.BACKGROUND_2, .5f, 1, this));
-
-		player = new Player(playerStart.x * bw + (playerWidth / 2), playerStart.y * bh + (playerHeight / 2), playerWidth, playerHeight, hud);
-		list.add((Entity) player);
-		controller.control(player);
-		
-
-		ShotCollection shots = new ShotCollection(20, 5, player);
-		// Schuesse aus Clingo auslesen 
-		// TODO: woanders im Quellcode?
-		String[] params = new String[3];
-		params[0] = "clingo";
-		params[1] = "clingo/encoding/schuesse-v0.1.txt";
-		params[2] = "1";
-
-		AnswerASP a = ClingoFactory.getInstance().getAnswerASP(params);
-		ArrayList<PredicateASP> pres = (ArrayList) a.getPreListFromString("schuss");
-		for (PredicateASP p : pres) {
-			System.out.println(p.toString());
-		}
-	
-		for (PredicateASP p : pres) {
-			int y = (int) p.getParameterOfIndex(1);
-			System.out.println(y);
-			shots.add(new Shot(new Point(600, 2000), (int) p.getParameterOfIndex(1), (int) p.getParameterOfIndex(0), shots));
-		}
-
-	
-		shots.add(new Shot(new Point(600, 2000), 1, 19, shots));
-		shots.add(new Shot(new Point(600, 2000), 2, 3, shots));
-		shots.add(new Shot(new Point(600, 2000), 4, 1, shots));
-		shots.add(new Shot(new Point(600, 2000), 5, 10, shots));
-		shots.add(new Shot(new Point(600, 2000), 9, 1, shots));
-		shots.add(new Shot(new Point(600, 2000), 10, 8, shots));
-		
-		
-		this.shots.add(shots);
-		
-		this.start();
 	}
 	
 	public void update(){

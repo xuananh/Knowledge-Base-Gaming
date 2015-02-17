@@ -1,5 +1,6 @@
 package de.kbgame.util;
 
+import java.awt.Point;
 import java.util.Vector;
 
 import de.kbgame.game.Game;
@@ -14,11 +15,13 @@ public class ShotCollection extends Vector<Shot> {
 	de.kbgame.geometry.Rectangle playerHitBox;
 	Player player;
 	private Vector<Shot> removeList = new Vector<Shot>();
+	public Point origin;
 
-	public ShotCollection(int updateInterval, int velocity, Player player) {
+	public ShotCollection(int updateInterval, int velocity, Player player, Point origin) {
 		this.updateInterveral = updateInterval;
 		this.velocity = velocity;
 		this.player = player;
+		this.origin = origin;
 	}
 
 	public void update(Game g) {

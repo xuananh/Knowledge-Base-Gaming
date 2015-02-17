@@ -115,12 +115,34 @@ public class Game extends Thread{
 		
 
 		ShotCollection shots = new ShotCollection(20, 5, player);
+		// Schuesse aus Clingo auslesen 
+		// TODO: woanders im Quellcode?
+		String[] params = new String[3];
+		params[0] = "clingo";
+		params[1] = "clingo/encoding/schuesse-v0.1.txt";
+		params[2] = "1";
+
+		AnswerASP a = ClingoFactory.getInstance().getAnswerASP(params);
+		ArrayList<PredicateASP> pres = (ArrayList) a.getPreListFromString("schuss");
+		for (PredicateASP p : pres) {
+			System.out.println(p.toString());
+		}
+	
+		for (PredicateASP p : pres) {
+			int y = (int) p.getParameterOfIndex(1);
+			System.out.println(y);
+			shots.add(new Shot(new Point(600, 2000), (int) p.getParameterOfIndex(1), (int) p.getParameterOfIndex(0), shots));
+		}
+
+	
 		shots.add(new Shot(new Point(600, 2000), 1, 19, shots));
 		shots.add(new Shot(new Point(600, 2000), 2, 3, shots));
 		shots.add(new Shot(new Point(600, 2000), 4, 1, shots));
 		shots.add(new Shot(new Point(600, 2000), 5, 10, shots));
 		shots.add(new Shot(new Point(600, 2000), 9, 1, shots));
 		shots.add(new Shot(new Point(600, 2000), 10, 8, shots));
+		
+		
 		this.shots.add(shots);
 		
 		this.start();

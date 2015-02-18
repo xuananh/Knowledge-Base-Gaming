@@ -1,14 +1,16 @@
 package de.kbgame.game;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Vector;
 
+import de.kbgame.game.level.LevelSegment;
+import de.kbgame.game.level.StandardSegment;
 import de.kbgame.geometry.ImageKey;
 import de.kbgame.grafic.Background;
 import de.kbgame.grafic.Graphics;
 import de.kbgame.map.Level;
-import de.kbgame.map.MapLoader;
 import de.kbgame.util.Input;
 import de.kbgame.util.ShotCollection;
 import de.kbgame.util.hud.HUD;
@@ -58,18 +60,26 @@ public class Game extends Thread{
 		
 		Point playerStart = new Point(1, 40);
 		
-		if (LOAD_CLINGO) {
-			level = MapLoader.LoadMapFromClingo(this, "clingo/encoding/labyrinth-23.lp", playerStart, goal);
-		} else {
-			level = MapLoader.LoadMapOutOfBitmap(this, "Levels/testmap.bmp");
-			
-			// add 2 dummy platforms
-			Platform pf1 = new Platform(this, 8 * bw + bw / 2, 30 * bh + bh / 2, bw, bh, 30, 40, true);
-			platforms.add(pf1);
-			
-			// jump blocks
-			new JumpBlock(11, 32, level);
-		}
+		// dummy
+		ArrayList<LevelSegment> levelParts = new ArrayList<LevelSegment>();
+		String[] args = {"Levels/testmap_small.bmp"};
+		levelParts.add(new StandardSegment(this, args));
+		levelParts.add(new StandardSegment(this, args));
+
+		level = Level.createLevel(levelParts, this);		
+		
+//		if (LOAD_CLINGO) {
+//			level = MapLoader.LoadMapFromClingo(this, "clingo/encoding/labyrinth-23.lp", playerStart, goal);
+//		} else {
+//			level = MapLoader.LoadMapOutOfBitmap(this, "Levels/testmap_small.bmp");
+//			
+//			// add 2 dummy platforms
+//			Platform pf1 = new Platform(this, 8 * bw + bw / 2, 30 * bh + bh / 2, bw, bh, 30, 40, true);
+//			platforms.add(pf1);
+//			
+//			// jump blocks
+//			new JumpBlock(11, 32, level);
+//		}
 		
 		backgrounds.add(new Background(ImageKey.BACKGROUND_1, .25f, 1, this));
 		backgrounds.add(new Background(ImageKey.BACKGROUND_2, .5f, 1, this));
@@ -78,8 +88,8 @@ public class Game extends Thread{
 		list.add((Entity) player);
 		controller.control(player);
 		
-		superEnemy = new SuperEnemy(553, 2025, Level.BLOCK_WIDTH, Level.BLOCK_HEIGHT, player);
-		list.add(superEnemy);
+//		superEnemy = new SuperEnemy(553, 2025, Level.BLOCK_WIDTH, Level.BLOCK_HEIGHT, player);
+//		list.add(superEnemy);
 		
 		this.start();
 	}

@@ -1,12 +1,18 @@
 package de.kbgame.map;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import de.kbgame.game.Enemy;
 import de.kbgame.game.Game;
+import de.kbgame.game.level.LevelSegment;
 import de.kbgame.geometry.ImageKey;
 
 public class Level {
 
 	public int width, height;
 	private final byte[][] map;
+	private final ArrayList<LevelSegment> levelParts = new ArrayList<LevelSegment>();
 
 	private int left, right, top, bottom;
 
@@ -40,7 +46,7 @@ public class Level {
 								BLOCK_HEIGHT, 0f);
 						break;
 					}
-					case Blocks.Boden: {
+					case Blocks.Floor: {
 						g.graphic.drawImage(ImageKey.BODEN, x * BLOCK_WIDTH
 								+ BLOCK_WIDTH / 2,
 								y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT,
@@ -75,7 +81,9 @@ public class Level {
 	public byte getMap(int x, int y){
 		if (x >= 0 && y >= 0 && x < width && y < height){
 			return map[x][y];
-		}else return 1;
+		} else {
+			return 1;
+		}
 	}
 	
 	public void setMap(int x, int y, byte v){
@@ -83,8 +91,90 @@ public class Level {
 			map[x][y] = v;
 		}
 	}
+	
+	public void createMap() {
+		byte[][] map;
+		int offsetTop, offsetLeft = 0;
+		int levelWidth;
+		
+		for (LevelSegment level : levelParts) {
+			// for levels of smaller height some extra space is needed above
+			offsetTop = height - level.getHeight(); 
+			map = level.getMap();
+			levelWidth = level.getWidth();
+			
+			for (int col = offsetLeft; col < levelWidth + offsetLeft; col++) {
+				for (int row = 0; row < height; row++) {
+					if (row < offsetTop) {
+						// fill extra space above with solid blocks
+						this.map[col][row] = Blocks.Solid;
+					} else {
+						// copy map of level segment
+						this.map[col][row] = map[col - offsetLeft][row - offsetTop];
+					}
+				}
+			}
+			
+			offsetLeft += levelWidth;
+		}
+	}
+	
+	public void add(LevelSegment level) {
+		levelParts.add(level);
+	}
+	
+	public int getOffsetByLevel(LevelSegment level) {
+		int offset = 0;
+		
+		for (LevelSegment lvl : levelParts) {
+			if (lvl != level) {
+				offset += lvl.getWidth();
+			} else {
+				return offset;
+			}
+		}
+		
+		throw new ArrayIndexOutOfBoundsException();
+	}
+	
+	private void insertEnemies(Game g) {
+		int offsetX = 0, offsetY;
+		
+		for (LevelSegment segment : levelParts) {
+			offsetY = (height - segment.getHeight()) * Level.BLOCK_HEIGHT;
+			
+			for (Enemy e : segment.getEnemies()) {
+				e.x += offsetX;
+				e.y += offsetY;
+				g.list.add(e);
+			}
+			
+			offsetX += segment.getWidth() * Level.BLOCK_WIDTH;
+		}
+	}
 
 	public boolean inViewport(int x, int y) {
 		return x >= left && x <= right && y >= top && y <= bottom;
+	}
+	
+	public static Level createLevel(List<LevelSegment> levelParts, Game g) {
+		int width = 0;
+		int height = 0;
+		
+		for (LevelSegment level : levelParts) {
+			width += level.getWidth();
+			height = Math.max(height, level.getHeight());
+		}
+		
+		Level newLevel = new Level(width, height);
+		
+		for (LevelSegment level : levelParts) {
+			newLevel.add(level);
+		}
+		
+		newLevel.createMap();
+		newLevel.insertEnemies(g);
+		 
+		return newLevel;
 	}
 }

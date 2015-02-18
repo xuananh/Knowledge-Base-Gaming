@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 
 import de.kbgame.game.Enemy;
 import de.kbgame.game.Game;
+import de.kbgame.game.level.LevelSegment;
 import de.kbgame.util.ColorValues;
 import de.kbgame.util.clingo.AnswerASP;
 import de.kbgame.util.clingo.ClingoFactory;
@@ -23,7 +24,7 @@ public final class MapLoader {
 
 	public static Level LoadMapFromClingo(Game g, String filename, Point playerStart, Point goalPoint) {
 		String[] params = new String[3];
-		params[0] = "clingo";
+		params[0] = "/opt/local/bin/clingo";
 		params[1] = filename;
 		params[2] = "1";
 
@@ -47,47 +48,47 @@ public final class MapLoader {
 		return level;
 	}
 
-	public static Level LoadMapOutOfBitmap(Game g, String filename) {
+	public static byte[][] loadFromBitmap(LevelSegment level, String filename) {
 		try {
-			final BufferedImage bi = ImageIO.read(new File(filename));
-			final Level level = new Level(bi.getWidth(), bi.getHeight());
+			final BufferedImage image = ImageIO.read(new File(filename));
+			final byte[][] map = new byte[image.getWidth()][image.getHeight()];
 			int pixelColor;
 
-			for (int x = 0; x < bi.getWidth(); x++) {
-				for (int y = 0; y < bi.getHeight(); y++) {
-					pixelColor = bi.getRGB(x, y);
-					setPixel(g, level, pixelColor, x, y);
+			for (int x = 0; x < image.getWidth(); x++) {
+				for (int y = 0; y < image.getHeight(); y++) {
+					pixelColor = image.getRGB(x, y);
+					setPixel(level, map, pixelColor, x, y);
 				}
 			}
 
-			return level;
+			return map;
 		} catch (IOException e) {
 			System.err.println("Error: Cannot Read Image '" + filename + "'");
 			return null;
 		}
 	}
 
-	private static void setPixel(Game g, Level level, int pixelColor, int x, int y) {
+	private static void setPixel(LevelSegment level, byte[][] map, int pixelColor, int x, int y) {
 		switch (pixelColor) {
 			case ColorValues.r0g0b0: {
-				level.setMap(x, y, Blocks.Solid);
+				map[x][y] = Blocks.Solid;
 				break;
 			}
 			case ColorValues.r128g128b128: {
-				level.setMap(x, y, Blocks.Boden);
+				map[x][y] = Blocks.Floor;
 				break;
 			}
 			case ColorValues.r0g0b255: {
-				level.setMap(x, y, Blocks.QuestionBlock);
+				map[x][y] = Blocks.QuestionBlock;
 				break;
 			}
 			case ColorValues.r255g0b0: {
-				Enemy e = new Enemy((x + 1) * Level.BLOCK_WIDTH - 50 - 1, (y + 1) * Level.BLOCK_HEIGHT - 50 - 1, 50, 50);
-				g.list.add(e);
+				Enemy e = new Enemy(x * Level.BLOCK_WIDTH - 1, y * Level.BLOCK_HEIGHT - 1, Level.BLOCK_WIDTH, Level.BLOCK_HEIGHT);
+				level.addEnemy(e);
 				break;
 			}
 			default:
-				level.setMap(x, y, Blocks.Empty);
+				map[x][y] = Blocks.Empty;
 				break;
 		}
 	}
@@ -98,7 +99,7 @@ public final class MapLoader {
 		final int y = (Integer) pre.getParameterOfIndex(1);
 		switch (blockType) {
 			case 1:
-				level.setMap(x, y, Blocks.Boden);
+				level.setMap(x, y, Blocks.Floor);
 				break;
 			case 2:
 				level.setMap(x, y, Blocks.QuestionBlock);

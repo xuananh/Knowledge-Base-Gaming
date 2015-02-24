@@ -1,14 +1,12 @@
 package de.kbgame.game;
 
 import java.awt.Point;
-import java.io.FileNotFoundException;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Vector;
 
-import de.kbgame.game.level.GraebenSegment;
-import de.kbgame.game.level.LevelSegment;
-import de.kbgame.game.level.StandardSegment;
 import de.kbgame.geometry.ImageKey;
 import de.kbgame.grafic.Background;
 import de.kbgame.grafic.Graphics;
@@ -29,7 +27,7 @@ public class Game extends Thread{
 	public final LinkedList<Platform> platforms = new LinkedList<Platform>();
 	public final LinkedList<Entity> list = new LinkedList<Entity>();
 	public final LinkedList<Entity> removeFromList = new LinkedList<Entity>();
-	public final Level level;
+	public Level level;
 	public LinkedList<Background> backgrounds = new LinkedList<Background>();
 	public Player player;
 	public HUD hud = new HUD();
@@ -60,32 +58,23 @@ public class Game extends Thread{
 		int playerWidth = Level.BLOCK_WIDTH - 6;
 		int playerHeight = Level.BLOCK_HEIGHT;
 		
-		Point playerStart = new Point();
+		Point playerStart = new Point();		
 		
-		// dummy
-		ArrayList<LevelSegment> levelParts = new ArrayList<LevelSegment>();
-		String[] args = {"Levels/testmap_small.bmp"};
-		String[] clingoArgs = {"clingo/encoding/graeben2.txt"};
 		try {
-			levelParts.add(new GraebenSegment(this, clingoArgs));
-		} catch(FileNotFoundException e) {
-			// simply ignore this segment
-		}
-		levelParts.add(new StandardSegment(this, args));
-
-		level = Level.createLevel(levelParts, this, playerStart);		
+			ArrayList<Level> levels = Level.createByConfig(new File("level_config.txt"), this, playerStart);
+			level = levels.get(0);
+			
+			backgrounds.add(new Background(ImageKey.BACKGROUND_1, .25f, 1, this));
+			backgrounds.add(new Background(ImageKey.BACKGROUND_2, .5f, 1, this));
 		
-		backgrounds.add(new Background(ImageKey.BACKGROUND_1, .25f, 1, this));
-		backgrounds.add(new Background(ImageKey.BACKGROUND_2, .5f, 1, this));
-	
-		player = new Player(playerStart.x * bw + (playerWidth / 2), playerStart.y * bh + (playerHeight / 2), playerWidth, playerHeight, hud);
-		list.add((Entity) player);
-		controller.control(player);
-		
-//		superEnemy = new SuperEnemy(553, 2025, Level.BLOCK_WIDTH, Level.BLOCK_HEIGHT, player);
-//		list.add(superEnemy);
-		
-		this.start();
+			player = new Player(playerStart.x * bw + (playerWidth / 2), playerStart.y * bh + (playerHeight / 2), playerWidth, playerHeight, hud);
+			list.add((Entity) player);
+			controller.control(player);
+			
+			this.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
 	}
 
 	public void run() {

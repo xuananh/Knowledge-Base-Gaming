@@ -32,7 +32,7 @@ public class SuperEnemy extends Enemy {
 		}
 
 		for (PredicateASP p : pres) {
-			shots.add(new Shot((int) p.getParameterOfIndex(1), (int) p.getParameterOfIndex(0), shots));
+			shots.add(new Shot((Integer) p.getParameterOfIndex(1), (Integer) p.getParameterOfIndex(0), shots));
 		}
 
 		// fixed dummy shots

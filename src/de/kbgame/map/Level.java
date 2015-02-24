@@ -1,5 +1,7 @@
 package de.kbgame.map;
 
+import java.awt.Point;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,7 @@ public class Level {
 	private int left, right, top, bottom;
 
 	public final static int BLOCK_WIDTH = 50, BLOCK_HEIGHT = 50;
+	public final static Point DEFAULT_PLAYER_START = new Point(1, 40);
 
 	public Level(int wi, int hi) {
 		width = Math.max(10, wi);
@@ -40,69 +43,54 @@ public class Level {
 				byte val = getMap(x, y);
 				switch (val) {
 					case Blocks.Solid: {
-						g.graphic.drawImage(ImageKey.BLOCK, x * BLOCK_WIDTH
-								+ BLOCK_WIDTH / 2,
-								y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT,
-								BLOCK_HEIGHT, 0f);
+						g.graphic.drawImage(ImageKey.BLOCK, x * BLOCK_WIDTH + BLOCK_WIDTH / 2, y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT, BLOCK_HEIGHT, 0f);
 						break;
 					}
 					case Blocks.Floor: {
-						g.graphic.drawImage(ImageKey.BODEN, x * BLOCK_WIDTH
-								+ BLOCK_WIDTH / 2,
-								y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT,
-								BLOCK_HEIGHT, 0f);
+						g.graphic.drawImage(ImageKey.BODEN, x * BLOCK_WIDTH + BLOCK_WIDTH / 2, y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT, BLOCK_HEIGHT, 0f);
 						break;
 					}
 					case Blocks.QuestionBlock: {
-						g.graphic.drawImage(ImageKey.QUESTION_BLOCK, x * BLOCK_WIDTH
-								+ BLOCK_WIDTH / 2,
-								y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT,
-								BLOCK_HEIGHT, 0f);
+						g.graphic.drawImage(ImageKey.QUESTION_BLOCK, x * BLOCK_WIDTH + BLOCK_WIDTH / 2, y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT, BLOCK_HEIGHT, 0f);
 						break;
 					}
 					case Blocks.JUMP: {
-						g.graphic.drawImage(ImageKey.JUMP_BLOCK, x * BLOCK_WIDTH
-								+ BLOCK_WIDTH / 2,
-								y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT,
-								BLOCK_HEIGHT, 0f);
+						g.graphic.drawImage(ImageKey.JUMP_BLOCK, x * BLOCK_WIDTH + BLOCK_WIDTH / 2, y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT, BLOCK_HEIGHT, 0f);
 						break;
 					}
 					case Blocks.QUESTION_BLOCK_BOUNCED:
-						g.graphic.drawImage(ImageKey.QUESTIONBLOCK_BOUNCED_IMAGE, x * BLOCK_WIDTH
-								+ BLOCK_WIDTH / 2,
-								y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT,
-								BLOCK_HEIGHT, 0f);
+						g.graphic.drawImage(ImageKey.QUESTIONBLOCK_BOUNCED_IMAGE, x * BLOCK_WIDTH + BLOCK_WIDTH / 2, y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT, BLOCK_HEIGHT, 0f);
 						break;
 				}
 			}
 		}
 	}
-	
-	public byte getMap(int x, int y){
-		if (x >= 0 && y >= 0 && x < width && y < height){
+
+	public byte getMap(int x, int y) {
+		if (x >= 0 && y >= 0 && x < width && y < height) {
 			return map[x][y];
 		} else {
 			return 1;
 		}
 	}
-	
-	public void setMap(int x, int y, byte v){
-		if (x >= 0 && y >= 0 && x < width && y < height){
+
+	public void setMap(int x, int y, byte v) {
+		if (x >= 0 && y >= 0 && x < width && y < height) {
 			map[x][y] = v;
 		}
 	}
-	
+
 	public void createMap() {
 		byte[][] map;
 		int offsetTop, offsetLeft = 0;
 		int levelWidth;
-		
+
 		for (LevelSegment level : levelParts) {
 			// for levels of smaller height some extra space is needed above
-			offsetTop = height - level.getHeight(); 
+			offsetTop = height - level.getHeight();
 			map = level.getMap();
 			levelWidth = level.getWidth();
-			
+
 			for (int col = offsetLeft; col < levelWidth + offsetLeft; col++) {
 				for (int row = 0; row < height; row++) {
 					if (row < offsetTop) {
@@ -114,18 +102,18 @@ public class Level {
 					}
 				}
 			}
-			
+
 			offsetLeft += levelWidth;
 		}
 	}
-	
+
 	public void add(LevelSegment level) {
 		levelParts.add(level);
 	}
-	
+
 	public int getOffsetByLevel(LevelSegment level) {
 		int offset = 0;
-		
+
 		for (LevelSegment lvl : levelParts) {
 			if (lvl != level) {
 				offset += lvl.getWidth();
@@ -133,22 +121,22 @@ public class Level {
 				return offset;
 			}
 		}
-		
+
 		throw new ArrayIndexOutOfBoundsException();
 	}
-	
+
 	private void insertEnemies(Game g) {
 		int offsetX = 0, offsetY;
-		
+
 		for (LevelSegment segment : levelParts) {
 			offsetY = (height - segment.getHeight()) * Level.BLOCK_HEIGHT;
-			
+
 			for (Enemy e : segment.getEnemies()) {
 				e.x += offsetX;
 				e.y += offsetY;
 				g.list.add(e);
 			}
-			
+
 			offsetX += segment.getWidth() * Level.BLOCK_WIDTH;
 		}
 	}
@@ -156,25 +144,39 @@ public class Level {
 	public boolean inViewport(int x, int y) {
 		return x >= left && x <= right && y >= top && y <= bottom;
 	}
-	
-	public static Level createLevel(List<LevelSegment> levelParts, Game g) {
+
+	public static Level createLevel(List<LevelSegment> levelParts, Game g, Point playerStart) {
 		int width = 0;
 		int height = 0;
-		
+
 		for (LevelSegment level : levelParts) {
 			width += level.getWidth();
 			height = Math.max(height, level.getHeight());
 		}
-		
+
 		Level newLevel = new Level(width, height);
-		
+
 		for (LevelSegment level : levelParts) {
 			newLevel.add(level);
 		}
-		
+
 		newLevel.createMap();
 		newLevel.insertEnemies(g);
-		 
+
+		if (levelParts.get(0).getPlayerStart() != null) {
+			// levelPart's playerStart is relative to its own dimensions.
+			// So it must be converted to the global dimension which means that there might be an upper offset.
+			Point relativeStart = levelParts.get(0).getPlayerStart();
+			playerStart.x = relativeStart.x;
+			playerStart.y = relativeStart.y + height - levelParts.get(0).getHeight();
+		} else {
+			playerStart.setLocation(DEFAULT_PLAYER_START);
+		}
+
 		return newLevel;
+	}
+
+	public static Level createByConfig(File config) {
+		return null;
 	}
 }

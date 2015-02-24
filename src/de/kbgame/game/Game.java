@@ -1,10 +1,12 @@
 package de.kbgame.game;
 
 import java.awt.Point;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Vector;
 
+import de.kbgame.game.level.GraebenSegment;
 import de.kbgame.game.level.LevelSegment;
 import de.kbgame.game.level.StandardSegment;
 import de.kbgame.geometry.ImageKey;
@@ -58,28 +60,20 @@ public class Game extends Thread{
 		int playerWidth = Level.BLOCK_WIDTH - 6;
 		int playerHeight = Level.BLOCK_HEIGHT;
 		
-		Point playerStart = new Point(1, 40);
+		Point playerStart = new Point();
 		
 		// dummy
 		ArrayList<LevelSegment> levelParts = new ArrayList<LevelSegment>();
 		String[] args = {"Levels/testmap_small.bmp"};
-		levelParts.add(new StandardSegment(this, args));
+		String[] clingoArgs = {"clingo/encoding/graeben2.txt"};
+		try {
+			levelParts.add(new GraebenSegment(this, clingoArgs));
+		} catch(FileNotFoundException e) {
+			// simply ignore this segment
+		}
 		levelParts.add(new StandardSegment(this, args));
 
-		level = Level.createLevel(levelParts, this);		
-		
-//		if (LOAD_CLINGO) {
-//			level = MapLoader.LoadMapFromClingo(this, "clingo/encoding/labyrinth-23.lp", playerStart, goal);
-//		} else {
-//			level = MapLoader.LoadMapOutOfBitmap(this, "Levels/testmap_small.bmp");
-//			
-//			// add 2 dummy platforms
-//			Platform pf1 = new Platform(this, 8 * bw + bw / 2, 30 * bh + bh / 2, bw, bh, 30, 40, true);
-//			platforms.add(pf1);
-//			
-//			// jump blocks
-//			new JumpBlock(11, 32, level);
-//		}
+		level = Level.createLevel(levelParts, this, playerStart);		
 		
 		backgrounds.add(new Background(ImageKey.BACKGROUND_1, .25f, 1, this));
 		backgrounds.add(new Background(ImageKey.BACKGROUND_2, .5f, 1, this));

@@ -3,6 +3,7 @@ package de.kbgame.map;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -22,10 +23,14 @@ public final class MapLoader {
 		throw new AssertionError();
 	}
 
-	public static Level LoadMapFromClingo(Game g, String filename, Point playerStart, Point goalPoint) {
+	public static byte[][] loadFromClingo(Game g, File file, Point playerStart, Point goalPoint) throws FileNotFoundException {
+		if (!file.exists()) {
+			throw new FileNotFoundException();
+		}
+
 		String[] params = new String[3];
-		params[0] = "/opt/local/bin/clingo";
-		params[1] = filename;
+		params[0] = "clingo";
+		params[1] = file.getAbsolutePath();
 		params[2] = "1";
 
 		final AnswerASP answer = ClingoFactory.getInstance().getAnswerASP(params);
@@ -37,15 +42,15 @@ public final class MapLoader {
 
 		playerStart.x = (Integer) start.getParameterOfIndex(0);
 		playerStart.y = (Integer) start.getParameterOfIndex(1);
-		
+
 		goalPoint.x = (Integer) goal.getParameterOfIndex(0);
 		goalPoint.y = (Integer) goal.getParameterOfIndex(1);
-		
-		final Level level = new Level(width, height - 1);
+
+		byte[][] map = new byte[width][height + 1];
 		for (PredicateASP pre : pres) {
-			setMapFromPredicate(g, level, pre);
+			setMapFromPredicate(g, map, pre);
 		}
-		return level;
+		return map;
 	}
 
 	public static byte[][] loadFromBitmap(LevelSegment level, String filename) {
@@ -87,32 +92,23 @@ public final class MapLoader {
 				level.addEnemy(e);
 				break;
 			}
-			default:
-				map[x][y] = Blocks.Empty;
-				break;
+			// java initializes scalar vectors with 0s by default
 		}
 	}
 
-	private static void setMapFromPredicate(Game g, Level level, PredicateASP pre) {
+	private static void setMapFromPredicate(Game g, byte[][] map, PredicateASP pre) {
 		final int blockType = (Integer) pre.getParameterOfIndex(2);
 		final int x = (Integer) pre.getParameterOfIndex(0);
 		final int y = (Integer) pre.getParameterOfIndex(1);
+
 		switch (blockType) {
 			case 1:
-				level.setMap(x, y, Blocks.Floor);
+				map[x][y] = Blocks.Floor;
 				break;
 			case 2:
-				level.setMap(x, y, Blocks.QuestionBlock);
+				map[x][y] = Blocks.QuestionBlock;
 				break;
-			case 10:
-
-				break;
-			case 11:
-
-				break;
-			default:
-				level.setMap(x, y, Blocks.Empty);
-				break;
+		// java initializes scalar vectors with 0s by default
 		}
 	}
 }

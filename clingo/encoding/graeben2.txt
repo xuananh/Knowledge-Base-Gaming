@@ -27,7 +27,7 @@ startX(0,5).
 goalX(20,5).
 
 width(width).
-height(height).
+height(height * 3).
 
 
 

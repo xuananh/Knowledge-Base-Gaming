@@ -2,10 +2,10 @@
 #program base.
 #const width=31.
 #const height=30.
-#const sprungweite = 6.
-#const sprungweiteMin = 4.
-#const grabenanzahl = 4.
-#const plattformMin = 3. % Breite der Schutzbereiche zwischen den Feuerschluchten
+#const sprungweite = 5.
+#const sprungweiteMin = 3.
+%#const grabenanzahl = 4.
+#const plattformMin = 2. % Breite der Schutzbereiche zwischen den Feuerschluchten
 #const plattformMax = 5.
 % #const proportionFire = width*2/3.
 w(1..width).
@@ -26,6 +26,8 @@ height(height).
 %diff(X,X):- ph(X).
 diff(X,X+1):- ph(X;(X+1)).
 diff(X,X-1) :- ph(X;(X-1)).
+diff(X,X+2):- ph(X;(X+2)).
+diff(X,X-2) :- ph(X;(X-2)).
 
 spr(sprungweiteMin..sprungweite).
 pla(plattformMin..plattformMax).

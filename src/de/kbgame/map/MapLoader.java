@@ -28,10 +28,14 @@ public final class MapLoader {
 			throw new FileNotFoundException();
 		}
 
-		String[] params = new String[3];
+		Random r = new Random();
+		int seed = r.nextInt(10000);
+		
+		String[] params = new String[4];
 		params[0] = "clingo";
 		params[1] = file.getAbsolutePath();
-		params[2] = "1";
+		params[2] = "--seed="+seed;
+		params[3] = "--rand-freq=1";
 
 		final AnswerASP answer = ClingoFactory.getInstance().getAnswerASP(params);
 		final List<PredicateASP> pres = answer.getPreListFromString("block");

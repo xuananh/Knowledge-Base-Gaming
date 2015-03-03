@@ -3,7 +3,6 @@ package de.kbgame.game;
 import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Vector;
 
@@ -11,6 +10,7 @@ import de.kbgame.geometry.ImageKey;
 import de.kbgame.grafic.Background;
 import de.kbgame.grafic.Graphics;
 import de.kbgame.map.Level;
+import de.kbgame.map.LevelBuilder;
 import de.kbgame.util.Input;
 import de.kbgame.util.ShotCollection;
 import de.kbgame.util.hud.HUD;
@@ -60,9 +60,9 @@ public class Game extends Thread{
 		
 		Point playerStart = new Point();		
 		
-		try {
-			ArrayList<Level> levels = Level.createByConfig(new File("level_config.txt"), this, playerStart);
-			level = levels.get(0);
+		try {			
+			LevelBuilder builder = new LevelBuilder(new File("level_config.txt"), this, playerStart);
+			level = builder.next();
 			
 			backgrounds.add(new Background(ImageKey.BACKGROUND_1, .25f, 1, this));
 			backgrounds.add(new Background(ImageKey.BACKGROUND_2, .5f, 1, this));

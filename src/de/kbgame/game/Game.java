@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.Vector;
 
 import de.kbgame.geometry.ImageKey;
@@ -13,6 +15,7 @@ import de.kbgame.map.Level;
 import de.kbgame.map.LevelBuilder;
 import de.kbgame.util.Input;
 import de.kbgame.util.ShotCollection;
+import de.kbgame.util.XValueObserver;
 import de.kbgame.util.hud.HUD;
 import de.kbgame.util.sound.SoundThread;
 
@@ -41,6 +44,8 @@ public class Game extends Thread{
 	public int r = 50, g = 100, b = 150;
 	
 	public double gaFactor = 1.0;
+	
+	private TreeMap<Integer, XValueObserver> xValueObservers = new TreeMap<Integer, XValueObserver>();
 	
 	SuperEnemy superEnemy;
 	
@@ -141,6 +146,8 @@ public class Game extends Thread{
 			// TODO remove list when empty
 			coll.update(this);
 		}
+		
+		checkObservers();
 	}
 	
 	public void draw(){
@@ -168,5 +175,16 @@ public class Game extends Thread{
 		
 		graphic.endDrawNewFrame();
 	}
-
+	
+	public void subscribeXPass(XValueObserver observer, Integer xValue) {
+		xValueObservers.put(xValue, observer);
+	}
+	
+	private void checkObservers() {
+		for (Map.Entry<Integer, XValueObserver> observer : xValueObservers.entrySet()) {
+			if (observer.getKey() <= player.x && observer.getValue() != null) {
+				observer.getValue().notifyObserver(this);
+			}
+		}
+	}
 }

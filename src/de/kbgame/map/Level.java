@@ -146,7 +146,7 @@ public class Level {
 		return x >= left && x <= right && y >= top && y <= bottom;
 	}
 
-	public static Level createLevel(List<LevelSegment> levelParts, Game g, Point playerStart) {
+	public static Level createLevel(List<LevelSegment> levelParts, Game g, Point playerStart, String[] levelSettings) {
 		int width = 0;
 		int height = 0;
 

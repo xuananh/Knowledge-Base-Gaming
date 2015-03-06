@@ -57,12 +57,17 @@ public class LevelBuilder implements Iterator<Level> {
 		String line = configLines.get(currentIndex++);
 		LevelSegment segment;
 		ArrayList<LevelSegment> levelSegments = new ArrayList<LevelSegment>();
+		String[] levelSettings = null;
 
 		// split current line in level segments
 		String[] levelSegmentsString = line.trim().replaceAll("(\\s)", "").split(";");
+		
+		if (levelSegmentsString.length > 0) {
+			levelSettings = parseLevelSettings(levelSegmentsString[0]);
+		}
 
 		// process each level segment
-		for (int i = 0; i < levelSegmentsString.length; i++) {
+		for (int i = 1; i < levelSegmentsString.length; i++) {
 			// try to create a level segment
 			segment = parseSegment(levelSegmentsString[i], game);
 			if (segment != null) {
@@ -72,7 +77,7 @@ public class LevelBuilder implements Iterator<Level> {
 		}
 
 		if (levelSegments.size() > 0) {
-			level = Level.createLevel(levelSegments, game, playerStart);
+			level = Level.createLevel(levelSegments, game, playerStart, levelSettings);
 		}
 
 		return level;
@@ -111,6 +116,10 @@ public class LevelBuilder implements Iterator<Level> {
 		}
 
 		return level;
+	}
+	
+	private String[] parseLevelSettings(String tupel) {
+		return tupel.replaceAll("\\(|\\)", "").split(",");
 	}
 
 }

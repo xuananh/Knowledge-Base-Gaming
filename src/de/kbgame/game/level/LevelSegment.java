@@ -11,7 +11,7 @@ public abstract class LevelSegment {
 	protected byte[][] map;
 	protected ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	protected Point playerStart = null;
-	protected Point goal = null;
+	protected Point goal = null; // block wise!
 
 	public int getWidth() {
 		return width;

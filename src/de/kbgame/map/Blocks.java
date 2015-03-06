@@ -16,4 +16,6 @@ public final class Blocks {
 	public final static byte START = 10;
 	public final static byte GOAL = 11;
 	public final static byte JUMP = 12;
+	
+	public final static int NON_BLOCKING_BITMAP = (int) (Math.pow(2, Empty) + Math.pow(2, GOAL));
 }

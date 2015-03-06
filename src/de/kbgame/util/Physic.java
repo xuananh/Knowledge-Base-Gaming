@@ -91,7 +91,7 @@ public final class Physic {
 					my -= 1;
 				}
 
-				if (newBlockIndexX != currentBlockIndexX && g.level.getMap(newBlockIndexX, my) != 0) {
+				if (newBlockIndexX != currentBlockIndexX && isBlocking(g, newBlockIndexX, my)) {
 					// if your size would be > 1 Block, this check is more complex...
 					// Then you would adjust vx instead of result.x directly...
 					if (vx > 0) {
@@ -113,7 +113,7 @@ public final class Physic {
 					my -= 1;
 				}
 
-				if (newBlockIndexX != currentBlockIndexX && g.level.getMap(newBlockIndexX, my) != 0) {
+				if (newBlockIndexX != currentBlockIndexX && isBlocking(g, newBlockIndexX, my)) {
 					// if your size would be > 1 Block, this check is more
 					// complex...
 					// Then you would adjust vx instead of result.x directly...
@@ -154,7 +154,7 @@ public final class Physic {
 					blockIndex -= 1;
 				}
 
-				if (newBlockIndexY != currentBlockIndexY && g.level.getMap(blockIndex, newBlockIndexY) != 0) {
+				if (newBlockIndexY != currentBlockIndexY && isBlocking(g, blockIndex, newBlockIndexY)) {
 					// if your size would be > 1 Block, this check is more complex...
 					// Then you would adjust vx instead of result.x directly...
 					if (vy > 0) {
@@ -178,7 +178,7 @@ public final class Physic {
 				if (loopX < 0) {
 					mx -= 1;
 				}
-				if (newBlockIndexY != currentBlockIndexY && g.level.getMap(mx, newBlockIndexY) != 0) {
+				if (newBlockIndexY != currentBlockIndexY && isBlocking(g, mx, newBlockIndexY)) {
 					// if your size would be > 1 Block, this check is more complex...
 					// Then you would adjust vx instead of result.x directly...
 					if (vy > 0) {
@@ -314,5 +314,9 @@ public final class Physic {
 		if (Game.DEBUG) {
 			System.out.println(str);
 		}
+	}
+	
+	private final static boolean isBlocking(Game g, int x, int y) {
+		return ((int) Math.pow(2, g.level.getMap(x, y)) & Blocks.NON_BLOCKING_BITMAP) == 0;
 	}
 }

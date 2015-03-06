@@ -22,6 +22,7 @@ public class ImageLoader {
 	private static final String BACKGROUND_1 = "Images/bg-1.jpg";
 	private static final String BACKGROUND_2 = "Images/bg-2.png";
 	private static final String HUD_HEART = "Images/heart.png";
+	private static final String GOAL = "Images/goal.png";
 	private final HashMap<ImageKey, BufferedImage> images = new HashMap<ImageKey, BufferedImage>();
 	
 	private ImageLoader() {
@@ -39,6 +40,7 @@ public class ImageLoader {
 			images.put(ImageKey.BACKGROUND_1, ImageIO.read(new File(BACKGROUND_1)));
 			images.put(ImageKey.BACKGROUND_2, ImageIO.read(new File(BACKGROUND_2)));
 			images.put(ImageKey.HUD_HEART, ImageIO.read(new File(HUD_HEART)));
+			images.put(ImageKey.GOAL, ImageIO.read(new File(GOAL)));
 		} catch (IOException e) { 
 			e.printStackTrace();
 		}

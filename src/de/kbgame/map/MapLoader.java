@@ -58,7 +58,7 @@ public final class MapLoader {
 		return map;
 	}
 
-	public static byte[][] loadFromBitmap(LevelSegment level, String filename) {
+	public static byte[][] loadFromBitmap(LevelSegment level, String filename, Point goal) {
 		try {
 			final BufferedImage image = ImageIO.read(new File(filename));
 			final byte[][] map = new byte[image.getWidth()][image.getHeight()];
@@ -67,7 +67,7 @@ public final class MapLoader {
 			for (int x = 0; x < image.getWidth(); x++) {
 				for (int y = 0; y < image.getHeight(); y++) {
 					pixelColor = image.getRGB(x, y);
-					setPixel(level, map, pixelColor, x, y);
+					setPixel(level, map, pixelColor, x, y, goal);
 				}
 			}
 
@@ -78,7 +78,7 @@ public final class MapLoader {
 		}
 	}
 
-	private static void setPixel(LevelSegment level, byte[][] map, int pixelColor, int x, int y) {
+	private static void setPixel(LevelSegment level, byte[][] map, int pixelColor, int x, int y, Point goal) {
 		switch (pixelColor) {
 			case ColorValues.r0g0b0: {
 				map[x][y] = Blocks.Solid;
@@ -95,6 +95,11 @@ public final class MapLoader {
 			case ColorValues.r255g0b0: {
 				Enemy e = new Enemy(x * Level.BLOCK_WIDTH - 1, y * Level.BLOCK_HEIGHT - 1, Level.BLOCK_WIDTH, Level.BLOCK_HEIGHT);
 				level.addEnemy(e);
+				break;
+			}
+			case ColorValues.r255g255b0: {
+				map[x][y] = Blocks.GOAL;
+				goal.setLocation(x, y);
 				break;
 			}
 			// java initializes scalar vectors with 0s by default

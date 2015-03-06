@@ -16,6 +16,7 @@ public class Level {
 	private final ArrayList<LevelSegment> levelParts = new ArrayList<LevelSegment>();
 
 	private int left, right, top, bottom;
+	private Point goal = null;
 
 	public final static int BLOCK_WIDTH = 50, BLOCK_HEIGHT = 50;
 	public final static Point DEFAULT_PLAYER_START = new Point(1, 40);
@@ -62,6 +63,9 @@ public class Level {
 					case Blocks.QUESTION_BLOCK_BOUNCED:
 						g.graphic.drawImage(ImageKey.QUESTIONBLOCK_BOUNCED_IMAGE, x * BLOCK_WIDTH + BLOCK_WIDTH / 2, y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT, BLOCK_HEIGHT, 0f);
 						break;
+					case Blocks.GOAL:
+						g.graphic.drawImage(ImageKey.GOAL, x * BLOCK_WIDTH + BLOCK_WIDTH / 2, y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT, BLOCK_HEIGHT, 0f);
+						break;
 				}
 			}
 		}
@@ -101,6 +105,14 @@ public class Level {
 						// copy map of level segment
 						this.map[col][row] = map[col - offsetLeft][row - offsetTop];
 					}
+				}
+			}
+			
+			if (level.equals(levelParts.get(levelParts.size() - 1))) {
+				Point goal = levelParts.get(levelParts.size() - 1).getGoal();
+				
+				if (goal != null) {
+					this.goal = new Point(goal.x + offsetLeft, goal.y + offsetTop);
 				}
 			}
 
@@ -175,5 +187,9 @@ public class Level {
 		}
 
 		return newLevel;
+	}
+	
+	public Point getGoal() {
+		return goal;
 	}
 }

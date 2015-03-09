@@ -23,6 +23,7 @@ public class ImageLoader {
 	private static final String BACKGROUND_2 = "Images/bg-2.png";
 	private static final String HUD_HEART = "Images/heart.png";
 	private static final String GOAL = "Images/goal.png";
+	private static final String FIREBLOCK_IMAGE = "Images/fire.png";
 	private final HashMap<ImageKey, BufferedImage> images = new HashMap<ImageKey, BufferedImage>();
 	
 	private ImageLoader() {
@@ -34,6 +35,7 @@ public class ImageLoader {
 			images.put(ImageKey.BLOCK, ImageIO.read(new File(BLOCK_IMAGE)));
 			images.put(ImageKey.BODEN, ImageIO.read(new File(BODEN_IMAGE)));
 			images.put(ImageKey.QUESTION_BLOCK, ImageIO.read(new File(QUESTIONBLOCK_IMAGE)));
+			images.put(ImageKey.FIRE_BLOCK, ImageIO.read(new File(FIREBLOCK_IMAGE)));
 			images.put(ImageKey.JUMP_BLOCK, ImageIO.read(new File(JUMP_BLOCK)));
 			images.put(ImageKey.ENEMY, ImageIO.read(new File(ENEMY_IMAGE)));
 			images.put(ImageKey.QUESTIONBLOCK_BOUNCED_IMAGE, ImageIO.read(new File(QUESTIONBLOCK_BOUNCED_IMAGE)));

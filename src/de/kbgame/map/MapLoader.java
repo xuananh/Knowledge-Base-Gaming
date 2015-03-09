@@ -118,6 +118,9 @@ public final class MapLoader {
 			case 2:
 				map[x][y] = Blocks.QuestionBlock;
 				break;
+			case 9:
+				map[x][y] = Blocks.FireBlock;
+				break;
 		// java initializes scalar vectors with 0s by default
 		}
 	}

@@ -1,13 +1,11 @@
-%% Version nur mit Graeben
 #program base.
 #const width=31.
 #const height=30.
 #const sprungweite = 5.
 #const sprungweiteMin = 3.
-%#const grabenanzahl = 4.
 #const plattformMin = 2. % Breite der Schutzbereiche zwischen den Feuerschluchten
 #const plattformMax = 5.
-% #const proportionFire = width*2/3.
+
 w(1..width).
 h(1..height).
 w2(2..width-1). % erster und letzter Block sollen begehbar sein.
@@ -19,11 +17,7 @@ startX(0,5).
 goalX(20,5).
 width(width).
 height(height).
-%diff(0;1;-1).
 
-%diff(X,((X);(X+1);(X-1)) :- ph(X).
-
-%diff(X,X):- ph(X).
 diff(X,X+1):- ph(X;(X+1)).
 diff(X,X-1) :- ph(X;(X-1)).
 diff(X,X+2):- ph(X;(X+2)).
@@ -33,13 +27,11 @@ spr(sprungweiteMin..sprungweite).
 pla(plattformMin..plattformMax).
 
 ph(3..6).
-plNo(1..3).
-%plNo(1..Max) :- maxplatform(Max).
-% maxplatform(4..6).
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Genierung der Abschnitte aus Feuergr�ben (x-Achse) %
+% Genierung der Abschnitte aus Feuergraeben (x-Achse) %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Initialplattform
@@ -51,7 +43,7 @@ platform(1,3,1).
 % Hinzufuegen der Plattformhoehe
 1{ platform(S,Z,H,N) : ph(H) }1 :- platform(S,Z,N).
 
-% geringer Höhenunterschied bei aufeinanderfolgenden Plattformen 
+% geringer Hoehenunterschied bei aufeinanderfolgenden Plattformen 
 :- platform(_,_,H,N), platform(_,_,H1,N+1), not diff(H,H1). 
 
 
@@ -63,26 +55,20 @@ onplatform(X,H) :- platform(A,B,H,_),X>=A, X<=B, w(X).
 fire(X) :- not onplatform(X,_), w(X).
 
 
-%safe(X) :- not insidefire(X), w(X).
-
-% Code f�r Blockmaterialien:
+% Code fuer Blockmaterialien:
 % Nichts/Luft = 0
 % normaler Block/solid = 1
 % Feuer = 9
-% Unterste Bl�cke (height) bestehen aus Feuer
+% Unterste Bloecke (height) bestehen aus Feuer
 
 block(X-1,Y-1,9) :- fire(X), Y=height.
 marked(X,Y) :- fire(X), Y=height.
 
 % Sichere Bereiche 
-block(X-1,Y-1,1) :- onplatform(X,H), w(Y), Y>=height-H.
-marked(X,Y) :- onplatform(X,H), w(Y), Y>=height-H.
+block(X-1,Y-1,1) :- onplatform(X,H), h(Y), Y>=height-H.
+marked(X,Y) :- onplatform(X,H), h(Y), Y>=height-H.
 
-% Rest wird mit Luft gefuellt
-% Funktioniert das?
-block(X-1,Y-1,0) :- not marked(X,Y), w(X),h(Y).
 
-%#show fire/2.
 #show block/3.
 #show width/1.
 #show height/1.

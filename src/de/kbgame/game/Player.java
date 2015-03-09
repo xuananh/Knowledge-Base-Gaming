@@ -9,6 +9,7 @@ import de.kbgame.util.PhysicResult;
 import de.kbgame.util.Status;
 import de.kbgame.util.hud.HUD;
 import de.kbgame.util.hud.LifeHearts;
+import de.kbgame.util.hud.Points;
 
 public class Player extends Entity {
 
@@ -23,12 +24,14 @@ public class Player extends Entity {
 
 	private Status status = Status.STANDING;
 	private LifeHearts lifes = new LifeHearts(2);
+	private Points points = new Points(0);
 
 	public Player(int x, int y, int width, int height, HUD hud) {
 		super(x, y, width, height);
 		sprite = new TimeBasedImageSprite("Images/sprite.png", 4, 3, 100);
 		
 		hud.add(lifes);
+		hud.add(points);
 	}
 
 	public void setParent(Platform platform) {
@@ -132,6 +135,7 @@ public class Player extends Entity {
 				vy = -Physic.JUMP_VELOCITY;
 				((Enemy) e).kill(g);
 				maxRuns = -1;
+				points.add(100);
 			}
 		}
 
@@ -139,6 +143,7 @@ public class Player extends Entity {
 		if (maxRuns == 0) {
 			vy = -Physic.JUMP_VELOCITY;
 			((Enemy) e).kill(g);
+			points.add(100);
 		}
 	}
 

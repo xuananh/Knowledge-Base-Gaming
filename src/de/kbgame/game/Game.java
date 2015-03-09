@@ -1,5 +1,6 @@
 package de.kbgame.game;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
@@ -62,6 +63,8 @@ public class Game extends Thread {
 		int playerWidth = Level.BLOCK_WIDTH - 6;
 		int playerHeight = Level.BLOCK_HEIGHT;
 
+	//	graphic.drawText("hello World", 10, 10, Color.RED);
+		
 		Point playerStart = new Point();
 
 		try {

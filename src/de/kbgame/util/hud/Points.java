@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 import de.kbgame.game.Game;
+import de.kbgame.game.Player;
 import de.kbgame.geometry.ImageKey;
 import de.kbgame.grafic.ImageLoader;
 import de.kbgame.map.Level;
@@ -23,9 +24,15 @@ public class Points implements HUDElement {
 		//img = ImageLoader.getInstance().getImageByKey(ImageKey.HUD_HEART);
 	}
 	
-	public void add(int plus) {
+	public void add(int plus, Player player) {
 		points+=plus;
+		// TODO: Punktezahl festlegen
+		while (points>=200) {
+			points = points-200;
+			player.lifes.add(1,player);
+		}
 	}
+	
 
 	public void draw(Game g) {
 		int offsetLeft;

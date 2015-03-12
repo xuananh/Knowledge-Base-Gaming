@@ -14,6 +14,8 @@ import de.kbgame.grafic.Background;
 import de.kbgame.grafic.Graphics;
 import de.kbgame.map.Level;
 import de.kbgame.map.LevelBuilder;
+import de.kbgame.util.FallingItem;
+import de.kbgame.util.FallingItemCollection;
 import de.kbgame.util.Input;
 import de.kbgame.util.ShotCollection;
 import de.kbgame.util.XValueObserver;
@@ -35,6 +37,8 @@ public class Game extends Thread {
 	public LinkedList<Background> backgrounds = new LinkedList<Background>();
 	public Player player;
 	public HUD hud = new HUD();
+	public FallingItem fi;
+	public LinkedList<FallingItem> fallingItemList;
 
 	public final static boolean DEBUG = false;
 	public final static boolean LOAD_CLINGO = false;
@@ -63,7 +67,6 @@ public class Game extends Thread {
 		int playerWidth = Level.BLOCK_WIDTH - 6;
 		int playerHeight = Level.BLOCK_HEIGHT;
 
-	//	graphic.drawText("hello World", 10, 10, Color.RED);
 		
 		Point playerStart = new Point();
 
@@ -78,7 +81,15 @@ public class Game extends Thread {
 			player = new Player(playerStart.x * bw + (playerWidth / 2), playerStart.y * bh + (playerHeight / 2), playerWidth, playerHeight, hud);
 			list.add((Entity) player);
 			controller.control(player);
-
+			
+			fallingItemList = new LinkedList<FallingItem>();
+			
+			// Test -> MapLoader
+			fi = new FallingItem(player);
+			
+			fallingItemList.add(fi);
+			fallingItemList.add(new FallingItem(300,1500,-20,7,player));
+			
 			this.start();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -142,6 +153,12 @@ public class Game extends Thread {
 			// TODO remove list when empty
 			coll.update(this);
 		}
+		
+		for (FallingItem e : fallingItemList) {
+			e.update(this);
+		}
+		
+
 
 		checkObservers();
 		if (isGoalReached()) {
@@ -165,7 +182,11 @@ public class Game extends Thread {
 		for (Entity e : list) {
 			e.draw(this);
 		}
-
+		
+		for (FallingItem e : fallingItemList) {
+			e.draw(this);
+		}
+				
 		hud.draw(this);
 
 		for (ShotCollection coll : this.shots) {

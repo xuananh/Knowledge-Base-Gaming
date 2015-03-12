@@ -23,7 +23,7 @@ public class Player extends Entity {
 	public int hitdelay = 0;
 
 	private Status status = Status.STANDING;
-	private LifeHearts lifes = new LifeHearts(2);
+	public LifeHearts lifes = new LifeHearts(2);
 	private Points points = new Points(0);
 
 	public Player(int x, int y, int width, int height, HUD hud) {
@@ -135,7 +135,7 @@ public class Player extends Entity {
 				vy = -Physic.JUMP_VELOCITY;
 				((Enemy) e).kill(g);
 				maxRuns = -1;
-				points.add(100);
+				points.add(100,this);
 			}
 		}
 
@@ -143,7 +143,7 @@ public class Player extends Entity {
 		if (maxRuns == 0) {
 			vy = -Physic.JUMP_VELOCITY;
 			((Enemy) e).kill(g);
-			points.add(100);
+			points.add(100,this);
 		}
 	}
 

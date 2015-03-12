@@ -15,7 +15,6 @@ import de.kbgame.grafic.Graphics;
 import de.kbgame.map.Level;
 import de.kbgame.map.LevelBuilder;
 import de.kbgame.util.FallingItem;
-import de.kbgame.util.FallingItemCollection;
 import de.kbgame.util.Input;
 import de.kbgame.util.ShotCollection;
 import de.kbgame.util.XValueObserver;

@@ -17,7 +17,7 @@ public class SuperEnemy extends Enemy {
 	public SuperEnemy(int x, int y, int width, int height, Player player) {
 		super(x, y, width, height);
 
-		shots = new ShotCollection(20, 5, player, new Point(x, y));
+		shots = new ShotCollection(20, 5, new Point(x, y));
 
 		String[] params = new String[3];
 		params[0] = "/opt/local/bin/clingo";

@@ -13,7 +13,9 @@ public class FallingItem {
 	public static final int RADIUS = 20;
 	
 	private int time =100000;
-	private int x=200, y=1000;
+	public int x=200;
+
+	public int y=1000;
 	private Player player;
 	private int velocity=5;
 	private int spaceX = -10;
@@ -30,6 +32,12 @@ public class FallingItem {
 			this.velocity = velocity;
 		}
 		this.player = player;
+	}
+	
+	
+	public FallingItem(int x,int y) {
+		this.x = x;
+		this.y = y;
 	}
 	
 	// Test

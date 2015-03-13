@@ -8,6 +8,8 @@ import de.kbgame.game.Enemy;
 import de.kbgame.game.Game;
 import de.kbgame.game.level.LevelSegment;
 import de.kbgame.geometry.ImageKey;
+import de.kbgame.util.FallingItem;
+import de.kbgame.util.ShotCollection;
 
 public class Level {
 
@@ -69,6 +71,9 @@ public class Level {
 						break;
 					case Blocks.GOAL:
 						g.graphic.drawImage(ImageKey.GOAL, x * BLOCK_WIDTH + BLOCK_WIDTH / 2, y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT, BLOCK_HEIGHT, 0f);
+						break;
+					case Blocks.CannonBlock:
+						g.graphic.drawImage(ImageKey.CANNON, x * BLOCK_WIDTH + BLOCK_WIDTH / 2, y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT, BLOCK_HEIGHT, 0f);
 						break;
 				}
 			}
@@ -158,6 +163,45 @@ public class Level {
 		}
 	}
 
+	private void insertFallingItems(Game g) {
+		int offsetX = 0, offsetY;
+
+		for (LevelSegment segment : levelParts) {
+			offsetY = (height - segment.getHeight()) * Level.BLOCK_HEIGHT;
+
+			for (FallingItem f : segment.getFallingItems()) {
+				f.x += offsetX;
+				f.y += offsetY;
+				g.fallingItemList.add(f);
+			}
+
+			offsetX += segment.getWidth() * Level.BLOCK_WIDTH;
+		}
+		
+	}
+	
+	
+	private void insertShotCollections(Game g) {
+		// TODO Auto-generated method stub
+		int offsetX = 0, offsetY=0;
+        int x = 0, y = 0;
+        
+		for (LevelSegment segment : levelParts) {
+			offsetY = (height - segment.getHeight()) * Level.BLOCK_HEIGHT;
+
+			for (ShotCollection sc : segment.getShotCollections()) {
+				sc.origin.x += offsetX;
+				sc.origin.y += offsetY;
+				sc.origin = new Point(x,y);
+				sc.autofill();
+				g.shots.add(sc);
+			}
+
+			offsetX += segment.getWidth() * Level.BLOCK_WIDTH;
+		}
+	}
+	
+	
 	public boolean inViewport(int x, int y) {
 		return x >= left && x <= right && y >= top && y <= bottom;
 	}
@@ -179,6 +223,8 @@ public class Level {
 
 		newLevel.createMap();
 		newLevel.insertEnemies(g);
+		newLevel.insertFallingItems(g);
+		newLevel.insertShotCollections(g);
 
 		if (levelParts.get(0).getPlayerStart() != null) {
 			// levelPart's playerStart is relative to its own dimensions.
@@ -193,6 +239,10 @@ public class Level {
 		return newLevel;
 	}
 	
+
+
+
+
 	public Point getGoal() {
 		return goal;
 	}

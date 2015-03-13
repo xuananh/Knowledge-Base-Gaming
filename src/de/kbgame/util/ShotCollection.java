@@ -17,10 +17,10 @@ public class ShotCollection extends Vector<Shot> {
 	private Vector<Shot> removeList = new Vector<Shot>();
 	public Point origin;
 
-	public ShotCollection(int updateInterval, int velocity, Player player, Point origin) {
+	public ShotCollection(int updateInterval, int velocity, Point origin) {
 		this.updateInterveral = updateInterval;
 		this.velocity = velocity;
-		this.player = player;
+		//this.player = player;
 		this.origin = origin;
 	}
 
@@ -35,7 +35,7 @@ public class ShotCollection extends Vector<Shot> {
 		}
 
 		if (currentTime > nextUpdate) {
-			playerHitBox = player.getSurroundingRectangle();
+			playerHitBox = g.player.getSurroundingRectangle();
 			
 			for (Shot shot : this) {
 				shot.update(g);
@@ -53,6 +53,14 @@ public class ShotCollection extends Vector<Shot> {
 	
 	public void addToRemoveList(Shot shot) {
 		removeList.add(shot);
+	}
+
+	public void autofill() {
+		for (int i=0; i<100; i++) {
+			this.add(new Shot(10, i*130, this));
+		}
+		// TODO Auto-generated method stub
+		
 	}
 
 }

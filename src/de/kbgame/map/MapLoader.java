@@ -12,8 +12,11 @@ import javax.imageio.ImageIO;
 
 import de.kbgame.game.Enemy;
 import de.kbgame.game.Game;
+import de.kbgame.game.Player;
 import de.kbgame.game.level.LevelSegment;
 import de.kbgame.util.ColorValues;
+import de.kbgame.util.FallingItem;
+import de.kbgame.util.ShotCollection;
 import de.kbgame.util.clingo.AnswerASP;
 import de.kbgame.util.clingo.ClingoFactory;
 import de.kbgame.util.clingo.PredicateASP;
@@ -102,6 +105,31 @@ public final class MapLoader {
 				goal.setLocation(x, y);
 				break;
 			}
+			
+			
+			// Falling Objects - Gruen
+			case ColorValues.r0g255b0: {
+				level.addFallingItem(x*Level.BLOCK_WIDTH - 1, y*Level.BLOCK_HEIGHT - 1);
+				//map[x][y] = Blocks.GOAL;
+				//goal.setLocation(x, y);
+				//break;
+				break;
+			}
+			
+			
+			// Cannon - dunkeblau
+			case ColorValues.r0g0b128: {
+				ShotCollection sc = new ShotCollection(20,2, new Point(x*Level.BLOCK_WIDTH - 1, y*Level.BLOCK_HEIGHT - 1));
+				System.out.println(x +" "+y);
+				//sc.autofill();
+				level.addShotCollection(sc);
+				map[x][y] = Blocks.CannonBlock;
+				//map[x][y] = Blocks.GOAL;
+				//goal.setLocation(x, y);
+				//break;
+			}
+			
+			
 			// java initializes scalar vectors with 0s by default
 		}
 	}

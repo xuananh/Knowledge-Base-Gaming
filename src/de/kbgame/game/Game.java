@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -53,7 +54,8 @@ public class Game extends Thread {
 
 	SuperEnemy superEnemy;
 
-	Vector<ShotCollection> shots = new Vector<ShotCollection>();
+	public Vector<ShotCollection> shots = new Vector<ShotCollection>();
+	//public ArrayList<ShotCollection> shotCollections;
 
 	public Game() {
 		input = new Input(); // Init Input before Graphic, because Graphics uses Input!
@@ -71,6 +73,9 @@ public class Game extends Thread {
 
 		try {
 			LevelBuilder builder = new LevelBuilder(new File("level_config.txt"), this, playerStart);
+			fallingItemList = new LinkedList<FallingItem>();
+			//shotCollections = new ArrayList<ShotCollection>();
+			
 			level = builder.next();
 			goal = level.getGoal();
 
@@ -81,13 +86,13 @@ public class Game extends Thread {
 			list.add((Entity) player);
 			controller.control(player);
 			
-			fallingItemList = new LinkedList<FallingItem>();
+
 			
 			// Test -> MapLoader
-			fi = new FallingItem(player);
+		//	fi = new FallingItem(player);
 			
-			fallingItemList.add(fi);
-			fallingItemList.add(new FallingItem(300,1500,-20,7,player));
+		//	fallingItemList.add(fi);
+		//	fallingItemList.add(new FallingItem(300,1500,-20,7,player));
 			
 			this.start();
 		} catch (IOException e) {
@@ -148,6 +153,8 @@ public class Game extends Thread {
 			ent.update(this);
 		}
 
+		
+		
 		for (ShotCollection coll : this.shots) {
 			// TODO remove list when empty
 			coll.update(this);

@@ -57,7 +57,8 @@ public class ShotCollection extends Vector<Shot> {
 
 	public void autofill() {
 		for (int i=0; i<100; i++) {
-			this.add(new Shot(10, i*130, this));
+			this.add(new Shot(-1, i*130, this));
+			System.out.println("Shotcollection: " +this.origin.x + " - " + this.origin.y);
 		}
 		// TODO Auto-generated method stub
 		

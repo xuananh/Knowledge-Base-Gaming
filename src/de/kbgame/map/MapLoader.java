@@ -119,14 +119,10 @@ public final class MapLoader {
 			
 			// Cannon - dunkeblau
 			case ColorValues.r0g0b128: {
-				ShotCollection sc = new ShotCollection(20,2, new Point(x*Level.BLOCK_WIDTH - 1, y*Level.BLOCK_HEIGHT - 1));
-				System.out.println(x +" "+y);
-				//sc.autofill();
+				ShotCollection sc = new ShotCollection(13,2, new Point(x*Level.BLOCK_WIDTH - 1, y*Level.BLOCK_HEIGHT - 1));
+				System.out.println("Maploader: " + x +" "+y);
 				level.addShotCollection(sc);
 				map[x][y] = Blocks.CannonBlock;
-				//map[x][y] = Blocks.GOAL;
-				//goal.setLocation(x, y);
-				//break;
 			}
 			
 			

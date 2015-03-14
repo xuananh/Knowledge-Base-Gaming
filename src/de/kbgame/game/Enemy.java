@@ -12,6 +12,8 @@ public class Enemy extends Entity {
 	private final ImageSprite sprite;
 	private Status status = Status.STANDING;
 
+
+	
 	public Enemy(int x, int y, int width, int height) {
 		super(x, y, width, height);
 		sprite = new ImageSprite("Images/enemy.png", 1, 1);

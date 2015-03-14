@@ -3,6 +3,7 @@ package de.kbgame.util;
 import java.awt.Color;
 import java.awt.Point;
 
+import de.kbgame.game.Enemy;
 import de.kbgame.game.Game;
 import de.kbgame.map.Blocks;
 import de.kbgame.map.Level;
@@ -26,6 +27,7 @@ public class Shot {
 	public void update(Game g) {
 		if (timeOffset == 0) {
 			x = shots.origin.x;
+			y = shots.origin.y;
 			y = shots.origin.y - Level.BLOCK_HEIGHT / 4 * yOffset;
 			yBlock = (int) y / Level.BLOCK_HEIGHT;
 			timeOffset--;
@@ -36,7 +38,7 @@ public class Shot {
 			
 			// player collision
 			if (shots.playerHitBox.intersects(x, y, RADIUS, RADIUS)) {
-				shots.player.getHit(null, g);
+				shots.player.getHit(null,g);
 				shots.addToRemoveList(this);
 			}
 			

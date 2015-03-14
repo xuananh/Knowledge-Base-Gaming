@@ -56,6 +56,7 @@ public class Level {
 					}
 					case Blocks.QuestionBlock: {
 						g.graphic.drawImage(ImageKey.QUESTION_BLOCK, x * BLOCK_WIDTH + BLOCK_WIDTH / 2, y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT, BLOCK_HEIGHT, 0f);
+						// Test: System.out.println("QuestionBlock: " + (x * BLOCK_WIDTH + BLOCK_WIDTH / 2) + " " + (y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2));
 						break;
 					}
 					case Blocks.FireBlock: {
@@ -68,6 +69,7 @@ public class Level {
 					}
 					case Blocks.QUESTION_BLOCK_BOUNCED:
 						g.graphic.drawImage(ImageKey.QUESTIONBLOCK_BOUNCED_IMAGE, x * BLOCK_WIDTH + BLOCK_WIDTH / 2, y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT, BLOCK_HEIGHT, 0f);
+
 						break;
 					case Blocks.GOAL:
 						g.graphic.drawImage(ImageKey.GOAL, x * BLOCK_WIDTH + BLOCK_WIDTH / 2, y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT, BLOCK_HEIGHT, 0f);
@@ -190,9 +192,11 @@ public class Level {
 			offsetY = (height - segment.getHeight()) * Level.BLOCK_HEIGHT;
 
 			for (ShotCollection sc : segment.getShotCollections()) {
+				System.out.println("Level1: " + sc.origin.x +" - " + sc.origin.y);
 				sc.origin.x += offsetX;
 				sc.origin.y += offsetY;
-				sc.origin = new Point(x,y);
+				System.out.println("Level2: " + sc.origin.x +" - " + sc.origin.y);
+				//sc.origin = new Point(x,y);
 				sc.autofill();
 				g.shots.add(sc);
 			}

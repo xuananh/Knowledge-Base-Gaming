@@ -222,4 +222,18 @@ public class Player extends Entity {
 			g.shouldApplicationExit = true;
 		}
 	}
+	
+/*	
+	public void getHit(Game g) {
+		if (hitdelay > 0) {
+			return;
+		}
+		
+		hitdelay = 50;
+		
+		if (--lifes.hearts <= 0) {
+			g.shouldApplicationExit = true;
+		}
+	}
+	*/
 }

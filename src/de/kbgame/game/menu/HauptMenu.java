@@ -86,7 +86,7 @@ public class HauptMenu extends Menu{
 		default:
 			break;
 		}
-		g.graphic.drawImage(sprite.getSprite(), x, y, 30, 30, 0, false);
+		g.graphic.drawImage(sprite.getCurrent(), x, y, 30, 30, 0, false);
 	}
 	
 	private void updateNormalMenu(Game g) {
@@ -102,6 +102,7 @@ public class HauptMenu extends Menu{
 			switch (menuPunkt) {
 			case 1:
 				g.state = GameState.GAME;
+				g.newGame();
 				isPauseMenu = true;
 				break;
 			case 2:
@@ -139,7 +140,7 @@ public class HauptMenu extends Menu{
 		default:
 			break;
 		}
-		g.graphic.drawImage(sprite.getSprite(), x, y, 30, 30, 0, false);
+		g.graphic.drawImage(sprite.getCurrent(), x, y, 30, 30, 0, false);
 	}
 	
 	private void updatePauseMenu(Game g) {
@@ -159,6 +160,7 @@ public class HauptMenu extends Menu{
 				break;
 			case 2:
 				g.state = GameState.GAME;
+				g.newGame();
 				isPauseMenu = true;
 				break;
 			case 3:

@@ -25,10 +25,8 @@ public abstract class Menu {
 		if (g.input.getKey(KeyEvent.VK_ESCAPE)) 
 			g.shouldApplicationExit = true;
 		
-		if (sprite.getIndex() == 8 || sprite.getIndex() < 6) {
-			sprite.setIndex(6);
-		}
-		sprite.setIndexInkrement();
+		sprite.setCurrentRow(2);
+		sprite.update();
 		g.input.resetKeys();
 	}
 	

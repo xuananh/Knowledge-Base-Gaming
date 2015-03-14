@@ -48,7 +48,7 @@ public class AboutAndHelpMenu extends Menu{
 		if(menuPunkt == 2) {
 			y = y + 50;
 		}
-		g.graphic.drawImage(sprite.getSprite(), x, y, 30, 30, 0, false);
+		g.graphic.drawImage(sprite.getCurrent(), x, y, 30, 30, 0, false);
 	}
 
 }

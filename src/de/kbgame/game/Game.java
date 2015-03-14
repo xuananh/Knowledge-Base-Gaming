@@ -1,6 +1,5 @@
 package de.kbgame.game;
 
-import java.awt.Color;
 import java.awt.AlphaComposite;
 import java.awt.Point;
 import java.io.File;
@@ -18,7 +17,6 @@ import de.kbgame.grafic.Graphics;
 import de.kbgame.map.Level;
 import de.kbgame.map.LevelBuilder;
 import de.kbgame.util.FallingItem;
-import de.kbgame.map.MapLoader;
 import de.kbgame.util.GameState;
 import de.kbgame.util.Input;
 import de.kbgame.util.ShotCollection;
@@ -49,8 +47,6 @@ public class Game extends Thread {
 	public final static boolean LOAD_CLINGO = false;
 
 	public Point goal = null;
-
-	private final Point playerStart = new Point(1, 1);
 	public GameState state = GameState.MENU;
 
 	public double gaFactor = 1.0;
@@ -68,6 +64,12 @@ public class Game extends Thread {
 		sounds = new SoundThread();
 		menu = new HauptMenu();
 
+		init();
+		
+		this.start();
+	}
+	
+	private void init() {
 		int bw = Level.BLOCK_WIDTH;
 		int bh = Level.BLOCK_HEIGHT;
 		int playerWidth = Level.BLOCK_WIDTH - 6;
@@ -96,10 +98,16 @@ public class Game extends Thread {
 			fallingItemList.add(fi);
 			fallingItemList.add(new FallingItem(300,1500,-20,7,player));
 			
-			this.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void newGame() {
+		list.removeAll(list);
+		platforms.removeAll(platforms);
+		removeFromList.removeAll(removeFromList);
+		init();
 	}
 	
 	public void run() {

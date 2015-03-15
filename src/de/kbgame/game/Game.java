@@ -9,8 +9,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
 
-import de.kbgame.game.menu.HauptMenu;
-import de.kbgame.game.menu.Menu;
+import de.kbgame.game.menu.MenuManage;
 import de.kbgame.geometry.ImageKey;
 import de.kbgame.grafic.Background;
 import de.kbgame.grafic.Graphics;
@@ -30,7 +29,7 @@ public class Game extends Thread {
 	public final Input input;
 	public final Controller controller;
 	public final SoundThread sounds;
-	public final Menu menu;
+	public final MenuManage menu;
 	
 	public boolean shouldApplicationExit = false;
 	public final LinkedList<Platform> platforms = new LinkedList<Platform>();
@@ -63,7 +62,7 @@ public class Game extends Thread {
 		graphic = new Graphics(this);
 		controller = new Controller();
 		sounds = new SoundThread();
-		menu = new HauptMenu();
+		menu = new MenuManage();
 
 		init();
 		
@@ -151,9 +150,7 @@ public class Game extends Thread {
 	}
 
 	public void update(){
-		if(isState(GameState.MENU)) {
-			menu.update(this);
-		} else if(isState(GameState.GAME)) {
+		if(isState(GameState.GAME)) {
 			level.update(this);
 			controller.update(this);
 
@@ -185,21 +182,19 @@ public class Game extends Thread {
 
 			checkObservers();
 			if (isGoalReached()) {
-				shouldApplicationExit = true;
+				state = GameState.GOAL;
 			}
-		} else if(isState(GameState.PAUSE)) {
+		} else {
 			menu.update(this);
 		}
 	}
 	
 	public void draw(){
-		if(isState(GameState.MENU)) {
-			graphic.startDrawNewFrame(0,0);
-			menu.draw(this);
-		} else {
+		if(isState(GameState.PAUSE) || isState(GameState.DEAD) || isState(GameState.GAME)) {
+			
 			graphic.startDrawNewFrame(controller.viewX,controller.viewY);
 			
-			if(isState(GameState.PAUSE)) {
+			if(isState(GameState.PAUSE) || isState(GameState.DEAD)) {
 				graphic.currentGrafic.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
 			}
 
@@ -226,10 +221,13 @@ public class Game extends Thread {
 			for (ShotCollection coll : this.shots) {
 				coll.draw(this);
 			}
-			if(isState(GameState.PAUSE)) {
+			if(isState(GameState.PAUSE) || isState(GameState.DEAD)) {
 				graphic.currentGrafic.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 				menu.draw(this);
 			}
+		} else {
+			graphic.startDrawNewFrame(0,0);
+			menu.draw(this);
 		}
 		graphic.endDrawNewFrame();
 	}

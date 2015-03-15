@@ -3,5 +3,8 @@ package de.kbgame.util;
 public enum GameState {
 	MENU,
 	GAME,
-	PAUSE
+	GOAL,
+	DEAD,
+	PAUSE,
+	WAIT
 }

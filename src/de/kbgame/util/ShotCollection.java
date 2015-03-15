@@ -13,7 +13,7 @@ public class ShotCollection extends Vector<Shot> {
 	private long nextUpdate = 0;
 	int velocity;
 	de.kbgame.geometry.Rectangle playerHitBox;
-	Player player;
+	public Player player;
 	private Vector<Shot> removeList = new Vector<Shot>();
 	public Point origin;
 
@@ -24,9 +24,14 @@ public class ShotCollection extends Vector<Shot> {
 		this.origin = origin;
 	}
 
+	public ShotCollection(int updateInterval, int velocity, Point origin, Player player) {
+		this(updateInterval, velocity, origin);
+		this.player = player;
+	}
+
 	public void update(Game g) {
 		long currentTime = System.currentTimeMillis();
-		
+
 		if (!removeList.isEmpty()) {
 			for (Shot shot : removeList) {
 				remove(shot);
@@ -36,7 +41,7 @@ public class ShotCollection extends Vector<Shot> {
 
 		if (currentTime > nextUpdate) {
 			playerHitBox = g.player.getSurroundingRectangle();
-			
+
 			for (Shot shot : this) {
 				shot.update(g);
 			}
@@ -50,18 +55,18 @@ public class ShotCollection extends Vector<Shot> {
 			shot.draw(g);
 		}
 	}
-	
+
 	public void addToRemoveList(Shot shot) {
 		removeList.add(shot);
 	}
 
 	public void autofill() {
-		for (int i=0; i<100; i++) {
-			this.add(new Shot(-1, i*130, this));
-			System.out.println("Shotcollection: " +this.origin.x + " - " + this.origin.y);
+		for (int i = 0; i < 100; i++) {
+			this.add(new Shot(-1, i * 130, this));
+			//			System.out.println("Shotcollection: " +this.origin.x + " - " + this.origin.y);
 		}
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

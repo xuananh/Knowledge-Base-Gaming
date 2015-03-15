@@ -12,10 +12,8 @@ import javax.imageio.ImageIO;
 
 import de.kbgame.game.Enemy;
 import de.kbgame.game.Game;
-import de.kbgame.game.Player;
 import de.kbgame.game.level.LevelSegment;
 import de.kbgame.util.ColorValues;
-import de.kbgame.util.FallingItem;
 import de.kbgame.util.ShotCollection;
 import de.kbgame.util.clingo.AnswerASP;
 import de.kbgame.util.clingo.ClingoFactory;
@@ -119,8 +117,8 @@ public final class MapLoader {
 			
 			// Cannon - dunkeblau
 			case ColorValues.r0g0b128: {
-				ShotCollection sc = new ShotCollection(13,2, new Point(x*Level.BLOCK_WIDTH - 1, y*Level.BLOCK_HEIGHT - 1));
-				System.out.println("Maploader: " + x +" "+y);
+				ShotCollection sc = new ShotCollection(13, 2, new Point(x * Level.BLOCK_WIDTH - 1, y * Level.BLOCK_HEIGHT - 1));
+//				System.out.println("Maploader: " + x + " " + y);
 				level.addShotCollection(sc);
 				map[x][y] = Blocks.CannonBlock;
 			}

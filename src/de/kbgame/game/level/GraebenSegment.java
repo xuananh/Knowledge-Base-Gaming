@@ -10,6 +10,8 @@ import de.kbgame.map.MapLoader;
 public class GraebenSegment extends LevelSegment {
 
 	public GraebenSegment(Game g, String[] args) throws FileNotFoundException {
+		super(g);
+		
 		goal = new Point();
 		playerStart = new Point();
 

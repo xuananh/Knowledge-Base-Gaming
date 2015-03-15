@@ -1,9 +1,7 @@
 package de.kbgame.util;
 
 import java.awt.Color;
-import java.awt.Point;
 
-import de.kbgame.game.Enemy;
 import de.kbgame.game.Game;
 import de.kbgame.map.Blocks;
 import de.kbgame.map.Level;
@@ -37,7 +35,7 @@ public class Shot {
 			x -= shots.velocity;
 			
 			// player collision
-			if (shots.playerHitBox.intersects(x, y, RADIUS, RADIUS)) {
+			if (shots.playerHitBox.intersects(x, y, RADIUS, RADIUS) && shots.player != null) {
 				shots.player.getHit(null,g);
 				shots.addToRemoveList(this);
 			}

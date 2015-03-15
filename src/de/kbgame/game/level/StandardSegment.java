@@ -8,6 +8,8 @@ import de.kbgame.map.MapLoader;
 public class StandardSegment extends LevelSegment {
 
 	public StandardSegment(Game g, String[] args) {
+		super(g);
+		
 		goal = new Point(-1,-1);
 		
 		map = MapLoader.loadFromBitmap(this, args[0], goal);

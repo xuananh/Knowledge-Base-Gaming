@@ -21,7 +21,7 @@ public class Graphics extends JFrame {
 
 	private static final long serialVersionUID = -8990501035231822716L;
 	
-	private static final String GAME_TITLE = "Mario";
+	private static final String GAME_TITLE = "Jump & Run";
 	private static final String TIMES_NEW_ROMAN = "Times New Roman";
 	private double rotation = 0;
 	
@@ -155,8 +155,14 @@ public class Graphics extends JFrame {
 		currentGrafic.fillOval(x, y, w, h);
 	}
 
-	public void drawText(String st, int x, int y, Color c) {drawText(st, x, y, c, true);}
-	public void drawText(String st, int x, int y, Color c, boolean relative) {
+	public void drawText(String st, int x, int y, Color c, Font font) {
+		drawText(st, x, y, c, true,font);
+	}
+ 	public void drawText(String st, int x, int y, Color c, boolean relative) {
+		drawText(st, x, y, c, relative,TimesSmall);
+	}
+	public void drawText(String st, int x, int y, Color c, boolean relative, Font font) {
+
 		if (relative){
 			x -= viewX - this.Width/2;
 			y -= viewY - this.Height/2;
@@ -165,7 +171,7 @@ public class Graphics extends JFrame {
 		//if (x+w < 0 || x-w > this.Width || y+h < 0 || y-h < this.Width) return; //Draw only if in screen
 		currentGrafic.rotate(-rotation, x, y);
 		currentGrafic.setColor(c);
-		currentGrafic.setFont(TimesSmall);
+		currentGrafic.setFont(font);
 		currentGrafic.drawString(st, x, y);
 		currentGrafic.rotate(rotation, x, y);
 	}

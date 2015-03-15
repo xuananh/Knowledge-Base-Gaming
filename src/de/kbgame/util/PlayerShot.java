@@ -11,6 +11,7 @@ import de.kbgame.map.Level;
 public class PlayerShot {
 
 	public static final int LIFE_TIME = 50;
+	public static final int SHOT_KILL_SCORE = 50;
 	
 	private int x, y;
 	private int factor;
@@ -44,6 +45,7 @@ public class PlayerShot {
 				if (e.getSurroundingRectangle().intersects(x, y, Shot.RADIUS, Shot.RADIUS)) {
 					e.kill(g);
 					g.player.removeShots.add(this);
+					g.player.addPoints(SHOT_KILL_SCORE);
 				}
 			}
 		}

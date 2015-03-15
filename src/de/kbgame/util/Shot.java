@@ -7,21 +7,21 @@ import de.kbgame.map.Blocks;
 import de.kbgame.map.Level;
 
 public class Shot {
-	
+
 	public static final int RADIUS = 10;
-	
+
 	private int timeOffset;
 	private int x, y;
 	private ShotCollection shots;
 	private int yBlock;
 	private int yOffset;
-	
+
 	public Shot(int yOffset, int timeOffset, ShotCollection shots) {
 		this.timeOffset = timeOffset;
 		this.shots = shots;
 		this.yOffset = yOffset;
 	}
-	
+
 	public void update(Game g) {
 		if (timeOffset == 0) {
 			x = shots.origin.x;
@@ -30,20 +30,20 @@ public class Shot {
 			yBlock = (int) y / Level.BLOCK_HEIGHT;
 			timeOffset--;
 		}
-		
+
 		if (timeOffset <= 0) {
 			x -= shots.velocity;
-			
+
 			// player collision
-			if (shots.playerHitBox.intersects(x, y, RADIUS, RADIUS) && shots.player != null) {
-				shots.player.getHit(null,g);
+			if (shots.playerHitBox.intersects(x, y, RADIUS, RADIUS)) {
+				g.player.getHit(null, g);
 				shots.addToRemoveList(this);
 			}
-			
+
 			int xBlock = (int) x / Level.BLOCK_WIDTH;
 			if (g.level.getMap(xBlock, yBlock) != Blocks.Empty || x < 0 - RADIUS) {
 				shots.addToRemoveList(this);
-			} 
+			}
 		} else {
 			--timeOffset;
 		}

@@ -73,18 +73,14 @@ public class Game extends Thread {
 	}
 	
 	private void init() {
-		int bw = Level.BLOCK_WIDTH;
-		int bh = Level.BLOCK_HEIGHT;
 		int playerWidth = Level.BLOCK_WIDTH - 6;
 		int playerHeight = Level.BLOCK_HEIGHT;
 
-		
 		Point playerStart = new Point();
 
 		try {
 			LevelBuilder builder = new LevelBuilder(new File("level_config.txt"), this, playerStart);
 			fallingItemList = new LinkedList<FallingItem>();
-			//shotCollections = new ArrayList<ShotCollection>();
 			
 			level = builder.next();
 			goal = level.getGoal();
@@ -92,27 +88,19 @@ public class Game extends Thread {
 			backgrounds.add(new Background(ImageKey.BACKGROUND_1, .25f, 1, this));
 			backgrounds.add(new Background(ImageKey.BACKGROUND_2, .5f, 1, this));
 
-			player = new Player(playerStart.x * bw + (playerWidth / 2), playerStart.y * bh + (playerHeight / 2), playerWidth, playerHeight, hud);
+			player = new Player(playerStart.x * Level.BLOCK_WIDTH + (playerWidth / 2), playerStart.y * Level.BLOCK_HEIGHT + (playerHeight / 2), playerWidth, playerHeight, hud);
 			list.add((Entity) player);
-			controller.control(player);
-			
-
-			
-			// Test -> MapLoader
-		//	fi = new FallingItem(player);
-			
-		//	fallingItemList.add(fi);
-		//	fallingItemList.add(new FallingItem(300,1500,-20,7,player));
-			
+			controller.control(player);			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void newGame() {
-		list.removeAll(list);
-		platforms.removeAll(platforms);
-		removeFromList.removeAll(removeFromList);
+		list.clear();
+		platforms.clear();
+		removeFromList.clear();
+		hud.clear();
 		init();
 	}
 	

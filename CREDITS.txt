@@ -1,0 +1,9 @@
+This software project uses some third party content that is provided under several licenses. This text file lists all the thrid party content and their licenses.
+--------------------------------------------------
+
+IMAGES
+------
+original “Spinning coin” by JM.Atencia
+http://opengameart.org/content/spinning-coin
+is licensed under a Creative Commons license:
+http://creativecommons.org/licenses/by/3.0/

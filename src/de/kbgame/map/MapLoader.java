@@ -103,6 +103,10 @@ public final class MapLoader {
 				goal.setLocation(x, y);
 				break;
 			}
+			case ColorValues.r128g128b0: {
+				map[x][y] = Blocks.COIN;
+				break;
+			}
 			
 			
 			// Falling Objects - Gruen

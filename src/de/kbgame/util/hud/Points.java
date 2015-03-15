@@ -1,13 +1,10 @@
 package de.kbgame.util.hud;
 
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 import de.kbgame.game.Game;
 import de.kbgame.game.Player;
-import de.kbgame.geometry.ImageKey;
-import de.kbgame.grafic.ImageLoader;
 import de.kbgame.map.Level;
 
 public class Points implements HUDElement {
@@ -16,6 +13,8 @@ public class Points implements HUDElement {
 
 	public final static int OFFSET_LEFT = Level.BLOCK_WIDTH / 5;
 	public final static int OFFSET_TOP = Level.BLOCK_HEIGHT / 5;
+	
+	public final static int COIN_SCORE = 50;
 
 	private BufferedImage img;
 

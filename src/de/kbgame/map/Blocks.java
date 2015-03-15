@@ -18,8 +18,8 @@ public final class Blocks {
 	public final static byte JUMP = 12;
 	public final static byte FireBlock = 9;
 	public final static byte CannonBlock = 13;
+	public final static byte COIN = 14;
 	
-	
-	public final static int NON_BLOCKING_BITMAP = (int) (Math.pow(2, Empty) + Math.pow(2, GOAL) + Math.pow(2, FireBlock));
+	public final static int NON_BLOCKING_BITMAP = (int) (Math.pow(2, Empty) + Math.pow(2, GOAL) + Math.pow(2, FireBlock) + Math.pow(2, COIN));
 	public final static int KILLING_BITMAP = (int) Math.pow(2, FireBlock);
 }

@@ -77,6 +77,9 @@ public class Level {
 					case Blocks.CannonBlock:
 						g.graphic.drawImage(ImageKey.CANNON, x * BLOCK_WIDTH + BLOCK_WIDTH / 2, y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT, BLOCK_HEIGHT, 0f);
 						break;
+					case Blocks.COIN:
+						g.graphic.drawImage(Game.coins.getCurrent(), x * BLOCK_WIDTH + BLOCK_WIDTH / 2, y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_WIDTH, BLOCK_HEIGHT, 0f, true);
+						break;
 				}
 			}
 		}

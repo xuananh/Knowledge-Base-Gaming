@@ -10,6 +10,7 @@ import de.kbgame.geometry.MyPoint;
 import de.kbgame.geometry.Rectangle;
 import de.kbgame.map.Blocks;
 import de.kbgame.map.Level;
+import de.kbgame.util.hud.Points;
 
 public final class Physic {
 
@@ -26,16 +27,23 @@ public final class Physic {
 
 	public static PhysicResult doPhysic(Game g, Entity e) {
 		// 1. step
+		// gravity and deadly blocks
 		PhysicResult result = fromAbovePhysic(g, e);
 
 		int newBlockIndexX = (int) result.x / Level.BLOCK_WIDTH;
 		int newBlockIndexY = (int) result.y / Level.BLOCK_HEIGHT;
 		if (isKilling(g, newBlockIndexX, newBlockIndexY)) {
 			g.kill(g.level.getMap(newBlockIndexX, newBlockIndexY));
-		}
+		} 
 
 		// 2. step
+		// coins and platforms
 		if (e instanceof Player) {
+			if (g.level.getMap(newBlockIndexX, newBlockIndexY) == Blocks.COIN) {
+				g.level.setMap(newBlockIndexX, newBlockIndexY, Blocks.Empty);
+				g.player.addPoints(Points.COIN_SCORE);
+			}
+			
 			result = platformPhysics(g, (Player) e, result);
 		}
 

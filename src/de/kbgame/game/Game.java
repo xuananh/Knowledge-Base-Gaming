@@ -13,6 +13,7 @@ import de.kbgame.game.menu.MenuManage;
 import de.kbgame.geometry.ImageKey;
 import de.kbgame.grafic.Background;
 import de.kbgame.grafic.Graphics;
+import de.kbgame.grafic.TimeBasedImageSprite;
 import de.kbgame.map.Level;
 import de.kbgame.map.LevelBuilder;
 import de.kbgame.util.FallingItem;
@@ -49,6 +50,8 @@ public class Game extends Thread {
 	public GameState state = GameState.MENU;
 
 	public double gaFactor = 1.0;
+	
+	public static TimeBasedImageSprite coins = new TimeBasedImageSprite("Images/coin_flipping_sprite.png", 1, 6, 128);
 
 	private TreeMap<Integer, XValueObserver> xValueObservers = new TreeMap<Integer, XValueObserver>();
 
@@ -178,7 +181,7 @@ public class Game extends Thread {
 				e.update(this);
 			}
 			
-
+			coins.update();
 
 			checkObservers();
 			if (isGoalReached()) {

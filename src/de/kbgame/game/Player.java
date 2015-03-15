@@ -30,7 +30,7 @@ public class Player extends Entity {
 	public Player(int x, int y, int width, int height, HUD hud) {
 		super(x, y, width, height);
 		sprite = new TimeBasedImageSprite("Images/sprite.png", 4, 3, 100);
-		
+
 		hud.add(lifes);
 		hud.add(points);
 	}
@@ -101,7 +101,7 @@ public class Player extends Entity {
 			event.update();
 		}
 	}
-	
+
 	private void enemyCollision(Enemy e, MyPoint before, MyPoint after, Game g) {
 		de.kbgame.geometry.Rectangle enemyRect = e.getSurroundingRectangle();
 		boolean xIn, yIn;
@@ -136,7 +136,7 @@ public class Player extends Entity {
 				vy = -Physic.JUMP_VELOCITY;
 				((Enemy) e).kill(g);
 				maxRuns = -1;
-				points.add(100,this);
+				points.add(100, this);
 			}
 		}
 
@@ -144,7 +144,7 @@ public class Player extends Entity {
 		if (maxRuns == 0) {
 			vy = -Physic.JUMP_VELOCITY;
 			((Enemy) e).kill(g);
-			points.add(100,this);
+			points.add(100, this);
 		}
 	}
 
@@ -175,9 +175,9 @@ public class Player extends Entity {
 
 	private void setSprites(PhysicResult result) {
 		setPlayerStatus(result);
-		
+
 		sprite.noUpdate = false;
-		
+
 		switch (status) {
 			case MOVE_LEFT:
 				sprite.setCurrentRow(1);
@@ -208,20 +208,24 @@ public class Player extends Entity {
 		if (hitdelay > 0) {
 			return;
 		}
-		
+
 		if (e != null) {
 			vx = (x > e.x) ? 10 : -10;
 			vy = -3;
 		}
 		hitdelay = 50;
-		
+
 		if (--lifes.hearts <= 0) {
 			kill(g);
 		}
 	}
-	
+
 	public void kill(Game g) {
 		lifes.hearts = 0;
 		g.state = GameState.DEAD;
+	}
+
+	public void addPoints(int points) {
+		this.points.add(points, this);
 	}
 }

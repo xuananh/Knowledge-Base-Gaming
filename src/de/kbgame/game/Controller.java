@@ -53,6 +53,11 @@ public class Controller {
 			} else if (g.input.getKey(KeyEvent.VK_RIGHT)) {
 				controlledOne.vx += Physic.WALK_VELOCITY;
 			}
+			
+			if (g.input.getKey(KeyEvent.VK_SPACE)) {
+				g.input.dontAlertTillKeyUp(KeyEvent.VK_SPACE);
+				g.player.fire();
+			}
 		}
 
 		if (g.input.getKey(KeyEvent.VK_ESCAPE)) {

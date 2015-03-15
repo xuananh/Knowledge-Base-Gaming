@@ -326,11 +326,11 @@ public final class Physic {
 		}
 	}
 
-	private final static boolean isBlocking(Game g, int x, int y) {
+	public final static boolean isBlocking(Game g, int x, int y) {
 		return ((int) Math.pow(2, g.level.getMap(x, y)) & Blocks.NON_BLOCKING_BITMAP) == 0;
 	}
 
-	private final static boolean isKilling(Game g, int x, int y) {
+	public final static boolean isKilling(Game g, int x, int y) {
 		return ((int) Math.pow(2, g.level.getMap(x, y)) & Blocks.KILLING_BITMAP) != 0;
 	}
 }

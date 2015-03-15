@@ -1,5 +1,8 @@
 package de.kbgame.game;
 
+import java.awt.Point;
+import java.util.ArrayList;
+
 import de.kbgame.geometry.MyPoint;
 import de.kbgame.grafic.TimeBasedImageSprite;
 import de.kbgame.map.Blocks;
@@ -7,6 +10,7 @@ import de.kbgame.map.Level;
 import de.kbgame.util.GameState;
 import de.kbgame.util.Physic;
 import de.kbgame.util.PhysicResult;
+import de.kbgame.util.PlayerShot;
 import de.kbgame.util.Status;
 import de.kbgame.util.hud.HUD;
 import de.kbgame.util.hud.LifeHearts;
@@ -26,6 +30,9 @@ public class Player extends Entity {
 	private Status status = Status.STANDING;
 	public LifeHearts lifes = new LifeHearts(2);
 	private Points points = new Points(0);
+	
+	private ArrayList<PlayerShot> shots = new ArrayList<PlayerShot>();
+	public ArrayList<PlayerShot> removeShots = new ArrayList<PlayerShot>();
 
 	public Player(int x, int y, int width, int height, HUD hud) {
 		super(x, y, width, height);
@@ -97,6 +104,14 @@ public class Player extends Entity {
 			}
 
 			setSprites(result);
+			
+			for (PlayerShot shot : removeShots) {
+				shots.remove(shot);
+			}
+			
+			for (PlayerShot playerShots : shots) {
+				playerShots.update(g);
+			}
 		} else {
 			event.update();
 		}
@@ -155,6 +170,10 @@ public class Player extends Entity {
 		} else {
 			int _y = parent.y - height;
 			g.graphic.drawImage(sprite.getCurrent(), x, _y, this.width, this.height, rot, true);
+		}
+		
+		for (PlayerShot playerShots : shots) {
+			playerShots.draw(g);
 		}
 	}
 
@@ -227,5 +246,12 @@ public class Player extends Entity {
 
 	public void addPoints(int points) {
 		this.points.add(points, this);
+	}
+	
+	public void fire() {
+		if (status == Status.MOVE_LEFT || status == Status.MOVE_RIGHT) {
+			PlayerShot shot = new PlayerShot(new Point(x, y), status == Status.MOVE_LEFT ? -1 : 1, PlayerShot.LIFE_TIME);
+			shots.add(shot);
+		}
 	}
 }

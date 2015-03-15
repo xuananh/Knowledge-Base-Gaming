@@ -4,6 +4,7 @@ import de.kbgame.geometry.MyPoint;
 import de.kbgame.grafic.TimeBasedImageSprite;
 import de.kbgame.map.Blocks;
 import de.kbgame.map.Level;
+import de.kbgame.util.GameState;
 import de.kbgame.util.Physic;
 import de.kbgame.util.PhysicResult;
 import de.kbgame.util.Status;
@@ -184,9 +185,6 @@ public class Player extends Entity {
 			case MOVE_RIGHT:
 				sprite.setCurrentRow(2);
 				break;
-//			case JUMP:
-//				sprite.setIndex(4);
-//				break;
 			default:
 				sprite.noUpdate = true;
 				sprite.setIndex(1);
@@ -224,6 +222,6 @@ public class Player extends Entity {
 	
 	public void kill(Game g) {
 		lifes.hearts = 0;
-		g.shouldApplicationExit = true;
+		g.state = GameState.DEAD;
 	}
 }

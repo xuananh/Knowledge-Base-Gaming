@@ -7,3 +7,8 @@ original “Spinning coin” by JM.Atencia
 http://opengameart.org/content/spinning-coin
 is licensed under a Creative Commons license:
 http://creativecommons.org/licenses/by/3.0/
+
+original “Gold Skull“ by cron
+http://opengameart.org/content/gold-skull
+is licensed under a Creative Commons license:
+http://creativecommons.org/licenses/by-sa/3.0/

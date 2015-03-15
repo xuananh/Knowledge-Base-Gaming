@@ -184,18 +184,17 @@ public class Level {
 	
 	
 	private void insertShotCollections(Game g) {
-		// TODO Auto-generated method stub
 		int offsetX = 0, offsetY=0;
-        int x = 0, y = 0;
+//        int x = 0, y = 0;
         
 		for (LevelSegment segment : levelParts) {
 			offsetY = (height - segment.getHeight()) * Level.BLOCK_HEIGHT;
 
 			for (ShotCollection sc : segment.getShotCollections()) {
-				System.out.println("Level1: " + sc.origin.x +" - " + sc.origin.y);
+//				System.out.println("Level1: " + sc.origin.x +" - " + sc.origin.y);
 				sc.origin.x += offsetX;
 				sc.origin.y += offsetY;
-				System.out.println("Level2: " + sc.origin.x +" - " + sc.origin.y);
+//				System.out.println("Level2: " + sc.origin.x +" - " + sc.origin.y);
 				//sc.origin = new Point(x,y);
 				sc.autofill();
 				g.shots.add(sc);

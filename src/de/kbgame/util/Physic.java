@@ -28,6 +28,12 @@ public final class Physic {
 		// 1. step
 		PhysicResult result = fromAbovePhysic(g, e);
 
+		int newBlockIndexX = (int) result.x / Level.BLOCK_WIDTH;
+		int newBlockIndexY = (int) result.y / Level.BLOCK_HEIGHT;
+		if (isKilling(g, newBlockIndexX, newBlockIndexY)) {
+			g.kill(g.level.getMap(newBlockIndexX, newBlockIndexY));
+		}
+
 		// 2. step
 		if (e instanceof Player) {
 			result = platformPhysics(g, (Player) e, result);
@@ -208,9 +214,9 @@ public final class Physic {
 			currentBlockIndexY = (int) (result.y / blockheight);
 		}
 
-		result.vx = nvx;
-		result.vy = nvy;
-		
+		result.vx = Math.min(nvx, Level.BLOCK_WIDTH - 1);
+		result.vy = Math.min(nvy, Level.BLOCK_HEIGHT - 1);
+
 		return result;
 	}
 
@@ -222,11 +228,7 @@ public final class Physic {
 			result.vx = 0;
 		}
 
-//		if (Math.abs(result.vy) > TRESHOLD) {
-			result.vy += GRAVITY;
-//		} else {
-//			result.vy = 0;
-//		}
+		result.vy += GRAVITY;
 
 		return result;
 	}
@@ -315,8 +317,12 @@ public final class Physic {
 			System.out.println(str);
 		}
 	}
-	
+
 	private final static boolean isBlocking(Game g, int x, int y) {
 		return ((int) Math.pow(2, g.level.getMap(x, y)) & Blocks.NON_BLOCKING_BITMAP) == 0;
+	}
+
+	private final static boolean isKilling(Game g, int x, int y) {
+		return ((int) Math.pow(2, g.level.getMap(x, y)) & Blocks.KILLING_BITMAP) != 0;
 	}
 }

@@ -218,22 +218,12 @@ public class Player extends Entity {
 		hitdelay = 50;
 		
 		if (--lifes.hearts <= 0) {
-			// TODO
-			g.shouldApplicationExit = true;
+			kill(g);
 		}
 	}
 	
-/*	
-	public void getHit(Game g) {
-		if (hitdelay > 0) {
-			return;
-		}
-		
-		hitdelay = 50;
-		
-		if (--lifes.hearts <= 0) {
-			g.shouldApplicationExit = true;
-		}
+	public void kill(Game g) {
+		lifes.hearts = 0;
+		g.shouldApplicationExit = true;
 	}
-	*/
 }

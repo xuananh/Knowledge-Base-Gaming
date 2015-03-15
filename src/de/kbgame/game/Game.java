@@ -251,4 +251,8 @@ public class Game extends Thread {
 	public boolean isState(GameState state) {
 		return this.state == state;
 	}
+	
+	public void kill(byte block) {
+		player.kill(this);
+	}
 }

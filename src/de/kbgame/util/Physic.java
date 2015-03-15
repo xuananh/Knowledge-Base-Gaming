@@ -179,6 +179,9 @@ public final class Physic {
 						result.top = true;
 						if (g.level.getMap(blockIndex, newBlockIndexY) == Blocks.QuestionBlock) {
 							g.level.setMap(blockIndex, newBlockIndexY, Blocks.QUESTION_BLOCK_BOUNCED);
+							if (g.level.getMap(blockIndex, newBlockIndexY - 1) == Blocks.Empty) {
+								g.level.setMap(blockIndex, newBlockIndexY - 1, Blocks.COIN);
+							}
 						}
 					}
 					vy = 0;

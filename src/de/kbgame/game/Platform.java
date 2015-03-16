@@ -5,10 +5,10 @@ import de.kbgame.map.Level;
 
 public class Platform extends Entity {
 
-	private boolean verticalMove = true;
+	public boolean verticalMove = true;
 	private boolean downOrRight = true;
-	private int fromXY;
-	private int toXY;
+	public int fromXY;
+	public int toXY;
 
 	public int speed = 1;
 

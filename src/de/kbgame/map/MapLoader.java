@@ -116,7 +116,7 @@ public final class MapLoader {
 			for (int x = 0; x < image.getWidth(); x++) {
 				for (int y = 0; y < image.getHeight(); y++) {
 					pixelColor = image.getRGB(x, y);
-					setPixel(level, map, pixelColor, x, y, goal);
+					setPixel(level, map, pixelColor, x, y, goal, image);
 				}
 			}
 
@@ -127,7 +127,7 @@ public final class MapLoader {
 		}
 	}
 
-	private static void setPixel(LevelSegment level, byte[][] map, int pixelColor, int x, int y, Point goal) {
+	private static void setPixel(LevelSegment level, byte[][] map, int pixelColor, int x, int y, Point goal, BufferedImage image) {	
 		switch (pixelColor) {
 			case ColorValues.r0g0b0: {
 				map[x][y] = Blocks.Solid;
@@ -153,6 +153,14 @@ public final class MapLoader {
 			}
 			case ColorValues.r128g128b0: {
 				map[x][y] = Blocks.COIN;
+				break;
+			}
+			case ColorValues.r128g0b0: {
+				map[x][y] = Blocks.FireBlock;
+				break;
+			}
+			case ColorValues.r0g255b255: {
+				initPlatform(x, y, level, map, image);
 				break;
 			}
 			
@@ -197,5 +205,46 @@ public final class MapLoader {
 				break;
 		// java initializes scalar vectors with 0s by default
 		}
+	}
+	
+	/**
+	 * prepares insertion of a new platform by calculating the moving path
+	 * 
+	 * @param x block index
+	 * @param y block index
+	 * @param level the current level
+	 * @param map the level's block map
+	 * @param image the bitmap that is parsed
+	 */
+	private static void initPlatform(int x, int y, LevelSegment level, byte[][] map, BufferedImage image) {
+		int fromBlockIndex = 0, toBlockIndex = 0;
+		int counter = 1;
+		boolean verticalMove = image.getRGB(x - 1, y) != ColorValues.r0g128b255 && image.getRGB(x + 1, y) != ColorValues.r0g128b255;
+
+		if (verticalMove) {
+			while (x - counter >= 0 && image.getRGB(x, y - counter) == ColorValues.r0g128b255) {
+				++counter;
+			}
+			fromBlockIndex = y - counter;
+
+			counter = 1;
+			while (x + counter < map.length && image.getRGB(x, y + counter) == ColorValues.r0g128b255) {
+				++counter;
+			}
+			toBlockIndex = y + counter;
+		} else {
+			while (x - counter >= 0 && image.getRGB(x - counter, y) == ColorValues.r0g128b255) {
+				++counter;
+			}
+			fromBlockIndex = x - counter;
+
+			counter = 1;
+			while (x + counter < map.length && image.getRGB(x + counter, y) == ColorValues.r0g128b255) {
+				++counter;
+			}
+			toBlockIndex = x + counter;
+		}
+
+		level.addPlatform(x * Level.BLOCK_WIDTH, y * Level.BLOCK_HEIGHT, fromBlockIndex, toBlockIndex, verticalMove);
 	}
 }

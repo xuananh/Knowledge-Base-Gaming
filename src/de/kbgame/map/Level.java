@@ -6,6 +6,7 @@ import java.util.List;
 
 import de.kbgame.game.Enemy;
 import de.kbgame.game.Game;
+import de.kbgame.game.Platform;
 import de.kbgame.game.level.LevelSegment;
 import de.kbgame.geometry.ImageKey;
 import de.kbgame.util.FallingItem;
@@ -189,10 +190,10 @@ public class Level {
 	private void insertShotCollections(Game g) {
 		int offsetX = 0, offsetY=0;
 //        int x = 0, y = 0;
-        
+		
 		for (LevelSegment segment : levelParts) {
 			offsetY = (height - segment.getHeight()) * Level.BLOCK_HEIGHT;
-
+			
 			for (ShotCollection sc : segment.getShotCollections()) {
 //				System.out.println("Level1: " + sc.origin.x +" - " + sc.origin.y);
 				sc.origin.x += offsetX;
@@ -202,11 +203,28 @@ public class Level {
 				sc.autofill();
 				g.shots.add(sc);
 			}
-
+			
 			offsetX += segment.getWidth() * Level.BLOCK_WIDTH;
 		}
 	}
 	
+	private void insertPlatforms(Game g) {
+		int offsetX = 0, offsetY;
+
+		for (LevelSegment segment : levelParts) {
+			offsetY = (height - segment.getHeight()) * Level.BLOCK_HEIGHT;
+
+			for (Platform p : segment.getPlatform()) {
+				p.x += offsetX;
+				p.y += offsetY;
+				p.fromXY += p.verticalMove ? offsetY : offsetX;
+				p.toXY += p.verticalMove ? offsetY : offsetX;
+				g.platforms.add(p);
+			}
+
+			offsetX += segment.getWidth() * Level.BLOCK_WIDTH;
+		}
+	}
 	
 	public boolean inViewport(int x, int y) {
 		return x >= left && x <= right && y >= top && y <= bottom;
@@ -231,6 +249,7 @@ public class Level {
 		newLevel.insertEnemies(g);
 		newLevel.insertFallingItems(g);
 		newLevel.insertShotCollections(g);
+		newLevel.insertPlatforms(g);
 
 		if (levelParts.get(0).getPlayerStart() != null) {
 			// levelPart's playerStart is relative to its own dimensions.
@@ -245,10 +264,6 @@ public class Level {
 		return newLevel;
 	}
 	
-
-
-
-
 	public Point getGoal() {
 		return goal;
 	}

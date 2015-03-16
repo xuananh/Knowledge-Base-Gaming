@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import de.kbgame.game.Enemy;
 import de.kbgame.game.Game;
+import de.kbgame.game.Platform;
+import de.kbgame.map.Level;
 import de.kbgame.util.FallingItem;
 import de.kbgame.util.ShotCollection;
 
@@ -13,6 +15,7 @@ public abstract class LevelSegment {
 	protected int width, height;
 	protected byte[][] map;
 	protected ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	protected ArrayList<Platform> platforms = new ArrayList<Platform>();
 	protected ArrayList<FallingItem> fi = new ArrayList<FallingItem>();
 	protected ArrayList<ShotCollection> shotCollections = new ArrayList<ShotCollection>();
 	protected Point playerStart = null;
@@ -49,6 +52,14 @@ public abstract class LevelSegment {
 	
 	public ArrayList<Enemy> getEnemies() {
 		return enemies;
+	}
+	
+	public void addPlatform(int x, int y, int fromBlockIndex, int toBlockIndex, boolean verticalMove) {
+		platforms.add(new Platform(game, x, y, Level.BLOCK_WIDTH, Level.BLOCK_HEIGHT, fromBlockIndex, toBlockIndex, verticalMove));
+	}
+	
+	public ArrayList<Platform> getPlatform() {
+		return platforms;
 	}
 
 	public void setMap(int x, int y, byte v) {

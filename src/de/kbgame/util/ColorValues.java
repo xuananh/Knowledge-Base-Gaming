@@ -8,6 +8,8 @@ public final class ColorValues {
 
 	//Colors for Pixels
 	public static final int r0g0b0 = -16777216; // == new Color(0,0,0).getRGB();
+	public static final int r0g128b255 = -16744193;
+	public static final int r0g255b255 = -16711681;
 	public static final int r255g255b255 = -1;
 	public static final int r70g0b0 = -12189696;
 	public static final int r0g0b70 = -16777146;

@@ -58,6 +58,54 @@ public final class MapLoader {
 		}
 		return map;
 	}
+	
+	
+	public static byte[][] loadFromClingo(Game g, File file, Point playerStart, Point goalPoint, String ... moreParams) throws FileNotFoundException {
+		if (!file.exists()) {
+			throw new FileNotFoundException();
+		}
+
+		Random r = new Random();
+		int seed = r.nextInt(10000);
+		
+		String[] params = new String[4];
+		params[0] = "clingo";
+		params[1] = file.getAbsolutePath();
+		params[2] = "--seed="+seed;
+		params[3] = "--rand-freq=1";
+		
+		String[] paramsFinal = new String[params.length+moreParams.length];
+		int i=0;
+		for (String p : params) {
+			paramsFinal[i] = p;
+			i++;
+		}
+		for (String p : moreParams) {
+			paramsFinal[i] = p;
+		}
+		 		
+		
+
+		final AnswerASP answer = ClingoFactory.getInstance().getAnswerASP(paramsFinal);
+		final List<PredicateASP> pres = answer.getPreListFromString("block");
+		final int width = (Integer) answer.getPreListFromString("width").get(0).getParameterOfIndex(0);
+		final int height = (Integer) answer.getPreListFromString("height").get(0).getParameterOfIndex(0);
+		final PredicateASP start = answer.getPreListFromString("startX").get(0);
+		final PredicateASP goal = answer.getPreListFromString("goalX").get(0);
+
+		playerStart.x = (Integer) start.getParameterOfIndex(0);
+		playerStart.y = (Integer) start.getParameterOfIndex(1);
+
+		goalPoint.x = (Integer) goal.getParameterOfIndex(0);
+		goalPoint.y = (Integer) goal.getParameterOfIndex(1);
+
+		byte[][] map = new byte[width][height + 1];
+		for (PredicateASP pre : pres) {
+			setMapFromPredicate(g, map, pre);
+		}
+		return map;
+	}
+	
 
 	public static byte[][] loadFromBitmap(LevelSegment level, String filename, Point goal) {
 		try {

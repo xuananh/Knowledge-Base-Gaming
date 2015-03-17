@@ -48,8 +48,11 @@ public class FallingItem {
 	
 	public void update(Game g) {
 		
-		if (g.player.x>x+spaceX) {
-			activated=true;
+		int spaceX = 30;
+		if ((g.player.x>x-spaceX) & (g.player.x<x+spaceX)) {
+			if (g.player.y>y) {
+				activated=true;
+			}
 		}
 		
 		if (activated) {

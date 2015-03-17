@@ -38,6 +38,10 @@ public abstract class LevelSegment {
 		return map;
 	}
 	
+	public void setPlayerStart(Point start) {
+		this.playerStart = start;
+	}
+	
 	public Point getPlayerStart() {
 		return playerStart;
 	}

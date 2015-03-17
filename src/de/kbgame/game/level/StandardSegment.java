@@ -11,7 +11,6 @@ public class StandardSegment extends LevelSegment {
 		super(g);
 		
 		goal = new Point(-1,-1);
-		playerStart = new Point(0, 28);
 		
 		map = MapLoader.loadFromBitmap(this, args[0], goal);
 		width = map.length;

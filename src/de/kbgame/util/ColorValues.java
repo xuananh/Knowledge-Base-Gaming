@@ -48,6 +48,7 @@ public final class ColorValues {
 	public static final int r0g69b0 = -16759552;
 	public static final int r0g70b0 = -16759296;
 	public static final int r255g255b0 = -256;
+	public static final int r255g128b0 = -32768;
 	public static final int r128g128b128 = -8355712;
 	public static final int r192g192b192 = -4144960;
 	public static final int r128g135b0 = -8354048;

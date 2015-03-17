@@ -151,6 +151,10 @@ public final class MapLoader {
 				goal.setLocation(x, y);
 				break;
 			}
+			case ColorValues.r255g128b0: {
+				level.setPlayerStart(new Point(x, y));
+				break;
+			}
 			case ColorValues.r128g128b0: {
 				map[x][y] = Blocks.COIN;
 				break;

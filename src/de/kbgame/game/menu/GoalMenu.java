@@ -32,7 +32,7 @@ public class GoalMenu extends Menu{
 			switch (menuPunkt) {
 			case 1:
 				g.state = GameState.GAME;
-				g.newGame();
+				g.nextLevel();
 				break;
 			case 2:
 				g.state = GameState.GAME;

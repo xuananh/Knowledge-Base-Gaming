@@ -51,6 +51,9 @@ public class Game extends Thread {
 
 	public double gaFactor = 1.0;
 	
+	private Point playerStart = new Point();
+	private LevelBuilder builder;
+	
 	public static TimeBasedImageSprite coins = new TimeBasedImageSprite("Images/coin_flipping_sprite.png", 1, 6, 128);
 
 	private TreeMap<Integer, XValueObserver> xValueObservers = new TreeMap<Integer, XValueObserver>();
@@ -67,41 +70,56 @@ public class Game extends Thread {
 		sounds = new SoundThread();
 		menu = new MenuManage();
 
-		init();
+		fallingItemList = new LinkedList<FallingItem>();
 		
-		this.start();
+		try {
+			builder = new LevelBuilder(new File("level_config.txt"), this, playerStart);
+
+			nextLevel();
+			
+			this.start();
+		} catch (IOException e) {
+			System.err.println("config couldn't be read");
+		}
 	}
 	
 	private void init() {
 		int playerWidth = Level.BLOCK_WIDTH - 6;
 		int playerHeight = Level.BLOCK_HEIGHT;
+		
+		goal = level.getGoal();
 
-		Point playerStart = new Point();
+		backgrounds.add(new Background(ImageKey.BACKGROUND_1, .25f, 1, this));
+		backgrounds.add(new Background(ImageKey.BACKGROUND_2, .5f, 1, this));
 
-		try {
-			LevelBuilder builder = new LevelBuilder(new File("level_config.txt"), this, playerStart);
-			fallingItemList = new LinkedList<FallingItem>();
-			
-			level = builder.next();
-			goal = level.getGoal();
-
-			backgrounds.add(new Background(ImageKey.BACKGROUND_1, .25f, 1, this));
-			backgrounds.add(new Background(ImageKey.BACKGROUND_2, .5f, 1, this));
-
-			player = new Player(playerStart.x * Level.BLOCK_WIDTH + (playerWidth / 2), playerStart.y * Level.BLOCK_HEIGHT + (playerHeight / 2), playerWidth, playerHeight, hud);
-			list.add((Entity) player);
-			controller.control(player);			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		player = new Player(playerStart.x * Level.BLOCK_WIDTH + (playerWidth / 2), playerStart.y * Level.BLOCK_HEIGHT + (playerHeight / 2), playerWidth, playerHeight, hud);
+		list.add((Entity) player);
+		controller.control(player);		
 	}
 
-	public void newGame() {
+	public void newGame() {	
+		clearLists();
+		
+		level = builder.current();
+		
+		init();
+	}
+	
+	public void nextLevel() {
+		clearLists();
+		
+		level = builder.next();
+		
+		init();
+	}
+	
+	private void clearLists() {
 		list.clear();
 		platforms.clear();
 		removeFromList.clear();
 		hud.clear();
-		init();
+		fallingItemList.clear();
+		shots.clear();
 	}
 	
 	public void run() {

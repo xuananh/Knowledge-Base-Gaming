@@ -41,6 +41,11 @@ public class LevelBuilder implements Iterator<Level> {
 
 		reader.close();
 	}
+	
+	public Level current() {
+		currentIndex--;
+		return next();
+	}
 
 	@Override
 	public boolean hasNext() {

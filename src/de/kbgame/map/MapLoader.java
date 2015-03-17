@@ -147,7 +147,6 @@ public final class MapLoader {
 				break;
 			}
 			case ColorValues.r255g255b0: {
-				map[x][y] = Blocks.GOAL;
 				goal.setLocation(x, y);
 				break;
 			}

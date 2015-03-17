@@ -99,6 +99,13 @@ public class Level {
 			map[x][y] = v;
 		}
 	}
+	
+	public void setSegmentMap(LevelSegment segment, int x, int y, byte block) {
+		int xOffset = getOffsetByLevel(segment);
+		int yOffset = height - segment.getHeight();
+		
+		setMap(xOffset + x, yOffset + y, block);
+	}
 
 	public void createMap() {
 		byte[][] map;
@@ -259,6 +266,13 @@ public class Level {
 			playerStart.y = relativeStart.y + height - levelParts.get(0).getHeight();
 		} else {
 			playerStart.setLocation(DEFAULT_PLAYER_START);
+		}
+
+		// use final sgment's goal as level goal
+		LevelSegment finalSegment = newLevel.levelParts.get(levelParts.size() - 1);
+		Point goal = finalSegment.getGoal();
+		if (goal != null && goal.x > -1) {
+			newLevel.setSegmentMap(finalSegment, goal.x, goal.y, Blocks.GOAL);
 		}
 
 		return newLevel;

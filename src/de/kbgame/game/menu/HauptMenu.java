@@ -1,14 +1,8 @@
 package de.kbgame.game.menu;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import de.kbgame.game.Game;
 import de.kbgame.util.GameState;
@@ -42,14 +36,7 @@ public class HauptMenu extends Menu{
 	@Override
 	public void draw(Game g) {
 		if(!isPauseMenu) {
-			try {
-				BufferedImage image = ImageIO.read(new File("Images/menu_background.png"));
-				g.graphic.currentGrafic.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
-				g.graphic.currentGrafic.drawImage(image, 0, 0, g.graphic.Width, g.graphic.Height, null);
-				g.graphic.currentGrafic.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			menuBackground(g);
 		}
 		switch (menu) {
 		case HAUPT_MENU:

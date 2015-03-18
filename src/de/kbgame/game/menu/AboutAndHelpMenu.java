@@ -9,7 +9,7 @@ import de.kbgame.game.Game;
 public class AboutAndHelpMenu extends Menu{
 	
 	private static final int X_START = 350;
-	private static final int Y_START = 250;
+	private static final int Y_START = 350;
 	private final Menu hauptMenu;
 
 	public AboutAndHelpMenu(Menu hauptMenu) {
@@ -38,8 +38,10 @@ public class AboutAndHelpMenu extends Menu{
 
 	@Override
 	public void draw(Game g) {
-		gameLogo(0, 50, g, 0.5f);
-		g.graphic.drawText("About and Help", 50, 100, Color.red, false, new Font("Arial", Font.PLAIN, 40));
+		gameLogo(50, 50, g, 0.5f);
+		g.graphic.drawText("About and Help", 50, 150, Color.yellow, false, new Font("Arial", Font.PLAIN, 40));
+		g.graphic.drawText("Jump and Run game v.0.0 beta developed by A.T.A", 100, 200, Color.yellow, false, new Font("Arial", Font.PLAIN, 30));
+		g.graphic.drawText("Have fun! Thanks for joining us! ", 100, 250, Color.yellow, false, new Font("Arial", Font.PLAIN, 30));
 		g.graphic.drawText("back", X_START, Y_START, (menuPunkt == 1) ? Color.green : new Color(255,69,0), false, new Font("Comic Sans MS", Font.BOLD, (menuPunkt == 1) ? 35 : 30));
 		g.graphic.drawText("Exit game", X_START, Y_START + 50, (menuPunkt == 2) ? Color.green : new Color(255,69,0), false, new Font("Comic Sans MS", Font.BOLD, (menuPunkt == 2) ? 35 : 30));
 		int x = X_START - 30;

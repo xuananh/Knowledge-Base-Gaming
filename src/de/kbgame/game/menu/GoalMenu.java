@@ -1,14 +1,8 @@
 package de.kbgame.game.menu;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import de.kbgame.game.Game;
 import de.kbgame.util.GameState;
@@ -49,18 +43,11 @@ public class GoalMenu extends Menu{
 
 	@Override
 	public void draw(Game g) {
-		try {
-			BufferedImage image = ImageIO.read(new File("Images/menu_background.png"));
-			g.graphic.currentGrafic.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
-			g.graphic.currentGrafic.drawImage(image, 0, 0, g.graphic.Width, g.graphic.Height, null);
-			g.graphic.currentGrafic.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		menuBackground(g);
 		gameLogo(10, 50, g, 0.5f);
-		g.graphic.drawText("Victory! Congratulate!", X_START - 150, Y_START - 150, Color.magenta, false, new Font("Comic Sans MS", Font.BOLD, 50));
+		g.graphic.drawText("Level Complete!", X_START - 80, Y_START - 150, Color.orange, false, new Font("Comic Sans MS", Font.BOLD, 50));
 		
-		g.graphic.drawText("Score: ", X_START - 20, Y_START - 100, Color.red, false, new Font("Comic Sans MS", Font.BOLD, 30));
+		g.graphic.drawText("Score: " + g.player.getPoint(), X_START - 20, Y_START - 100, Color.orange, false, new Font("Comic Sans MS", Font.BOLD, 30));
 		
 		g.graphic.drawText("Next Level", X_START, Y_START, (menuPunkt == 1) ? Color.green : new Color(255,69,0), false, new Font("Comic Sans MS", Font.BOLD, (menuPunkt == 1) ? 35 : 30));
 		g.graphic.drawText("Restart Level", X_START, Y_START+50, (menuPunkt == 2) ? Color.green : new Color(255,69,0), false, new Font("Comic Sans MS", Font.BOLD, (menuPunkt == 2) ? 35 : 30));

@@ -254,4 +254,8 @@ public class Player extends Entity {
 			shots.add(shot);
 		}
 	}
+	
+	public int getPoint() {
+		return points.points + 200*lifes.hearts;
+	}
 }

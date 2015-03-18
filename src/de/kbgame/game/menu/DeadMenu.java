@@ -35,11 +35,10 @@ public class DeadMenu extends Menu{
 
 	@Override
 	public void draw(Game g) {
-		
 		gameLogo(10, 50, g, 0.5f);
-		g.graphic.drawText("Game Over!!", X_START - 30, Y_START - 150, Color.red, false, new Font("Comic Sans MS", Font.BOLD, 50));
+		g.graphic.drawText("Game Over!!", X_START - 30, Y_START - 150, new Color(187,255,255), false, new Font("Comic Sans MS", Font.BOLD, 50));
 		
-		g.graphic.drawText("Score: ", X_START - 20, Y_START - 100, Color.red, false, new Font("Comic Sans MS", Font.BOLD, 30));
+		g.graphic.drawText("Score: " + g.player.getPoint(), X_START - 20, Y_START - 100, new Color(187,255,255), false, new Font("Comic Sans MS", Font.BOLD, 30));
 		
 		g.graphic.drawText("Restart Level", X_START, Y_START, (menuPunkt == 1) ? Color.green : new Color(255,69,0), false, new Font("Comic Sans MS", Font.BOLD, (menuPunkt == 1) ? 35 : 30));
 		g.graphic.drawText("Exit game", X_START, Y_START + 50, (menuPunkt == 2) ? Color.green : new Color(255,69,0), false, new Font("Comic Sans MS", Font.BOLD, (menuPunkt == 2) ? 35 : 30));

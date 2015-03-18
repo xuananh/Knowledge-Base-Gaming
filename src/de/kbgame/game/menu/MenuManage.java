@@ -1,48 +1,27 @@
 package de.kbgame.game.menu;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.kbgame.game.Game;
+import de.kbgame.util.GameState;
 
 public class MenuManage {
-
-	private final HauptMenu hauptMenu = new HauptMenu();
-	private final GoalMenu goalMenu = new GoalMenu();
-	private final DeadMenu deadMenu = new DeadMenu();
 	
+	private final Map<GameState, Menu> menuMap = new HashMap<GameState, Menu>();
+	
+	public MenuManage() {
+		menuMap.put(GameState.MENU, new HauptMenu());
+		menuMap.put(GameState.GOAL, new GoalMenu());
+		menuMap.put(GameState.DEAD, new DeadMenu());
+		menuMap.put(GameState.WAIT, new WaitMenu());
+	}
+
 	public void update(Game g) {
-		switch (g.state) {
-		case MENU:
-			hauptMenu.update(g);
-			break;
-		case PAUSE:
-			hauptMenu.update(g);
-			break;
-		case GOAL:
-			goalMenu.update(g);
-			break;
-		case DEAD:
-			deadMenu.update(g);
-			break;
-		default:
-			break;
-		}
+		menuMap.get(g.state).update(g);
 	}
 	
 	public void draw(Game g) {
-		switch (g.state) {
-		case MENU:
-			hauptMenu.draw(g);
-			break;
-		case PAUSE:
-			hauptMenu.draw(g);
-			break;
-		case GOAL:
-			goalMenu.draw(g);
-			break;
-		case DEAD:
-			deadMenu.draw(g);
-			break;
-		default:
-			break;
-		}
+		menuMap.get(g.state).draw(g);
 	}
 }

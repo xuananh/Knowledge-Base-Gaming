@@ -1,0 +1,10 @@
+% Dummy-Testwerte
+
+platform(5,37,3,10,1).
+
+% platform(X,Y,Breite,Ausbreitung,vertikal).
+
+startX(0,5).
+goalX(20,5).
+width(width).
+height(height).

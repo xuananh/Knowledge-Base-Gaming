@@ -39,7 +39,6 @@ public class PlatformSegment extends LevelSegment {
 			System.out.println(p.toString());
 		}
 		
-		
 		boolean vertical = false;
 		for (PredicateASP p : pres) {
 			if ((Integer) p.getParameterOfIndex(4) == 1) {
@@ -54,11 +53,10 @@ public class PlatformSegment extends LevelSegment {
 										1*Level.BLOCK_HEIGHT,														// height
 										(Integer) p.getParameterOfIndex(1),						//Block-from
 										(Integer) p.getParameterOfIndex(1)+(Integer) p.getParameterOfIndex(3),		//Block-from
-										(Boolean) p.getParameterOfIndex(4)
+										vertical
 									);
-										
-										
-			g.platforms.add(pl);
+											
+			platforms.add(pl);
 			
 			//Platform	
 		}	

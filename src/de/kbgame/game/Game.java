@@ -3,7 +3,9 @@ package de.kbgame.game;
 import java.awt.AlphaComposite;
 import java.awt.Point;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -263,5 +265,15 @@ public class Game extends Thread {
 	
 	public void kill(byte block) {
 		player.kill(this);
+	}
+	
+	public void saveGame(String file){
+		try {
+		FileOutputStream fout = new FileOutputStream(file);
+		ObjectOutputStream oos = new ObjectOutputStream(fout);
+		oos.writeObject(this);
+		oos.close();
+		}
+		catch (Exception e) {e.printStackTrace();}
 	}
 }

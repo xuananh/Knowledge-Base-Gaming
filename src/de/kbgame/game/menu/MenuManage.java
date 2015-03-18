@@ -18,10 +18,19 @@ public class MenuManage {
 	}
 
 	public void update(Game g) {
-		menuMap.get(g.state).update(g);
+		if(g.isState(GameState.PAUSE)) {
+			menuMap.get(GameState.MENU).update(g);
+		}else {
+			menuMap.get(g.state).update(g);
+		}
+		
 	}
 	
 	public void draw(Game g) {
-		menuMap.get(g.state).draw(g);
+		if(g.isState(GameState.PAUSE)) {
+			menuMap.get(GameState.MENU).draw(g);
+		} else {
+			menuMap.get(g.state).draw(g);
+		}
 	}
 }

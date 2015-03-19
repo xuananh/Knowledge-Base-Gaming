@@ -1,16 +1,19 @@
 package de.kbgame.map;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.kbgame.game.Enemy;
 import de.kbgame.game.Game;
+import de.kbgame.game.JumpBlock;
 import de.kbgame.game.Platform;
 import de.kbgame.game.level.LevelSegment;
 import de.kbgame.geometry.ImageKey;
 import de.kbgame.util.FallingItem;
 import de.kbgame.util.ShotCollection;
+import de.kbgame.util.XValueObserver;
 
 public class Level {
 
@@ -80,6 +83,9 @@ public class Level {
 						break;
 					case Blocks.COIN:
 						g.graphic.drawImage(Game.coins.getCurrent(), x * BLOCK_WIDTH + BLOCK_WIDTH / 2, y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_WIDTH, BLOCK_HEIGHT, 0f, true);
+						break;
+					case Blocks.CAVE:
+						g.graphic.drawRectangle(x * BLOCK_WIDTH, y * BLOCK_HEIGHT, BLOCK_WIDTH, BLOCK_HEIGHT, Color.BLACK);
 						break;
 				}
 			}
@@ -233,6 +239,39 @@ public class Level {
 		}
 	}
 	
+	private void insertJumpBlocks(Game g) {
+		int offsetX = 0, offsetY;
+
+		for (LevelSegment segment : levelParts) {
+			offsetY = (height - segment.getHeight()) * Level.BLOCK_HEIGHT;
+
+			for (JumpBlock j : segment.getJumpBlock()) {
+				j.x += offsetX;
+				j.y += offsetY;
+				j.setMap(this);
+				g.jumpBlocks.put(new Point(j.x, j.y), j);
+			}
+
+			offsetX += segment.getWidth() * Level.BLOCK_WIDTH;
+		}
+	}
+	
+	private void subscribeObservers(Game g) {
+		int offsetX = 0;
+
+		for (LevelSegment segment : levelParts) {			
+			int[] observedXValues = segment.getObservedValues();
+			
+			if (observedXValues != null && segment instanceof XValueObserver) {
+				for (int i = 0; i < observedXValues.length; i++) {
+					g.subscribeXPass((XValueObserver) segment, observedXValues[i] + offsetX);
+				}
+			}
+
+			offsetX += segment.getWidth() * Level.BLOCK_WIDTH;
+		}
+	}
+	
 	public boolean inViewport(int x, int y) {
 		return x >= left && x <= right && y >= top && y <= bottom;
 	}
@@ -257,6 +296,8 @@ public class Level {
 		newLevel.insertFallingItems(g);
 		newLevel.insertShotCollections(g);
 		newLevel.insertPlatforms(g);
+		newLevel.insertJumpBlocks(g);
+		newLevel.subscribeObservers(g);
 
 		if (levelParts.get(0).getPlayerStart() != null) {
 			// levelPart's playerStart is relative to its own dimensions.

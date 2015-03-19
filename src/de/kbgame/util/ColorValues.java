@@ -127,5 +127,6 @@ public final class ColorValues {
 	public static final int r111g0b11 = -9502709;
 	public static final int r111g0b12 = -9502708;
 	public static final int r111g0b13 = -9502707;
+	public static final int r64g64b64 = -12566464;
 	
 }

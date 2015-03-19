@@ -3,7 +3,6 @@ package de.kbgame.util;
 import java.awt.Color;
 
 import de.kbgame.game.Game;
-import de.kbgame.map.Blocks;
 import de.kbgame.map.Level;
 
 public class Shot {
@@ -15,7 +14,6 @@ public class Shot {
 	private ShotCollection shots;
 	private int yBlock;
 	private int yOffset;
-	private boolean activated = false;
 
 	public Shot(int yOffset, int timeOffset, ShotCollection shots) {
 		this.timeOffset = timeOffset;
@@ -24,45 +22,34 @@ public class Shot {
 	}
 
 	public void update(Game g) {
-		
-		if (!(activated)) {
-			if (g.player.x>shots.origin.x-7*Level.BLOCK_WIDTH) {
-				activated=true;
+		if (timeOffset == 0) {
+			x = shots.origin.x;
+			y = shots.origin.y - Level.BLOCK_HEIGHT / 4 * yOffset;
+			yBlock = (int) y / Level.BLOCK_HEIGHT;
+			timeOffset--;
+		}
+
+		if (timeOffset <= 0) {
+			x -= shots.velocity;
+
+			// player collision
+			if (shots.playerHitBox.intersects(x, y, RADIUS, RADIUS)) {
+				g.player.getHit(null, g);
+				shots.addToRemoveList(this);
+			}
+
+			int xBlock = (int) x / Level.BLOCK_WIDTH;
+			if (Physic.isBlocking(g, xBlock, yBlock) || x < 0 - RADIUS) {
+				shots.addToRemoveList(this);
 			}
 		} else {
-		
-			if (timeOffset == 0) {
-				x = shots.origin.x;
-				y = shots.origin.y;
-				y = shots.origin.y - Level.BLOCK_HEIGHT / 4 * yOffset;
-				yBlock = (int) y / Level.BLOCK_HEIGHT;
-				timeOffset--;
-			}
-	
-			if (timeOffset <= 0) {
-				x -= shots.velocity;
-	
-				// player collision
-				if (shots.playerHitBox.intersects(x, y, RADIUS, RADIUS)) {
-					g.player.getHit(null, g);
-					shots.addToRemoveList(this);
-				}
-	
-				int xBlock = (int) x / Level.BLOCK_WIDTH;
-				if (g.level.getMap(xBlock, yBlock) != Blocks.Empty || x < 0 - RADIUS) {
-					shots.addToRemoveList(this);
-				}
-			} else {
-				--timeOffset;
-			}
+			--timeOffset;
 		}
 	}
 
 	public void draw(Game g) {
-		if (activated) {
-			if (timeOffset <= 0) {
-				g.graphic.drawOval(x, y, RADIUS, RADIUS, Color.BLACK);
-			}	
+		if (timeOffset <= 0) {
+			g.graphic.drawOval(x, y, RADIUS, RADIUS, Color.BLACK);
 		}
 	}
 }

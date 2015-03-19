@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -45,6 +46,7 @@ public class Game extends Thread {
 	public HUD hud = new HUD();
 	public FallingItem fi;
 	public LinkedList<FallingItem> fallingItemList;
+	public ArrayList<UpdateDraw> gameElements = new ArrayList<UpdateDraw>();
 
 	public final static boolean DEBUG = false;
 	public final static boolean LOAD_CLINGO = false;
@@ -125,6 +127,8 @@ public class Game extends Thread {
 		hud.clear();
 		fallingItemList.clear();
 		shots.clear();
+		gameElements.clear();
+		xValueObservers.clear();
 	}
 	
 	public void run() {
@@ -193,6 +197,10 @@ public class Game extends Thread {
 			}
 			
 			coins.update();
+			
+			for (UpdateDraw updateable : gameElements) {
+				updateable.update(this);
+			}
 
 			checkObservers();
 			if (isGoalReached()) {
@@ -235,6 +243,11 @@ public class Game extends Thread {
 			for (ShotCollection coll : this.shots) {
 				coll.draw(this);
 			}
+			
+			for (UpdateDraw drawable : gameElements) {
+				drawable.draw(this);
+			}
+			
 			if(isState(GameState.PAUSE) || isState(GameState.DEAD)) {
 				graphic.currentGrafic.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 				menu.draw(this);

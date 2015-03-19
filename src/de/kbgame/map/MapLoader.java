@@ -127,7 +127,7 @@ public final class MapLoader {
 		}
 	}
 
-	private static void setPixel(LevelSegment level, byte[][] map, int pixelColor, int x, int y, Point goal, BufferedImage image) {	
+	private static void setPixel(LevelSegment level, byte[][] map, int pixelColor, int x, int y, Point goal, BufferedImage image) {			
 		switch (pixelColor) {
 			case ColorValues.r0g0b0: {
 				map[x][y] = Blocks.Solid;
@@ -166,26 +166,22 @@ public final class MapLoader {
 				initPlatform(x, y, level, map, image);
 				break;
 			}
-			
-			
-			// Falling Objects - Gruen
-			case ColorValues.r0g255b0: {
-				level.addFallingItem(x*Level.BLOCK_WIDTH - 1, y*Level.BLOCK_HEIGHT - 1);
-				//map[x][y] = Blocks.GOAL;
-				//goal.setLocation(x, y);
-				//break;
+			case ColorValues.r64g64b64: {
+				map[x][y] = Blocks.CAVE;
 				break;
 			}
-			
-			
-			// Cannon - dunkeblau
+			// Falling Objects 
+			case ColorValues.r0g255b0: {
+				level.addFallingItem(x*Level.BLOCK_WIDTH - 1, y*Level.BLOCK_HEIGHT - 1);
+				break;
+			}
+			// Cannon
 			case ColorValues.r0g0b128: {
 				ShotCollection sc = new ShotCollection(13, 2, new Point(x * Level.BLOCK_WIDTH - 1, y * Level.BLOCK_HEIGHT - 1));
-//				System.out.println("Maploader: " + x + " " + y);
 				level.addShotCollection(sc);
 				map[x][y] = Blocks.CannonBlock;
+				break;
 			}
-			
 			
 			// java initializes scalar vectors with 0s by default
 		}

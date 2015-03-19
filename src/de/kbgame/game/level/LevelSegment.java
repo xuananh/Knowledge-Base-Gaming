@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import de.kbgame.game.Enemy;
 import de.kbgame.game.Game;
+import de.kbgame.game.JumpBlock;
 import de.kbgame.game.Platform;
 import de.kbgame.map.Level;
 import de.kbgame.util.FallingItem;
@@ -18,6 +19,8 @@ public abstract class LevelSegment {
 	protected ArrayList<Platform> platforms = new ArrayList<Platform>();
 	protected ArrayList<FallingItem> fi = new ArrayList<FallingItem>();
 	protected ArrayList<ShotCollection> shotCollections = new ArrayList<ShotCollection>();
+	protected ArrayList<JumpBlock> jumpBlocks = new ArrayList<JumpBlock>();
+	protected int[] observedValues = null;
 	protected Point playerStart = null;
 	protected Point goal = null; // block wise!
 	protected Game game;
@@ -65,6 +68,10 @@ public abstract class LevelSegment {
 	public ArrayList<Platform> getPlatform() {
 		return platforms;
 	}
+	
+	public ArrayList<JumpBlock> getJumpBlock() {
+		return jumpBlocks;
+	}
 
 	public void setMap(int x, int y, byte v) {
 		if (x >= 0 && y >= 0 && x < width && y < height) {
@@ -88,6 +95,14 @@ public abstract class LevelSegment {
 
 	public ArrayList<ShotCollection> getShotCollections() {
 		return shotCollections;
+	}
+	
+	public void addObserverValues(int[] obs) {
+		observedValues = obs;
+	}
+	
+	public int[] getObservedValues() {
+		return observedValues;
 	}
 
 }

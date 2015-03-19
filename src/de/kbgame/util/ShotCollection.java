@@ -20,7 +20,6 @@ public class ShotCollection extends Vector<Shot> {
 	public ShotCollection(int updateInterval, int velocity, Point origin) {
 		this.updateInterveral = updateInterval;
 		this.velocity = velocity;
-		//this.player = player;
 		this.origin = origin;
 	}
 
@@ -63,10 +62,7 @@ public class ShotCollection extends Vector<Shot> {
 	public void autofill() {
 		for (int i = 0; i < 100; i++) {
 			this.add(new Shot(-1, i * 130, this));
-			//			System.out.println("Shotcollection: " +this.origin.x + " - " + this.origin.y);
 		}
-		// TODO Auto-generated method stub
-
 	}
 
 }

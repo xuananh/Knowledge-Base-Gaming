@@ -68,14 +68,13 @@ public class Player extends Entity {
 			PhysicResult result = Physic.doPhysic(g, this);
 
 			if (parent != null) {
-				parentOffsetX = (int) result.x - parentOffsetX;
+				parentOffsetX += result.x - x;
 
-				nx = (int) result.x;
+				nx = parent.x + parentOffsetX;
 				ny = parent.y + parentOffsetY;
 
 				vy = parent.vy;
 				vx = result.vx;
-				// vx = parent.vx;
 
 				lx = x - width / 2;
 				rx = lx + width - 1; // != x+wi/2

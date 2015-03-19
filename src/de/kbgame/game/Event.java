@@ -2,9 +2,17 @@ package de.kbgame.game;
 
 public class Event {
 	
-	Entity owner;
+	protected Entity owner;
+	
+	Event() {
+		
+	}
 	
 	Event(Entity e) {
+		owner = e;
+	}
+	
+	public void setOwner(Entity e) {
 		owner = e;
 	}
 	

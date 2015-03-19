@@ -185,8 +185,10 @@ public class Player extends Entity {
 
 		if (g.level.getMap(blockX, blockY + 1) == Blocks.JUMP) {
 			// player's center must be above the jump block
-			if (event == null) {
-				this.event = new JumpEvent(this, -0.2, -10, 100, new MyPoint(5 * 50, 36 * 50));
+			if (event == null && g.jumpBlocks.get(new Point(blockX, blockY + 1)) != null) {
+				JumpEvent jEvent = g.jumpBlocks.get(new Point(blockX, blockY + 1)).getJumpEvent();
+				jEvent.setOwner(this);
+				this.event = jEvent;
 			}
 		} else {
 			super.jump(g);

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -52,6 +53,8 @@ public class Game extends Thread {
 	public GameState state = GameState.MENU;
 
 	public double gaFactor = 1.0;
+	
+	public final HashMap<Point, JumpBlock> jumpBlocks = new HashMap<Point, JumpBlock>();
 	
 	private Point playerStart = new Point();
 	private LevelBuilder builder;

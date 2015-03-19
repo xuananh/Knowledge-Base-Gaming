@@ -10,6 +10,7 @@ import de.kbgame.game.UpdateDraw;
 import de.kbgame.geometry.MyPoint;
 import de.kbgame.map.Level;
 import de.kbgame.map.MapLoader;
+import de.kbgame.util.CaveEnemyShotCollection;
 import de.kbgame.util.Shot;
 import de.kbgame.util.ShotCollection;
 import de.kbgame.util.XValueObserver;
@@ -51,7 +52,7 @@ public class CaveEnemySegment extends LevelSegment implements UpdateDraw, XValue
 	}
 
 	private void initShots() {
-		shots = new ShotCollection(24, 8, shotOrigin);
+		shots = new CaveEnemyShotCollection(24, 8, shotOrigin);
 
 		String[] params = new String[3];
 		params[0] = "clingo";

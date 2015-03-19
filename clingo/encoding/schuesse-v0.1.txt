@@ -8,15 +8,15 @@ vier(1..4).
 w(1..width).
 h(1..sprunghoehe).
 
-% Koordinaten ausgehen vom Boden wobei ein Block jeweils 4 Einheiten enth‰lt
+% Koordinaten ausgehen vom Boden wobei ein Block jeweils 4 Einheiten enth√§lt
 0{ schuss(X*FX,Y*FY) : vier(FY), vier(FX),  h(Y) }1 :- w(X).
 
-% TODO: Sicherstellen, dass der Weg zu bew‰ltigen ist
+% TODO: Sicherstellen, dass der Weg zu bew√§ltigen ist
 
 % TODO: Umrechnen der Koordinaten (?)
 
-% Gesamtanzahl der Sch¸sse (min. 5)
+% Gesamtanzahl der Sch√ºsse (min. 5)
 % TODO: Angemessene Zahl finden
-:- 0{ schuss(X,Y) }5.
+:- 0{ schuss(X,Y) } 15.
 
 #show schuss/2.

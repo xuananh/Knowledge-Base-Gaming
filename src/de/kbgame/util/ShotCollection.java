@@ -1,16 +1,17 @@
 package de.kbgame.util;
 
 import java.awt.Point;
+import java.util.LinkedList;
 import java.util.Vector;
 
 import de.kbgame.game.Game;
 import de.kbgame.game.Player;
 
 @SuppressWarnings("serial")
-public class ShotCollection extends Vector<Shot> {
+public class ShotCollection extends LinkedList<Shot> {
 
 	private int updateInterveral;
-	private long nextUpdate = 0;
+	protected long nextUpdate = 0;
 	int velocity;
 	de.kbgame.geometry.Rectangle playerHitBox;
 	public Player player;

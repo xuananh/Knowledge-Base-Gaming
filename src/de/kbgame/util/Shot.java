@@ -20,6 +20,10 @@ public class Shot {
 		this.shots = shots;
 		this.yOffset = yOffset;
 	}
+	
+	public Shot(Shot s) {
+		this(s.yOffset, s.timeOffset, s.shots);
+	}
 
 	public void update(Game g) {
 		if (timeOffset == 0) {
@@ -51,5 +55,9 @@ public class Shot {
 		if (timeOffset <= 0) {
 			g.graphic.drawOval(x, y, RADIUS, RADIUS, Color.BLACK);
 		}
+	}
+	
+	public int getTimeOffset() {
+		return timeOffset;
 	}
 }

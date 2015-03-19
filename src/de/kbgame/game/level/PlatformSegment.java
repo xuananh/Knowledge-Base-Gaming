@@ -7,7 +7,6 @@ import de.kbgame.game.Game;
 import de.kbgame.game.Platform;
 import de.kbgame.map.Level;
 import de.kbgame.map.MapLoader;
-import de.kbgame.util.Shot;
 import de.kbgame.util.clingo.AnswerASP;
 import de.kbgame.util.clingo.ClingoFactory;
 import de.kbgame.util.clingo.PredicateASP;

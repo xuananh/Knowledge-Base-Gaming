@@ -6,5 +6,6 @@ public enum SoundKey {
 	BACKGROUND,
 	GOAL,
 	DEAD,
-	GET_HIT
+	GET_HIT,
+	COIN,
 }

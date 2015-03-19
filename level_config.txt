@@ -1,2 +1,2 @@
 (summer,5,6);GraebenSegment(clingo/encoding/graeben2.txt,medium,0);StandardSegment(Levels/testmap_small.bmp)
-(summer,5,6);StandardSegment(Levels/testmap_small.bmp)
+(cloud,5,6);StandardSegment(Levels/testmap_small.bmp)

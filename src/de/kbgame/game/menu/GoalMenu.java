@@ -31,6 +31,7 @@ public class GoalMenu extends Menu{
 
 	@Override
 	public void draw(Game g) {
+		menuBackground(g);
 		switch (menu) {
 		case HAUPT_MENU:
 			drawGoalMenu(g);
@@ -49,7 +50,6 @@ public class GoalMenu extends Menu{
 			saveHightScore(score);
 			isSavedScore = true;
 		}
-		menuBackground(g);
 		gameLogo(10, 50, g, 0.5f);
 		g.graphic.drawText("Level Complete!", X_START - 80, Y_START - 150, Color.orange, false, new Font("Comic Sans MS", Font.BOLD, 50));
 		

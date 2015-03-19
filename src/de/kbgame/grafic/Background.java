@@ -1,10 +1,6 @@
 package de.kbgame.grafic;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import de.kbgame.game.Game;
 import de.kbgame.geometry.ImageKey;
@@ -32,14 +28,6 @@ public class Background {
 			
 		this.xFactor = xFactor;
 		this.yFactor = yFactor;
-	}
-	
-	public Background(ImageKey img) {
-		try {
-			background = ImageIO.read(new File("Images/bg-1.jpg"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public void draw(Game g) {

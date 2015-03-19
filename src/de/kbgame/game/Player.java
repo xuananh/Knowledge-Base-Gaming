@@ -15,6 +15,7 @@ import de.kbgame.util.Status;
 import de.kbgame.util.hud.HUD;
 import de.kbgame.util.hud.LifeHearts;
 import de.kbgame.util.hud.Points;
+import de.kbgame.util.sound.SoundKey;
 
 public class Player extends Entity {
 
@@ -178,6 +179,7 @@ public class Player extends Entity {
 
 	@Override
 	public void jump(Game g) {
+		g.sounds.sound(SoundKey.JUMP);
 		int blockX = x / Level.BLOCK_WIDTH;
 		int blockY = y / Level.BLOCK_HEIGHT;
 
@@ -239,6 +241,8 @@ public class Player extends Entity {
 	}
 
 	public void kill(Game g) {
+		g.sounds.sound(SoundKey.DEAD);
+		g.sounds.stop(SoundKey.DEAD);
 		lifes.hearts = 0;
 		g.state = GameState.DEAD;
 	}

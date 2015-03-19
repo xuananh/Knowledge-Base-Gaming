@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import de.kbgame.game.Game;
 import de.kbgame.game.level.LevelSegment;
+import de.kbgame.grafic.ImageLoader;
 
 public class LevelBuilder implements Iterator<Level> {
 
@@ -69,6 +70,7 @@ public class LevelBuilder implements Iterator<Level> {
 		
 		if (levelSegmentsString.length > 0) {
 			levelSettings = parseLevelSettings(levelSegmentsString[0]);
+			ImageLoader.getInstance().loadImages("Images/confImage/" + levelSettings[0] + ".txt");
 		}
 
 		// process each level segment

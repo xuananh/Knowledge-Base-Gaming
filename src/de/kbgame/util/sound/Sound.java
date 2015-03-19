@@ -38,8 +38,8 @@ public class Sound {
 		try{
 			if (clip.isActive()){
 				clip.stop();
-				clip.setFramePosition(0);
 			}
+			clip.setFramePosition(0);
 			clip.start();
 		}catch(Exception e){
 			e.printStackTrace();

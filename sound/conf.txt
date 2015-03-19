@@ -1,0 +1,6 @@
+SOUND:JUMP:sound/jump.wav
+MUSIC:MENU:
+MUSIC:BACKGROUND:sound/SunnyDay.wav
+MUSIC:GOAL:
+SOUND:DEAD:sound/death.wav
+SOUND:GET_HIT:

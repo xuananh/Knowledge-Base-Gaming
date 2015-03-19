@@ -54,7 +54,7 @@ public class CaveEnemySegment extends LevelSegment implements UpdateDraw, XValue
 		shots = new ShotCollection(24, 8, shotOrigin);
 
 		String[] params = new String[3];
-		params[0] = "/opt/local/bin/clingo";
+		params[0] = "clingo";
 		params[1] = "clingo/encoding/schuesse-v0.1.txt";
 		params[2] = "1";
 

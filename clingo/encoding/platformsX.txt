@@ -4,10 +4,14 @@
 % TODO: ueberschneidungen verhindern (parea betrachten))
 
 
-#const width = 20.
-#const height = 20.
-#const number = 5. 
+#const width = 30.
+#const height = 30.
+#const number = (width+height)/10. 
+%#const number = 3.
 #const lMax = 5.  
+
+%number((A+B)/10+1) :- betrag((startx-destx),A), betrag((starty-desty),B). 
+#show number/1.
 
 #const tolerance=2. % je X- und Y-Achse = 2x2
 
@@ -15,20 +19,34 @@ x(1..width).
 y(1..height).
 block(1..width,1..height).
 
-start(2,2).
-dest(19,19).
+#const startx = 1.
+#const starty = 2.
+#const destx = 19.
+#const desty = 19.
+start(2,10).
+dest(19,10).
+
+
+
+wert(-100..100). 
+betrag(I,O) :- O=I, I>=0, wert(I;O) .
+betrag(I,O) :- O=I*(-1), I<0, wert(I;O).
+
+%dir(up;right).
+%dir(up).
 dir(up;right).
 
 number(1..number).
 
 lMax(lMax).
-ausbreitung(3..5).
+ausbreitung(4..6).
 
 1{ platform(X,Y,L,A,Dir,ID) : x(X), y(Y), lMax(L), dir(Dir), ausbreitung(A) }1 :- number(ID). 
+%#minimize { 1, X,Y,L,A,Dir,ID : platform(X,Y,L,A,Dir,ID) }.
 
 :- platform(X,Y,L,A,up,ID), not y(Y+A).
-:- platform(X,Y,L,A,right,ID), not x(X+A).
-:- platform(X,Y,L,A,right,ID), L>=A.
+%:- platform(X,Y,L,A,right,ID), not x(X+A).
+%:- platform(X,Y,L,A,right,ID), L>=A.
 
 %:- platform(X,Y,L,A,Dir,ID), platform(X,Y,_,_,Dir,ID2), ID!=ID2.
 %:- platform(X,Y,_,_,_,ID), platform(X,Y,_,_,_,ID2), ID!=ID2.

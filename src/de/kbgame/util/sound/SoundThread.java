@@ -1,7 +1,11 @@
 package de.kbgame.util.sound;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class SoundThread extends Thread{
 	
@@ -12,49 +16,54 @@ public class SoundThread extends Thread{
 	float setVolumeTo = 1f;
 	float Volume = 1f;
 	
-	ArrayList<Sound> music = new ArrayList<Sound>();
-	ArrayList<Sound> sounds = new ArrayList<Sound>();
+	Map<SoundKey,Sound> music = new HashMap<SoundKey,Sound>();
+	Map<SoundKey,Sound> sounds = new HashMap<SoundKey,Sound>();
 	
-	LinkedList<Integer> incToPlay = new LinkedList<Integer>();
-	LinkedList<Integer> incToStop = new LinkedList<Integer>();
-	LinkedList<Integer> incToPlayMusic = new LinkedList<Integer>();
-	LinkedList<Integer> incToStopMusic = new LinkedList<Integer>();
+	LinkedList<SoundKey> incToPlay = new LinkedList<SoundKey>();
+	LinkedList<SoundKey> incToStop = new LinkedList<SoundKey>();
+	LinkedList<SoundKey> incToPlayMusic = new LinkedList<SoundKey>();
+	LinkedList<SoundKey> incToStopMusic = new LinkedList<SoundKey>();
 	
 
-	LinkedList<Integer> toPlay = new LinkedList<Integer>();
-	LinkedList<Integer> toStop = new LinkedList<Integer>();
-	LinkedList<Integer> toPlayMusic = new LinkedList<Integer>();
-	LinkedList<Integer> toStopMusic = new LinkedList<Integer>();
+	LinkedList<SoundKey> toPlay = new LinkedList<SoundKey>();
+	LinkedList<SoundKey> toStop = new LinkedList<SoundKey>();
+	LinkedList<SoundKey> toPlayMusic = new LinkedList<SoundKey>();
+	LinkedList<SoundKey> toStopMusic = new LinkedList<SoundKey>();
 	
 	public SoundThread(){
-		Sound s = new Sound("sound/SunnyDay.wav");
-		s.playRepeated();
-		s.play();
-		//soundloop.run();
+		loadSound();
 		this.start();
 	}
 	
-	public void playMusic(int index){
-		if (music.size() > index && index >= 0){
-			incToPlayMusic.add(index);
+	public Sound getMusic(SoundKey key) {
+		return music.get(key);
+	}
+	
+	public Sound getSound(SoundKey key) {
+		return sounds.get(key);
+	}
+	
+	public void playMusic(SoundKey key){
+		if (music.get(key) != null){
+			incToPlayMusic.add(key);
 		}
 	}
 	
-	public void stopMusic(int index){
-		if (music.size() > index && index >= 0){
-			incToStopMusic.add(index);
+	public void stopMusic(SoundKey key){
+		if (music.get(key) != null){
+			incToStopMusic.add(key);
 		}
 	}
 	
-	public void sound(int index){
-		if (sounds.size() > index && index >= 0){
-			incToPlay.add(index);
+	public void sound(SoundKey key){
+		if (sounds.get(key) != null){
+			incToPlay.add(key);
 		}
 	}
 	
-	public void stop(int index){
-		if (sounds.size() > index && index >= 0){
-			incToStop.add(index);
+	public void stop(SoundKey key){
+		if (sounds.get(key) != null){
+			incToStop.add(key);
 		}
 	}
 	
@@ -81,8 +90,8 @@ public class SoundThread extends Thread{
 		while(!selfdestruct){
 
 			if (stopall){
-				for (Sound c:sounds) c.stop();
-				for (Sound c:music) c.stop();
+				for (Entry<SoundKey, Sound> e:sounds.entrySet()) e.getValue().stop();
+				for (Entry<SoundKey, Sound> e:music.entrySet()) e.getValue().stop();
 			}else{
 				toStop.clear();
 				toPlay.clear();
@@ -92,20 +101,19 @@ public class SoundThread extends Thread{
 				toPlay.addAll(incToPlay);
 				toStopMusic.addAll(incToStopMusic);
 				toPlayMusic.addAll(incToPlayMusic);
-				for (Integer i:toStop){
+				for (SoundKey i:toStop){
 					sounds.get(i).stop();
 					incToStop.remove(i);
 				}
-				for (Integer i:toPlay){
+				for (SoundKey i:toPlay){
 					sounds.get(i).play();
 					incToPlay.remove(i);
 				}
-				for (Integer i:toStopMusic){
+				for (SoundKey i:toStopMusic){
 					music.get(i).stop();
 					incToStopMusic.remove(i);
 				}
-				for (Integer i:toPlayMusic){
-					System.out.println(incToPlayMusic.size());
+				for (SoundKey i:toPlayMusic){
 					music.get(i).play();
 					incToPlayMusic.remove(i);
 				}
@@ -113,13 +121,42 @@ public class SoundThread extends Thread{
 			if (setVolume && Volume != setVolumeTo){
 				Volume = setVolumeTo;
 				setVolume = false;
-				for (Sound c:sounds) c.setVolume(Volume);
-				for (Sound c:music) c.setVolume(Volume);
+				for (Entry<SoundKey, Sound> e:sounds.entrySet()) e.getValue().setVolume(Volume);
+				for (Entry<SoundKey, Sound> c:music.entrySet()) c.getValue().setVolume(Volume);
 			}
 			
 			try {
 				Thread.sleep(100);//10 times each second
 			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void loadSound() {
+		BufferedReader bfr = null;
+		try {
+			FileReader fstream = new FileReader("sound/conf.txt");
+			bfr = new BufferedReader(fstream);
+			String line;
+			while ( (line = bfr.readLine()) != null){
+				if(line.contains(":")) {
+					String[] s = line.trim().split(":");
+					if(s.length == 3) {
+						if("SOUND".equals(s[0])) {
+							sounds.put(SoundKey.valueOf(s[1]), new Sound(s[2]));
+						} else if("MUSIC".equals(s[0])) {
+							music.put(SoundKey.valueOf(s[1]), new Sound(s[2]));
+						}
+					}
+				}
+			}
+		} catch(Exception e){ 
+			e.printStackTrace();
+		} finally{
+			try{ 
+				bfr.close();
+			} catch(Exception e) {
 				e.printStackTrace();
 			}
 		}

@@ -1,0 +1,2 @@
+BACKGROUND_1:Images/cloud/cloud.png
+BACKGROUND_2:Images/cloud/bg_2.png

@@ -1,0 +1,15 @@
+BACKGROUND:
+PERSON:
+BLOCK:Images/block.png
+BODEN:Images/grass.png
+QUESTION_BLOCK:Images/questionblock.png
+SPRITE:
+ENEMY:Images/enemy.png
+JUMP_BLOCK:Images/jump_block.png
+QUESTIONBLOCK_BOUNCED_IMAGE:Images/questionblock_bounced.png
+BACKGROUND_1:Images/summerImage/bg-1.jpg
+BACKGROUND_2:Images/summerImage/bg-2.png
+HUD_HEART:Images/heart.png
+GOAL:Images/goal.png
+FIRE_BLOCK:Images/fire.png
+CANNON:Images/cannon.png

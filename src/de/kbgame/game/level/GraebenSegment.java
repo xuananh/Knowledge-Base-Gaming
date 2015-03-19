@@ -18,7 +18,7 @@ public class GraebenSegment extends LevelSegment {
 		String[] params = new String[1]; 
 		params[0] = "-c difficulty=" + args[1];
 		
-		map = MapLoader.loadFromClingo(g, new File(args[0]), playerStart, goal, params);
+		map = MapLoader.loadFromClingo(g, this, new File(args[0]), playerStart, goal, params);
 		width = map.length;
 		height = map[0].length;
 	}

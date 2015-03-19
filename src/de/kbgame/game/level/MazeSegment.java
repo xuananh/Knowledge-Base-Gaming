@@ -16,7 +16,7 @@ public class MazeSegment extends LevelSegment {
 		goal = new Point();
 		playerStart = new Point();
 		
-		map = MapLoader.loadFromClingo(g, new File(args[0]), playerStart, goal);
+		map = MapLoader.loadFromClingo(g, this, new File(args[0]), playerStart, goal);
 		width = map.length;
 		height = map[0].length;
 	}

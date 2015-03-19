@@ -25,7 +25,7 @@ public final class MapLoader {
 		throw new AssertionError();
 	}
 
-	public static byte[][] loadFromClingo(Game g, File file, Point playerStart, Point goalPoint) throws FileNotFoundException {
+	public static byte[][] loadFromClingo(Game g, LevelSegment level, File file, Point playerStart, Point goalPoint) throws FileNotFoundException {
 		if (!file.exists()) {
 			throw new FileNotFoundException();
 		}
@@ -54,13 +54,13 @@ public final class MapLoader {
 
 		byte[][] map = new byte[width][height + 1];
 		for (PredicateASP pre : pres) {
-			setMapFromPredicate(g, map, pre);
+			setMapFromPredicate(g, level, map, pre);
 		}
 		return map;
 	}
 	
 	
-	public static byte[][] loadFromClingo(Game g, File file, Point playerStart, Point goalPoint, String ... moreParams) throws FileNotFoundException {
+	public static byte[][] loadFromClingo(Game g, LevelSegment level, File file, Point playerStart, Point goalPoint, String ... moreParams) throws FileNotFoundException {
 		if (!file.exists()) {
 			throw new FileNotFoundException();
 		}
@@ -101,7 +101,7 @@ public final class MapLoader {
 
 		byte[][] map = new byte[width][height + 1];
 		for (PredicateASP pre : pres) {
-			setMapFromPredicate(g, map, pre);
+			setMapFromPredicate(g, level, map, pre);
 		}
 		return map;
 	}
@@ -187,7 +187,7 @@ public final class MapLoader {
 		}
 	}
 
-	private static void setMapFromPredicate(Game g, byte[][] map, PredicateASP pre) {
+	private static void setMapFromPredicate(Game g, LevelSegment level, byte[][] map, PredicateASP pre) {
 		final int blockType = (Integer) pre.getParameterOfIndex(2);
 		final int x = (Integer) pre.getParameterOfIndex(0);
 		final int y = (Integer) pre.getParameterOfIndex(1);
@@ -201,6 +201,22 @@ public final class MapLoader {
 				break;
 			case 9:
 				map[x][y] = Blocks.FireBlock;
+				break;
+			case 14:
+				map[x][y] = Blocks.COIN;
+				break;
+			case 4:
+				map[x][y] = Blocks.QuestionBlock;
+				break;			
+			case 5:
+				Enemy e = new Enemy(x * Level.BLOCK_WIDTH - 1, y * Level.BLOCK_HEIGHT - 1, Level.BLOCK_WIDTH, Level.BLOCK_HEIGHT);
+				level.addEnemy(e);
+				break;
+			case 13:				
+				ShotCollection sc = new ShotCollection(13, 2, new Point(x * Level.BLOCK_WIDTH - 1, y * Level.BLOCK_HEIGHT - 1));
+//				System.out.println("Maploader: " + x + " " + y);
+				level.addShotCollection(sc);
+				map[x][y] = Blocks.CannonBlock;
 				break;
 		// java initializes scalar vectors with 0s by default
 		}

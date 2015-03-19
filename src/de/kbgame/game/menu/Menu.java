@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 
 import de.kbgame.game.Game;
 import de.kbgame.grafic.ImageSprite;
+import de.kbgame.util.sound.SoundKey;
 
 public abstract class Menu {
 	
@@ -46,6 +47,9 @@ public abstract class Menu {
 	public abstract void draw(Game g);
 	
 	public void update(Game g) {
+		if (g.input.getKey(KeyEvent.VK_ENTER)){
+			g.sounds.sound(SoundKey.MENU);
+		}
 		updateMenu(g);
 		if (g.input.getKey(KeyEvent.VK_ESCAPE)) 
 			g.shouldApplicationExit = true;

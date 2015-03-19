@@ -11,6 +11,7 @@ import de.kbgame.geometry.Rectangle;
 import de.kbgame.map.Blocks;
 import de.kbgame.map.Level;
 import de.kbgame.util.hud.Points;
+import de.kbgame.util.sound.SoundKey;
 
 public final class Physic {
 
@@ -42,6 +43,7 @@ public final class Physic {
 			if (g.level.getMap(newBlockIndexX, newBlockIndexY) == Blocks.COIN) {
 				g.level.setMap(newBlockIndexX, newBlockIndexY, Blocks.Empty);
 				g.player.addPoints(Points.COIN_SCORE);
+				g.sounds.sound(SoundKey.COIN);
 			}
 			
 			result = platformPhysics(g, (Player) e, result);

@@ -227,6 +227,7 @@ public class Player extends Entity {
 	}
 
 	public void getHit(Enemy e, Game g) {
+		g.sounds.sound(SoundKey.GET_HIT);
 		if (hitdelay > 0) {
 			return;
 		}
@@ -244,7 +245,6 @@ public class Player extends Entity {
 
 	public void kill(Game g) {
 		g.sounds.sound(SoundKey.DEAD);
-		g.sounds.stop(SoundKey.DEAD);
 		lifes.hearts = 0;
 		g.state = GameState.DEAD;
 	}

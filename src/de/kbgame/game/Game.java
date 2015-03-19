@@ -25,6 +25,7 @@ import de.kbgame.util.Input;
 import de.kbgame.util.ShotCollection;
 import de.kbgame.util.XValueObserver;
 import de.kbgame.util.hud.HUD;
+import de.kbgame.util.sound.SoundKey;
 import de.kbgame.util.sound.SoundThread;
 
 public class Game extends Thread {
@@ -75,6 +76,7 @@ public class Game extends Thread {
 		sounds = new SoundThread();
 		menu = new MenuManage();
 
+		sounds.getMusic(SoundKey.BACKGROUND).playRepeated();
 		fallingItemList = new LinkedList<FallingItem>();
 		
 		try {
@@ -196,6 +198,7 @@ public class Game extends Thread {
 
 			checkObservers();
 			if (isGoalReached()) {
+				sounds.sound(SoundKey.GOAL);
 				state = GameState.GOAL;
 			}
 		} else {

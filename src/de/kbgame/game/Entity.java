@@ -53,4 +53,13 @@ public class Entity {
 	public void drawBox(Game g) {
 		g.graphic.drawRectangleBorder(x - width / 2, y - height / 2, width, height, Color.cyan);
 	}
+	
+	public void setStartPos(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	public void kill(Game g) {
+		g.removeFromList.add(this);
+	}
 }

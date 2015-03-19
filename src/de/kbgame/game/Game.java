@@ -71,6 +71,9 @@ public class Game extends Thread {
 	public Vector<ShotCollection> shots = new Vector<ShotCollection>();
 	//public ArrayList<ShotCollection> shotCollections;
 
+	private final int playerWidth = Level.BLOCK_WIDTH - 6;
+	private final int playerHeight = Level.BLOCK_HEIGHT;
+	
 	public Game() {
 		input = new Input(); // Init Input before Graphic, because Graphics uses Input!
 		graphic = new Graphics(this);
@@ -83,8 +86,7 @@ public class Game extends Thread {
 		
 		try {
 			builder = new LevelBuilder(new File("level_config.txt"), this, playerStart);
-
-			nextLevel();
+			player = new Player(0,0, playerWidth, playerHeight, hud);
 			
 			this.start();
 		} catch (IOException e) {
@@ -93,22 +95,23 @@ public class Game extends Thread {
 	}
 	
 	private void init() {
-		int playerWidth = Level.BLOCK_WIDTH - 6;
-		int playerHeight = Level.BLOCK_HEIGHT;
-		
 		goal = level.getGoal();
+
+		superEnemy = new SuperEnemy(500,1150, playerWidth*2, playerHeight*2, player);
+		list.add(superEnemy);
 
 		backgrounds.add(new Background(ImageKey.BACKGROUND_1, .25f, 1, this));
 		backgrounds.add(new Background(ImageKey.BACKGROUND_2, .5f, 1, this));
 
-		player = new Player(playerStart.x * Level.BLOCK_WIDTH + (playerWidth / 2), playerStart.y * Level.BLOCK_HEIGHT + (playerHeight / 2), playerWidth, playerHeight, hud);
+		player.setStartPos(playerStart.x * Level.BLOCK_WIDTH + (playerWidth / 2), playerStart.y * Level.BLOCK_HEIGHT + (playerHeight / 2));
 		list.add((Entity) player);
 		controller.control(player);		
 	}
 
 	public void newGame() {	
 		clearLists();
-		
+
+		player = new Player(0,0, playerWidth, playerHeight, hud);
 		level = builder.current();
 		
 		init();
@@ -126,7 +129,6 @@ public class Game extends Thread {
 		list.clear();
 		platforms.clear();
 		removeFromList.clear();
-		hud.clear();
 		fallingItemList.clear();
 		shots.clear();
 		gameElements.clear();

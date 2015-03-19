@@ -19,6 +19,12 @@ public class Enemy extends Entity {
 		sprite = new ImageSprite("Images/enemy.png", 1, 1);
 		sprite.setIndex(0);
 	}
+	
+	public Enemy(int x, int y, int width, int height, ImageSprite imageSprite) {
+		super(x, y, width, height);
+		sprite = imageSprite;
+		sprite.setIndex(0);
+	}
 
 	@Override
 	public void update(Game g) {
@@ -46,25 +52,23 @@ public class Enemy extends Entity {
 
 	private void setSprites(PhysicResult result) {
 		setPlayerStatus(result);
+
+		sprite.noUpdate = false;
+
 		switch (status) {
-		/*case MOVE_LEFT:
-			if (sprite.getIndex() == 4) {
-				sprite.setIndex(3);
-			} else {
-				sprite.setIndex(4);
-			}
-			break;
-		case MOVE_RIGHT:
-			if (sprite.getIndex() == 9) {
-				sprite.setIndex(10);
-			} else {
-				sprite.setIndex(9);
-			}
-			break;*/
+			case MOVE_LEFT:
+				sprite.setCurrentRow(1);
+				break;
+			case MOVE_RIGHT:
+				sprite.setCurrentRow(2);
+				break;
 			default:
-				sprite.setIndex(0);
+				sprite.noUpdate = true;
+				sprite.setIndex(1);
 				break;
 		}
+
+		sprite.update();
 	}
 
 	private void setPlayerStatus(PhysicResult result) {
@@ -75,9 +79,5 @@ public class Enemy extends Entity {
 		} else {
 			status = Status.STANDING;
 		}
-	}
-
-	public void kill(Game g) {
-		g.removeFromList.add(this);
 	}
 }

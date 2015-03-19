@@ -1,7 +1,8 @@
 package de.kbgame.util.hud;
 
 
-import java.awt.image.BufferedImage;
+import java.awt.Color;
+import java.awt.Font;
 
 import de.kbgame.game.Game;
 import de.kbgame.game.Player;
@@ -16,7 +17,7 @@ public class Points implements HUDElement {
 	
 	public final static int COIN_SCORE = 50;
 
-	private BufferedImage img;
+//	private BufferedImage img;
 
 	public Points(int points) {
 		this.points = points;
@@ -34,10 +35,7 @@ public class Points implements HUDElement {
 	
 
 	public void draw(Game g) {
-		int offsetLeft;
-	//	g.graphic.currentGrafic.drawText("hello World", 10, 10, Color.RED);
-		//g.graphic.currentGrafic.drawImage(img, offsetLeft, OFFSET_TOP, Level.BLOCK_HEIGHT, Level.BLOCK_HEIGHT, null);
-		g.graphic.currentGrafic.drawString("POINTS: " + points, 3, 12);
+		g.graphic.drawText("POINTS: " + points, 10, 15, Color.blue, false, new Font("Arial", Font.BOLD, 14));
 	}
 
 }

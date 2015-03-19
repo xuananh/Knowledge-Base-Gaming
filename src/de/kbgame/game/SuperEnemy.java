@@ -2,13 +2,15 @@ package de.kbgame.game;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
-import javax.imageio.ImageIO;
-
+import de.kbgame.geometry.ImageKey;
+import de.kbgame.grafic.ImageLoader;
+import de.kbgame.grafic.ImageSprite;
 import de.kbgame.map.Level;
+import de.kbgame.util.Physic;
+import de.kbgame.util.PhysicResult;
 import de.kbgame.util.Shot;
 import de.kbgame.util.ShotCollection;
 import de.kbgame.util.clingo.AnswerASP;
@@ -17,14 +19,17 @@ import de.kbgame.util.clingo.PredicateASP;
 
 public class SuperEnemy extends Enemy {
 
+	public int hearts = 5;
+	private final BufferedImage heart;
+	
 	private ShotCollection shots;
 	public boolean activated = true;
 	private final ArrayList<PredicateASP> pres;
-	private BufferedImage endboss;
 
 	public SuperEnemy(int x, int y, int width, int height, Player player) {
-		super(x, y, width, height);
+		super(x, y, width, height,new ImageSprite("Images/endboss.jpg", 1, 1));
 
+		heart = ImageLoader.getInstance().getImageByKey(ImageKey.HUD_HEART);
 		shots = new ShotCollection(20, 5, new Point(x, y), player);
 
 		String[] params = new String[3];
@@ -35,27 +40,10 @@ public class SuperEnemy extends Enemy {
 		AnswerASP a = ClingoFactory.getInstance().getAnswerASP(params);
 		pres = (ArrayList<PredicateASP>) a
 				.getPreListFromString("schuss");
-		for (PredicateASP p : pres) {
-			System.out.println(p.toString());
-		}
 
 		for (PredicateASP p : pres) {
 			shots.add(new Shot((Integer) p.getParameterOfIndex(1), (Integer) p.getParameterOfIndex(0), shots));
 		}
-		
-		try {
-			endboss = ImageIO.read(new File("Images/endboss.jpg"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		// fixed dummy shots
-//		 shots.add(new Shot(1, 10, shots));
-//		 shots.add(new Shot(2, 10, shots));
-//		 shots.add(new Shot(4, 10, shots));
-//		 shots.add(new Shot(5, 100, shots));
-//		 shots.add(new Shot(9, 10, shots));
-//		 shots.add(new Shot(10, 80, shots));
 	}
 
 	public void update(Game g) {
@@ -67,7 +55,22 @@ public class SuperEnemy extends Enemy {
 					}
 				}
 //			}
-			super.update(g);
+			Random r = new Random();
+			if(r.nextBoolean())
+				vx += (-0.6 + r.nextDouble()*1.2);
+			System.out.println(vx);
+			if (onground) {
+				vy = -3;
+			}
+			
+			PhysicResult pr = Physic.doPhysic(g, this);
+			pr.apply(this);
+
+			if (!facing && pr.left) {
+				facing = true;
+			} else if (facing && pr.right) {
+				facing = false;
+			}
 			shots.origin.x = x;
 			shots.origin.y = y;
 			shots.update(g);
@@ -76,8 +79,25 @@ public class SuperEnemy extends Enemy {
 
 	public void draw(Game g) {
 		if (activated) {
-			g.graphic.drawImage(endboss, x, y, width, height, rot, true);
+			super.draw(g);
 			shots.draw(g);
+			drawHeart(g);
+		}
+	}
+	
+	private void drawHeart(Game g) {
+		int x = g.graphic.Width - Level.BLOCK_WIDTH + 10;
+		
+		for (int i = 0; i < hearts; i++) {
+			g.graphic.drawImage(heart, x, Level.BLOCK_HEIGHT-10, Level.BLOCK_WIDTH, Level.BLOCK_HEIGHT, 0, false);
+			x -= Level.BLOCK_WIDTH;
+		}
+	}
+	
+	public void kill(Game g) {
+
+		if (--hearts <= 0) {
+			super.kill(g);
 		}
 	}
 }

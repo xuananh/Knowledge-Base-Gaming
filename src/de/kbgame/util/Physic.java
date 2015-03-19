@@ -34,7 +34,11 @@ public final class Physic {
 		int newBlockIndexX = (int) result.x / Level.BLOCK_WIDTH;
 		int newBlockIndexY = (int) result.y / Level.BLOCK_HEIGHT;
 		if (isKilling(g, newBlockIndexX, newBlockIndexY)) {
-			g.kill(g.level.getMap(newBlockIndexX, newBlockIndexY));
+			if(e instanceof Player) {
+				g.kill(g.level.getMap(newBlockIndexX, newBlockIndexY));
+			}else {
+				e.kill(g);
+			}
 		} 
 
 		// 2. step

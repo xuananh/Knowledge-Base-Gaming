@@ -100,7 +100,7 @@ public class HauptMenu extends Menu{
 			switch (menuPunkt) {
 			case 1:
 				g.state = GameState.GAME;
-				g.newGame();
+				g.nextLevel();
 				isPauseMenu = true;
 				break;
 			case 2:

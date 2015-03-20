@@ -110,6 +110,9 @@ public class Game extends Thread {
 	public void newGame() {	
 		clearLists();
 
+		if(!hasNextLevel()) {
+			builder.restartGame();
+		}
 		player = new Player(0,0, playerWidth, playerHeight, hud);
 		level = builder.current();
 		
@@ -122,6 +125,10 @@ public class Game extends Thread {
 		level = builder.next();
 		
 		init();
+	}
+	
+	public boolean hasNextLevel() {
+		return builder.hasNext();
 	}
 	
 	private void clearLists() {

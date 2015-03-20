@@ -1,5 +1,6 @@
-(summer);EndbossSegment(clingo/encoding/endboss.lp)
 (cloud);PlatformSegment(Levels/platform.bmp,6,40,15,20,6);GeneratedLevelSegment(clingo/encoding/level.txt,medium,0);StandardSegment(Levels/testmap_small.bmp);
+(summer);EndbossSegment(clingo/encoding/endboss.lp)
+
 (cloud);CaveEnemySegment(Levels/cave_enemy.bmp)
 (summer);GraebenSegment(clingo/encoding/graeben2.txt,medium,0);StandardSegment(Levels/testmap_small.bmp)
 (cloud);StandardSegment(Levels/testmap_small.bmp)

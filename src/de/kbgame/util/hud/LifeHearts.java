@@ -29,10 +29,16 @@ public class LifeHearts implements HUDElement {
 
 	public void draw(Game g) {
 		int x = Level.BLOCK_WIDTH-10;
+		int y = Level.BLOCK_HEIGHT - 10;
 		
 		for (int i = 0; i < hearts; i++) {
-			g.graphic.drawImage(img, x, Level.BLOCK_HEIGHT - 10 , Level.BLOCK_WIDTH, Level.BLOCK_HEIGHT, 0, false);
-			x += Level.BLOCK_WIDTH;
+			g.graphic.drawImage(img, x, y , Level.BLOCK_WIDTH, Level.BLOCK_HEIGHT, 0, false);
+			if(i>0 && ((i+1)%6) == 0) {
+				x = Level.BLOCK_WIDTH-10;
+				y = y + Level.BLOCK_HEIGHT;
+			}else {
+				x += Level.BLOCK_WIDTH;
+			}
 		}
 	}
 

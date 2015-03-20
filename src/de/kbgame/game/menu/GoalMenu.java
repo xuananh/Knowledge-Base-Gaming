@@ -55,13 +55,16 @@ public class GoalMenu extends Menu{
 		
 		g.graphic.drawText("Score: " + g.player.getPoint(), X_START - 20, Y_START - 100, Color.orange, false, new Font("Comic Sans MS", Font.BOLD, 30));
 		
-		g.graphic.drawText("Next Level", X_START, Y_START, (menuPunkt == 1) ? Color.green : new Color(255,69,0), false, new Font("Comic Sans MS", Font.BOLD, (menuPunkt == 1) ? 35 : 30));
+		if(g.hasNextLevel())
+			g.graphic.drawText("Next Level", X_START, Y_START, (menuPunkt == 1) ? Color.green : new Color(255,69,0), false, new Font("Comic Sans MS", Font.BOLD, (menuPunkt == 1) ? 35 : 30));
 		g.graphic.drawText("Restart Level", X_START, Y_START+50, (menuPunkt == 2) ? Color.green : new Color(255,69,0), false, new Font("Comic Sans MS", Font.BOLD, (menuPunkt == 2) ? 35 : 30));
 		g.graphic.drawText("Hight Score", X_START, Y_START + 100, (menuPunkt == 3) ? Color.green : new Color(255,69,0), false, new Font("Comic Sans MS", Font.BOLD, (menuPunkt == 3) ? 35 : 30));
 		g.graphic.drawText("Exit game", X_START, Y_START + 150, (menuPunkt == 4) ? Color.green : new Color(255,69,0), false, new Font("Comic Sans MS", Font.BOLD, (menuPunkt == 4) ? 35 : 30));
 
 		int x = X_START - 30;
 		int y = Y_START - 10;
+		if(!g.hasNextLevel() && menuPunkt == 1)
+			menuPunkt = 2;
 		switch (menuPunkt) {
 		case 2:
 			y = y + 50;
@@ -79,12 +82,13 @@ public class GoalMenu extends Menu{
 	}
 	
 	private void updateGoalMenu(Game g) {
+		int minMenuPunkt = (g.hasNextLevel()) ? 1 : 2;
 		if (g.input.getKey(KeyEvent.VK_UP)){
-			menuPunkt = (menuPunkt == 1) ? 4 : menuPunkt -1;
+			menuPunkt = (menuPunkt == minMenuPunkt) ? 4 : menuPunkt -1;
 		}
 		
 		if (g.input.getKey(KeyEvent.VK_DOWN)){
-			menuPunkt = (menuPunkt == 4) ? 1 : menuPunkt +1;
+			menuPunkt = (menuPunkt == 4) ? minMenuPunkt : menuPunkt +1;
 		}
 		
 		if (g.input.getKey(KeyEvent.VK_ENTER)){

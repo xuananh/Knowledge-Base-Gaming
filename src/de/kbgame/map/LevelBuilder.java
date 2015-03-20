@@ -47,6 +47,10 @@ public class LevelBuilder implements Iterator<Level> {
 		currentIndex--;
 		return next();
 	}
+	
+	public void restartGame() {
+		currentIndex = 0;
+	}
 
 	@Override
 	public boolean hasNext() {

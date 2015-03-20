@@ -1,12 +1,11 @@
 package de.kbgame.util;
 
-import java.awt.geom.Line2D;
+import java.awt.Point;
 
 import de.kbgame.game.Entity;
 import de.kbgame.game.Game;
 import de.kbgame.game.Platform;
 import de.kbgame.game.Player;
-import de.kbgame.geometry.MyPoint;
 import de.kbgame.geometry.Rectangle;
 import de.kbgame.map.Blocks;
 import de.kbgame.map.Level;
@@ -252,73 +251,43 @@ public final class Physic {
 
 	public static PhysicResult platformPhysics(Game g, Player player, PhysicResult result) {
 		Rectangle predictedRect = new Rectangle(result.lx, result.uy, result.wi, result.hi);
-		MyPoint moveVec = new MyPoint(result.x - player.x, result.y - player.y);
-		Line2D.Double entityMovement = new Line2D.Double(player.x, player.y, moveVec.x, moveVec.y);
-
-		MyPoint src = new MyPoint();
-		MyPoint dst = new MyPoint();
-
 		Rectangle rect;
 
 		for (Platform platform : g.platforms) {
 			rect = platform.getSurroundingRectangle();
 
-			if (predictedRect.intersects(rect)) {
-				// collision detected
-				result.setPhysicResult(player);
+			if (platform != player.parent && predictedRect.intersects(rect)) {	
+				Point oldPlatformLocation = platform.getOldPoint();
 
-				Line2D.Double[] rectLines = rect.getLines();
-				for (int line = 0; line < rectLines.length; line++) {
-					boolean collision = false;
-
-					src.setLocation(player.lx, player.uy);
-					dst.add(src, moveVec);
-					entityMovement.setLine(src, dst);
-					if (entityMovement.intersectsLine(rectLines[line])) {
-						log("top/left: " + line);
-						collision = true;
-					}
-
-					src.setLocation(player.rx, player.uy);
-					dst.add(src, moveVec);
-					entityMovement.setLine(src, dst);
-					if (entityMovement.intersectsLine(rectLines[line])) {
-						log("top/right: " + line);
-						collision = true;
-					}
-
-					src.setLocation(player.rx, player.dy);
-					dst.add(src, moveVec);
-					entityMovement.setLine(src, dst);
-					if (entityMovement.intersectsLine(rectLines[line])) {
-						log("bottom/right: " + line);
-						collision = true;
-					}
-
-					src.setLocation(player.lx, player.dy);
-					dst.add(src, moveVec);
-					entityMovement.setLine(src, dst);
-					if (entityMovement.intersectsLine(rectLines[line])) {
-						log("bottom/left: " + line);
-						collision = true;
-					}
-
-					if (collision) {
-						if (line == de.kbgame.geometry.Rectangle.BOTTOM) {
-							log("bottom");
-							result.vy = Math.max(0, platform.vy);
-						} else if (line == de.kbgame.geometry.Rectangle.LEFT || line == de.kbgame.geometry.Rectangle.RIGHT) {
-							log("side");
-							result.vx = platform.vx;
-						} else {	 // TOP
-							player.setParent(platform);
-							log(player.x + " " + player.y);
-							return result;
-						}
+				int oldPlatformLx = oldPlatformLocation.x - platform.width / 2;
+				int oldPlatformRx = oldPlatformLx + platform.width - 1;
+				int oldPlatformUy = oldPlatformLocation.y - platform.height / 2;
+				int oldPlatformDy = oldPlatformUy + platform.height - 1;
+				
+				boolean collidedFromLeft = player.rx <= oldPlatformLx && result.rx >= platform.lx;
+				boolean collidedFromRight = player.lx >= oldPlatformRx && result.lx < platform.rx;
+				boolean collidedFromTop = player.dy < oldPlatformUy && result.dy >= platform.uy;
+				boolean collidedFromBottom = player.uy >= oldPlatformDy && result.uy < platform.dy;
+				
+				if (collidedFromBottom) {
+					result.vy = platform.vy;
+					result.y = player.y;
+				} else if (collidedFromTop) {
+					// jump onto a platform => bind to that platform
+					player.setParent(platform);
+				} else if (collidedFromLeft || collidedFromRight) {
+					result.vx = 0;
+					if (platform.verticalMove) {
+						// on vertical move just nullify horizontal velocity
+						result.x = player.x;
+					} else if (collidedFromLeft) {
+						// push player to left
+						result.x = platform.lx - player.width / 2 - 1;
+					} else {
+						// push player to right
+						result.x = platform.rx + player.width / 2;
 					}
 				}
-
-				break;
 			}
 		}
 

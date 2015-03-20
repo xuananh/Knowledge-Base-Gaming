@@ -34,7 +34,7 @@ public final class MapLoader {
 		int seed = r.nextInt(10000);
 		
 		String[] params = new String[4];
-		params[0] = "clingo";
+		params[0] = "/opt/local/bin/clingo";
 		params[1] = file.getAbsolutePath();
 		params[2] = "--seed="+seed;
 		params[3] = "--rand-freq=1";
@@ -69,7 +69,7 @@ public final class MapLoader {
 		int seed = r.nextInt(10000);
 		
 		String[] params = new String[4];
-		params[0] = "clingo";
+		params[0] = "/opt/local/bin/clingo";
 		params[1] = file.getAbsolutePath();
 		params[2] = "--seed="+seed;
 		params[3] = "--rand-freq=1";
@@ -240,26 +240,26 @@ public final class MapLoader {
 			while (x - counter >= 0 && image.getRGB(x, y - counter) == ColorValues.r0g128b255) {
 				++counter;
 			}
-			fromBlockIndex = y - counter;
+			fromBlockIndex = y - counter - 1;
 
 			counter = 1;
 			while (x + counter < map.length && image.getRGB(x, y + counter) == ColorValues.r0g128b255) {
 				++counter;
 			}
-			toBlockIndex = y + counter;
+			toBlockIndex = y + counter - 1;
 		} else {
 			while (x - counter >= 0 && image.getRGB(x - counter, y) == ColorValues.r0g128b255) {
 				++counter;
 			}
-			fromBlockIndex = x - counter;
+			fromBlockIndex = x - counter + 1;
 
 			counter = 1;
 			while (x + counter < map.length && image.getRGB(x + counter, y) == ColorValues.r0g128b255) {
 				++counter;
 			}
-			toBlockIndex = x + counter;
+			toBlockIndex = x + counter - 1;
 		}
 
-		level.addPlatform(x * Level.BLOCK_WIDTH, y * Level.BLOCK_HEIGHT, fromBlockIndex, toBlockIndex, verticalMove);
+		level.addPlatform(x * Level.BLOCK_WIDTH + Level.BLOCK_WIDTH / 2, y * Level.BLOCK_HEIGHT + Level.BLOCK_HEIGHT / 2, fromBlockIndex, toBlockIndex, verticalMove);
 	}
 }

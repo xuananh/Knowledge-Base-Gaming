@@ -322,4 +322,11 @@ public class Level {
 	public Point getGoal() {
 		return goal;
 	}
+	
+	public void setCoin(int x, int y) {
+		byte val = getMap(x, y-1);
+		if(val == Blocks.Empty) {
+			setMap(x, y, Blocks.COIN);
+		}
+	}
 }

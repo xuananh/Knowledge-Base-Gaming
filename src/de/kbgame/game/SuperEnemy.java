@@ -25,6 +25,9 @@ public class SuperEnemy extends Enemy {
 	private ShotCollection shots;
 	public boolean activated = true;
 	private final ArrayList<PredicateASP> pres;
+	
+	private final ArrayList<Point> movePosition = new ArrayList<Point>();
+	private int nextPosition = 0;
 
 	public SuperEnemy(int x, int y, int width, int height, Player player, Game g) {
 		super(x, y, width, height,new ImageSprite("Images/endboss.jpg", 1, 1));
@@ -44,6 +47,14 @@ public class SuperEnemy extends Enemy {
 		for (PredicateASP p : pres) {
 			shots.add(new Shot((Integer) p.getParameterOfIndex(1), (Integer) p.getParameterOfIndex(0), shots));
 		}
+		
+		movePosition.add(new Point(29,0));
+		movePosition.add(new Point(25,0));
+		movePosition.add(new Point(27,0));
+		movePosition.add(new Point(29,0));
+		movePosition.add(new Point(23,0));
+		movePosition.add(new Point(20,0));
+		movePosition.add(new Point(25,1));
 	}
 
 	public void update(Game g) {
@@ -55,9 +66,13 @@ public class SuperEnemy extends Enemy {
 					}
 				}
 			}
-			
-			vx += (facing) ? 1 : -1;
-			if (onground) {
+			int xMove = movePosition.get(nextPosition).x*Level.BLOCK_WIDTH;
+			int y = movePosition.get(nextPosition).y;
+			if(x == xMove) {
+				nextPosition = (nextPosition < movePosition.size() - 1) ? nextPosition + 1 : 0;
+			}
+			vx += (x < xMove) ? 0.8 : -0.8;
+			if (y == 1) {
 				vy = -3;
 			}
 			
@@ -98,6 +113,10 @@ public class SuperEnemy extends Enemy {
 		if (--hearts <= 0) {
 			super.kill(g);
 			g.endboss = false;
+			g.level.setCoin(x/Level.BLOCK_WIDTH, y/Level.BLOCK_HEIGHT);
+			g.level.setCoin(x/Level.BLOCK_WIDTH + 1, y/Level.BLOCK_HEIGHT);
+			g.level.setCoin(x/Level.BLOCK_WIDTH, y/Level.BLOCK_HEIGHT - 1);
+			g.level.setCoin(x/Level.BLOCK_WIDTH + 1, y/Level.BLOCK_HEIGHT - 1);
 		}
 	}
 }

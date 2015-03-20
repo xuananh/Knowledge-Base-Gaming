@@ -1,4 +1,4 @@
-BLOCK:Images/block.png
+BLOCK:Images/block/block_clay.png
 BODEN:Images/grass.png
 QUESTION_BLOCK:Images/questionblock.png
 ENEMY:Images/enemy.png

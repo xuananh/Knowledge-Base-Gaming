@@ -34,7 +34,7 @@ public final class MapLoader {
 		int seed = r.nextInt(10000);
 		
 		String[] params = new String[4];
-		params[0] = "/opt/local/bin/clingo";
+		params[0] = "clingo";
 		params[1] = file.getAbsolutePath();
 		params[2] = "--seed="+seed;
 		params[3] = "--rand-freq=1";
@@ -66,10 +66,10 @@ public final class MapLoader {
 		}
 
 		Random r = new Random();
-		int seed = r.nextInt(10000);
+		int seed = r.nextInt(100000);
 		
 		String[] params = new String[4];
-		params[0] = "/opt/local/bin/clingo";
+		params[0] = "clingo";
 		params[1] = file.getAbsolutePath();
 		params[2] = "--seed="+seed;
 		params[3] = "--rand-freq=1";
@@ -99,7 +99,7 @@ public final class MapLoader {
 		goalPoint.x = (Integer) goal.getParameterOfIndex(0);
 		goalPoint.y = (Integer) goal.getParameterOfIndex(1);
 
-		byte[][] map = new byte[width][height + 1];
+		byte[][] map = new byte[width][height+1];
 		for (PredicateASP pre : pres) {
 			setMapFromPredicate(g, level, map, pre);
 		}
@@ -192,7 +192,12 @@ public final class MapLoader {
 		final int x = (Integer) pre.getParameterOfIndex(0);
 		final int y = (Integer) pre.getParameterOfIndex(1);
 
+		
+		
 		switch (blockType) {
+			case 0:
+				map[x][y] = Blocks.Solid;
+				break;
 			case 1:
 				map[x][y] = Blocks.Floor;
 				break;
@@ -217,6 +222,11 @@ public final class MapLoader {
 //				System.out.println("Maploader: " + x + " " + y);
 				level.addShotCollection(sc);
 				map[x][y] = Blocks.CannonBlock;
+				break;
+				
+			case 15:				
+//				System.out.println("Maploader: " + x + " " + y);
+				level.addFallingItem(x*Level.BLOCK_WIDTH - 1, y*Level.BLOCK_HEIGHT - 1);
 				break;
 		// java initializes scalar vectors with 0s by default
 		}

@@ -26,10 +26,21 @@ public class PlatformSegment extends LevelSegment {
 			goal = null;
 		}
 		
-		String[] params = new String[3];
+		
+
+		String[] params = new String[7];
 		params[0] = "clingo";
-		params[1] = "clingo/encoding/platforms.txt";
+		//params[1] = "clingo/encoding/platforms.txt";
+		//params[1] = "clingo/encoding/testlines-up.txt";
+		params[1] = "clingo/encoding/platforms-light.txt";
 		params[2] = "1";
+		params[3] = "-c startx="+args[1]; // startx
+		params[4] = "-c starty="+args[2];
+		params[5] = "-c destx="+args[3];
+		params[6] = "-c desty="+args[4];
+		
+		
+		
 
 		AnswerASP a = ClingoFactory.getInstance().getAnswerASP(params);
 		ArrayList<PredicateASP> pres = (ArrayList<PredicateASP>) a
@@ -37,7 +48,9 @@ public class PlatformSegment extends LevelSegment {
 		for (PredicateASP p : pres) {
 			System.out.println(p.toString());
 		}
+
 		
+
 		boolean vertical = false;
 		for (PredicateASP p : pres) {
 			if ((Integer) p.getParameterOfIndex(4) == 1) {
@@ -45,6 +58,7 @@ public class PlatformSegment extends LevelSegment {
 			} else {
 				vertical = false;
 			}
+			
 			Platform pl = new Platform(g,
 										(Integer) p.getParameterOfIndex(0)*Level.BLOCK_WIDTH,  //x
 										(Integer) p.getParameterOfIndex(1)*Level.BLOCK_HEIGHT, //y
@@ -56,7 +70,6 @@ public class PlatformSegment extends LevelSegment {
 									);
 											
 			platforms.add(pl);
-			
 			//Platform	
 		}	
 	}

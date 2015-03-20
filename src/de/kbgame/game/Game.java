@@ -66,13 +66,13 @@ public class Game extends Thread {
 
 	private TreeMap<Integer, XValueObserver> xValueObservers = new TreeMap<Integer, XValueObserver>();
 
-	SuperEnemy superEnemy;
-
 	public Vector<ShotCollection> shots = new Vector<ShotCollection>();
 	//public ArrayList<ShotCollection> shotCollections;
 
 	private final int playerWidth = Level.BLOCK_WIDTH - 6;
 	private final int playerHeight = Level.BLOCK_HEIGHT;
+	
+	public boolean endboss = false;
 	
 	public Game() {
 		input = new Input(); // Init Input before Graphic, because Graphics uses Input!
@@ -81,7 +81,6 @@ public class Game extends Thread {
 		sounds = new SoundThread();
 		menu = new MenuManage();
 
-		sounds.getMusic(SoundKey.BACKGROUND).playRepeated();
 		fallingItemList = new LinkedList<FallingItem>();
 		
 		try {
@@ -97,9 +96,8 @@ public class Game extends Thread {
 	private void init() {
 		goal = level.getGoal();
 
-		superEnemy = new SuperEnemy(500,1150, playerWidth*2, playerHeight*2, player);
-		list.add(superEnemy);
-
+		sounds.getMusic(SoundKey.BACKGROUND).playRepeated();
+		
 		backgrounds.add(new Background(ImageKey.BACKGROUND_1, .25f, 1, this));
 		backgrounds.add(new Background(ImageKey.BACKGROUND_2, .5f, 1, this));
 
@@ -277,7 +275,7 @@ public class Game extends Thread {
 	}
 
 	private boolean isGoalReached() {
-		return goal != null && player.x / Level.BLOCK_WIDTH == goal.x && player.y / Level.BLOCK_HEIGHT == goal.y;
+		return !endboss && goal != null && player.x / Level.BLOCK_WIDTH == goal.x && player.y / Level.BLOCK_HEIGHT == goal.y;
 	}
 	
 	public boolean isState(GameState state) {

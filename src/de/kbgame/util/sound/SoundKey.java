@@ -8,4 +8,6 @@ public enum SoundKey {
 	DEAD,
 	GET_HIT,
 	COIN,
+	ENEMY_HIT,
+	BACKGROUND_ENDBOSS
 }

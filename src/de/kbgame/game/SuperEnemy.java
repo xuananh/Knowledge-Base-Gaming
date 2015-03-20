@@ -3,7 +3,6 @@ package de.kbgame.game;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Random;
 
 import de.kbgame.geometry.ImageKey;
 import de.kbgame.grafic.ImageLoader;
@@ -16,6 +15,7 @@ import de.kbgame.util.ShotCollection;
 import de.kbgame.util.clingo.AnswerASP;
 import de.kbgame.util.clingo.ClingoFactory;
 import de.kbgame.util.clingo.PredicateASP;
+import de.kbgame.util.sound.SoundKey;
 
 public class SuperEnemy extends Enemy {
 
@@ -26,7 +26,7 @@ public class SuperEnemy extends Enemy {
 	public boolean activated = true;
 	private final ArrayList<PredicateASP> pres;
 
-	public SuperEnemy(int x, int y, int width, int height, Player player) {
+	public SuperEnemy(int x, int y, int width, int height, Player player, Game g) {
 		super(x, y, width, height,new ImageSprite("Images/endboss.jpg", 1, 1));
 
 		heart = ImageLoader.getInstance().getImageByKey(ImageKey.HUD_HEART);
@@ -48,23 +48,22 @@ public class SuperEnemy extends Enemy {
 
 	public void update(Game g) {
 		if (activated) {
-//			if (g.player.x>shots.origin.x-8*Level.BLOCK_WIDTH) {
+			if (g.player.x>shots.origin.x-8*Level.BLOCK_WIDTH) {
 				if(shots.size() == 0){
 					for (PredicateASP p : pres) {
 						shots.add(new Shot((Integer) p.getParameterOfIndex(1), (Integer) p.getParameterOfIndex(0), shots));
 					}
 				}
-//			}
-			Random r = new Random();
-			if(r.nextBoolean())
-				vx += (-0.6 + r.nextDouble()*1.2);
-			System.out.println(vx);
+			}
+			
+			vx += (facing) ? 1 : -1;
 			if (onground) {
 				vy = -3;
 			}
 			
 			PhysicResult pr = Physic.doPhysic(g, this);
 			pr.apply(this);
+			setSprites(pr);
 
 			if (!facing && pr.left) {
 				facing = true;
@@ -95,9 +94,10 @@ public class SuperEnemy extends Enemy {
 	}
 	
 	public void kill(Game g) {
-
+		g.sounds.sound(SoundKey.ENEMY_HIT);
 		if (--hearts <= 0) {
 			super.kill(g);
+			g.endboss = false;
 		}
 	}
 }

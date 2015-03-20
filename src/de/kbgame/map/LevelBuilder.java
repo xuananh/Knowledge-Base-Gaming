@@ -116,6 +116,7 @@ public class LevelBuilder implements Iterator<Level> {
 				level = (LevelSegment) constr.newInstance(g, constructorArgs);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			// ignore unknown classes
 			// ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException,
 			// IllegalAccessException, IllegalArgumentException, InvocationTargetException

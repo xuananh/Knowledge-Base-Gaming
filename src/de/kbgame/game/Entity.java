@@ -3,6 +3,7 @@ package de.kbgame.game;
 import java.awt.Color;
 
 import de.kbgame.util.Physic;
+import de.kbgame.util.sound.SoundKey;
 
 public class Entity {
 
@@ -60,6 +61,7 @@ public class Entity {
 	}
 	
 	public void kill(Game g) {
+		g.sounds.sound(SoundKey.ENEMY_HIT);
 		g.removeFromList.add(this);
 	}
 }

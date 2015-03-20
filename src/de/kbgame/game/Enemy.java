@@ -50,7 +50,7 @@ public class Enemy extends Entity {
 		g.graphic.drawImage(sprite.getCurrent(), x, y, width, height, rot, true);
 	}
 
-	private void setSprites(PhysicResult result) {
+	protected void setSprites(PhysicResult result) {
 		setPlayerStatus(result);
 
 		sprite.noUpdate = false;

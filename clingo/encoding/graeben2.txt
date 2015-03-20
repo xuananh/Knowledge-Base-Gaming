@@ -88,6 +88,8 @@ marked(X,Y) :- fire(X), Y=height.
 block(X-1,Y-1,1) :- onplatform(X,H), h(Y), Y>=height-H.
 marked(X,Y) :- onplatform(X,H), h(Y), Y>=height-H.
 
+block(1..width-1,height,0).
+
 #show block/3.
 #show width/1.
 #show height/1.

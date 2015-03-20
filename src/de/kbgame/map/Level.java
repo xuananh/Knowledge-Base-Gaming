@@ -64,7 +64,7 @@ public class Level {
 						break;
 					}
 					case Blocks.FireBlock: {
-						g.graphic.drawImage(ImageKey.FIRE_BLOCK, x * BLOCK_WIDTH + BLOCK_WIDTH / 2, y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_HEIGHT, BLOCK_HEIGHT, 0f);
+						g.graphic.drawImage(Game.fire.getCurrent(), x * BLOCK_WIDTH + BLOCK_WIDTH / 2, y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2, BLOCK_WIDTH, BLOCK_HEIGHT, 0f, true);
 						break;
 					}
 					case Blocks.JUMP: {

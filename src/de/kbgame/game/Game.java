@@ -61,8 +61,9 @@ public class Game extends Thread {
 	
 	private Point playerStart = new Point();
 	private LevelBuilder builder;
-	
+
 	public static TimeBasedImageSprite coins = new TimeBasedImageSprite("Images/coin_flipping_sprite.png", 1, 6, 128);
+	public static TimeBasedImageSprite fire = new TimeBasedImageSprite("Images/fire_sprite.png", 1, 2, 512);
 
 	private TreeMap<Integer, XValueObserver> xValueObservers = new TreeMap<Integer, XValueObserver>();
 
@@ -199,6 +200,7 @@ public class Game extends Thread {
 			}
 			
 			coins.update();
+			fire.update();
 			
 			for (UpdateDraw updateable : gameElements) {
 				updateable.update(this);

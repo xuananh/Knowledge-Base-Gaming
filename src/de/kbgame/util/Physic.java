@@ -36,7 +36,7 @@ public final class Physic {
 			if(e instanceof Player) {
 				g.kill(g.level.getMap(newBlockIndexX, newBlockIndexY));
 			}else {
-				e.kill(g);
+				//e.kill(g);
 			}
 		} 
 

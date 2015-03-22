@@ -44,7 +44,12 @@ block(0..width-1, 0..height-1).
 
 
 #const floorheight = 1.
-floor(X,floorheight) :- w(X).
+floor(X,floorheight) :- w(X), not firepixel(X,_).
+
+%%%%%%%%%%%%%%%%%
+%%% PLATTFORM %%%
+%%%%%%%%%%%%%%%%%
+
 
 % Platformen / platform1 erste Ebene, platform2 eine darueber. 
 #const platformLength = 7.
@@ -72,20 +77,27 @@ platform1pixel(A,Y) :- platform1(X,Y,L), X<=A, A<=X+L, w(A).
 platformpixel(X,Y) :- platform1pixel(X,Y).
 %platformpixel(X,Y) :- platform2pixel(X,Y).
 
+%%%%%%%%%%%%
+%%% FIRE %%%
+%%%%%%%%%%%%
+
 #const firecount=4.
 #const firepixelcount=9.
 firelength(1..jumpwidth).
 firecount{ fire(X1,X2) : firelength(Length), w(X1), X2=X1+Length}firecount.
-firepixel(X,floorheight+1) :- fire(X1,X2), X1<=X, X<=X2, w(X).
+firepixel(X,floorheight) :- fire(X1,X2), X1<=X, X<=X2, w(X).
 
-fireground(X,Y) :- floor(X,Y).
-fireground(X,Y) :- platformpixel(X,Y).
+fireground(X,floorheight) :- w(X).
+%fireground(X,Y) :- floor(X,Y).
+%fireground(X,Y) :- platformpixel(X,Y).
 :- firepixel(X,Y), platformpixel(X,Y+1).
 :- firepixel(X,Y), coin(X,Y+1).
 :- firepixel(X,Y), questionbox(X,Y+1).
-:- firepixel(X,Y), not fireground(X,Y-1).
+:- firepixel(X,Y), not fireground(X,Y).
 :- firepixel(X,Y), firepixel(X+1,Y), firepixel(X+2,Y), firepixel(X+3,Y).
 :- firepixel(X,Y), firepixel(X+1,Y), firepixel(X+2,Y), firepixel(X+3,Y), firepixel(X+5,Y).
+:- firepixel(X,Y), platform1pixel(X,Y1).
+
 
 :- not firepixelcount{ firepixel(X,Y) }firepixelcount.
 
@@ -103,14 +115,27 @@ fireground(X,Y) :- platformpixel(X,Y).
 %surfacePlatformFloorWall(X,Y) :- block(X,Y), floor(X,Y-1).
 
 
+%%%%%%%%%%%%%%
+%%% CANNON %%%
+%%%%%%%%%%%%%%
+
 % Kanonen: Abstand von mindestens 10 Blöcken, Keine Mauer direkt davor. 
 #const cannoncount = 2.
-cannoncount{ cannon(X,Y) : floor(X,Y-1), block(X,Y)}cannoncount. 
+{ cannon(X,Y) : floor(X,Y-1), block(X,Y)}cannoncount. 
+{ cannon(X,Y) : platform1pixel(X,Y-1), block(X,Y) }cannoncount.
+:- not cannoncount{cannon(X,Y)}cannoncount. 
 :- cannon(X,Y), cannon(X1,Y1), X<X1, X+10>X1.
 :- cannon(X,Y), wallpixel(XW,Y), XW<X, XW+10>X.
 :- cannon(X,Y), cannon(X,Y+1). 
 :- cannon(X,Y), not floor(X,Y-1).
+:- cannon(X,Y), wallpixel(X,Y).
+:- cannon(X,Y), platformpixel(X,Y+2).
+:- cannon(X,Y), questionbox(X,Y+2).
 
+
+%%%%%%%%%%%%
+%%% WALL %%%
+%%%%%%%%%%%%
 
 % Mauern
 wallheight(1+floorheight..jumpheight+floorheight).
@@ -125,6 +150,10 @@ wallpixel(X,Y) :- wall(X,H,_), block(X,Y), floorheight<=Y, Y<=floorheight+H.
 :- wall(X,Y,ID1), wall(X1,Y1,ID2),ID1!=ID2, X=X1.
 
 
+
+%%%%%%%%%%%%%%%%%%%
+%%% QUESTIONBOX %%%
+%%%%%%%%%%%%%%%%%%%
 
 % reachableitem(X,Y) :- platformpixel(X1,Y1), Y1-jumpwidth<=Y, Y<=Y1+jumpwidth,X<=Y+jumpheight, block(X,Y).
 reachableitem(X,Y) :- Y=jumpheight+floorheight+1, block(X,Y).
@@ -142,6 +171,11 @@ questionboxcount{ questionBox(X,Y) : reachableitem(X,Y)}questionboxcount.
 :- questionBox(X,Y), fire(X+1,Y-1), fire(X-1,Y-1).
 
 
+
+%%%%%%%%%%%%%
+%%% COINS %%%
+%%%%%%%%%%%%%
+
 #const coinscount=50.
 { coin(X,Y) : reachableitem(X,Y)}coinscount.
 :- questionBox(X,Y), coin(X,Y).
@@ -149,16 +183,22 @@ questionboxcount{ questionBox(X,Y) : reachableitem(X,Y)}questionboxcount.
 :- coin(X,Y), cannon(X,Y).
 :- coin(X,Y), floor(X,Y).
 :- coin(X,Y), enemy(X,Y).
+:- coin(X,Y), wallpixel(X,Y).
 
 :- not coinscount{ coin(X,Y) }coinscount.
 
-blocked(X,Y) :- cannon(X,Y), wallpixel(X,Y).
-%enemyarea(X,Y) :- platformpixel(X,Y-1), block(X,Y).
-enemyarea(X,Y) :- floor(X,Y-1), block(X,Y), not blocked(X,Y).
 
+
+%%%%%%%%%%%%%
+%%% ENEMY %%%
+%%%%%%%%%%%%%
 
 #const enemycount=2.
-enemycount{ enemy(X,Y) : floor(X,Y+1)}enemycount. 
+enemycount{ enemy(X,Y) : floor(X,Y-1)}enemycount. 
+:- enemy(X,Y), wallpixel(X,Y).
+:- enemy(X,Y), coin(X,Y).
+enemy(X) :- enemy(X,_).
+:- enemy(X), enemy(Z), X<Z, X+7>Z.
 
 
 
@@ -187,12 +227,16 @@ coin(X1,Y1) :- coin(X1,Y1,ID).
 
 #const focount=5.
 { fallingObject(X,Y) : w(X), Y=1}.
-{ fallingObject(X,Y) : platformpixel(X,Y+1)}.
+{ fallingObject(X,Y) : platform2pixel(X,Y+1)}.
 :- not focount{fallingObject(X,Y)}focount.
+fallingObject(X) :- fallingObject(X,Y).
+:- fallingObject(X), fallingObject(Z), X<Z, X+5>Z.
+%:- fallingObject(X,Y), fallingobject(X,Y1), X
 
 
 
-frei(1..5).
+
+frei(0..5; width-5..width).
 item(X) :- firepixel(X,_).
 item(X) :- platformpixel(X,_).
 item(X) :- questionBox(X,_).
@@ -200,6 +244,9 @@ item(X) :- wallpixel(X,_).
 item(X) :- coin(X,_).
 item(X) :- cannon(X,_).
 item(X) :- enemy(X,_).
+item(X) :- fallingObject(X,_).
+
+
 
 :- frei(X), item(X).
 
@@ -213,10 +260,11 @@ block(X,Y,14) :- coin(X,height-Y), block(X,Y).
 block(X,Y,4) :- questionBox(X,height-Y), block(X,Y).
 block(X,Y,13) :- cannon(X,height-Y).
 block(X,Y,15) :- fallingObject(X,Y).
-%block(X,Y,5) :- enemy(X,Y).
+block(X,Y,5) :- enemy(X,height-Y).
 %block(1..width-1,height,0).
 %block(1..width,height,0).
 block(1..width-1,height,0).
 
-
+blockid(0..30).
+%:- not 0{ block(X,Y,ID)}1, blockid(ID).
 

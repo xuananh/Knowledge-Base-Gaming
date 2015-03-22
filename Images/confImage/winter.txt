@@ -1,0 +1,15 @@
+BACKGROUND:
+PERSON:
+BLOCK:Images/winter/block_snow.png
+BODEN:Images/winter/grass_snow.png
+QUESTION_BLOCK:Images/questionblock.png
+SPRITE:
+ENEMY:Images/winter/enemy_winter.png
+JUMP_BLOCK:Images/jump_block.png
+QUESTIONBLOCK_BOUNCED_IMAGE:Images/questionblock_bounced.png
+BACKGROUND_1:Images/winter/cloud.png
+BACKGROUND_2:Images/winter/bgwinter.png
+HUD_HEART:Images/heart.png
+GOAL:Images/goal.png
+FIRE_BLOCK:Images/winter/water.png
+CANNON:Images/cannon.png

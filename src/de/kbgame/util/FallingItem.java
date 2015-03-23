@@ -73,7 +73,7 @@ public class FallingItem {
 	
 	public void draw(Game g) {
 		if (time > 0) {
-			g.graphic.drawOval(x, y, RADIUS, RADIUS, Color.ORANGE);
+			g.graphic.drawOval(x, y, RADIUS, RADIUS, Color.BLACK);
 		}
 	}
 	

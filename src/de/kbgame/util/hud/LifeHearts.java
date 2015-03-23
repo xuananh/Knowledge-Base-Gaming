@@ -3,7 +3,6 @@ package de.kbgame.util.hud;
 import java.awt.image.BufferedImage;
 
 import de.kbgame.game.Game;
-import de.kbgame.game.Player;
 import de.kbgame.geometry.ImageKey;
 import de.kbgame.grafic.ImageLoader;
 import de.kbgame.map.Level;
@@ -22,21 +21,21 @@ public class LifeHearts implements HUDElement {
 		img = ImageLoader.getInstance().getImageByKey(ImageKey.HUD_HEART);
 	}
 
-	public void add(int s, Player player) {
-		hearts = hearts+1;
-		
+	public void add() {
+		hearts++;
 	}
 
 	public void draw(Game g) {
-		int x = Level.BLOCK_WIDTH-10;
+		int x = Level.BLOCK_WIDTH - 10;
 		int y = Level.BLOCK_HEIGHT - 10;
-		
+
 		for (int i = 0; i < hearts; i++) {
-			g.graphic.drawImage(img, x, y , Level.BLOCK_WIDTH, Level.BLOCK_HEIGHT, 0, false);
-			if(i>0 && ((i+1)%6) == 0) {
-				x = Level.BLOCK_WIDTH-10;
+			g.graphic.drawImage(img, x, y, Level.BLOCK_WIDTH, Level.BLOCK_HEIGHT, 0, false);
+			
+			if (i > 0 && ((i + 1) % 6) == 0) {
+				x = Level.BLOCK_WIDTH - 10;
 				y = y + Level.BLOCK_HEIGHT;
-			}else {
+			} else {
 				x += Level.BLOCK_WIDTH;
 			}
 		}

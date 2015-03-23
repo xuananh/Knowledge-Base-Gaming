@@ -8,6 +8,11 @@ import java.io.InputStreamReader;
 
 public abstract class Clingo {
 
+	/**
+	 * die Methode ruft den Befehl von Clingo in eine selbst Prozesse
+	 * @param params list alle paramete von dem Befehl
+	 * @return Alles von Konsole bestellt
+	 */
 	public String callClingo(String[] params){
 		
 		if (params == null || params.length < 1) return null;
@@ -41,6 +46,10 @@ public abstract class Clingo {
 		public ClThread(Process p){
 			this.p = p;
 		}
+		
+		/**
+		 * liest jeder line von Konsole
+		 */
 		public void run() {
 			String line;
 			try {

@@ -74,7 +74,8 @@ public class LevelBuilder implements Iterator<Level> {
 		
 		if (levelSegmentsString.length > 0) {
 			levelSettings = parseLevelSettings(levelSegmentsString[0]);
-			ImageLoader.getInstance().loadImages("Images/confImage/" + levelSettings[0] + ".txt");
+			if(levelSettings[0].length() > 0)
+				ImageLoader.getInstance().loadImages("Images/confImage/" + levelSettings[0] + ".txt");
 		}
 
 		// process each level segment

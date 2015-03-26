@@ -16,15 +16,27 @@ public class LifeHearts implements HUDElement {
 
 	private BufferedImage img;
 
+	/**
+	 * Kontruktor legt Herzanzahl am Anfang fest 
+	 * @param hearts Herzanzahl
+	 */
 	public LifeHearts(int hearts) {
 		this.hearts = hearts;
 		img = ImageLoader.getInstance().getImageByKey(ImageKey.HUD_HEART);
 	}
 
+	/**
+	 * Herzanzahl erhoeht um ein
+	 */
 	public void add() {
 		hearts++;
 	}
 
+	/*
+	 * Zeichen Heart im ober-links der Bildschirm. Jeder Zeile bestehlt 6 Herzen
+	 * (non-Javadoc)
+	 * @see de.kbgame.util.hud.HUDElement#draw(de.kbgame.game.Game)
+	 */
 	public void draw(Game g) {
 		int x = Level.BLOCK_WIDTH - 10;
 		int y = Level.BLOCK_HEIGHT - 10;

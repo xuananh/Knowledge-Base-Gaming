@@ -47,8 +47,10 @@ public abstract class Clingo {
 			this.p = p;
 		}
 		
-		/**
+		/*
 		 * liest jeder line von Konsole
+		 * (non-Javadoc)
+		 * @see java.lang.Thread#run()
 		 */
 		public void run() {
 			String line;

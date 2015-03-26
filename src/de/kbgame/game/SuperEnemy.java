@@ -41,8 +41,7 @@ public class SuperEnemy extends Enemy {
 		params[2] = "1";
 
 		AnswerASP a = ClingoFactory.getInstance().getAnswerASP(params);
-		pres = (ArrayList<PredicateASP>) a
-				.getPreListFromString("schuss");
+		pres = (ArrayList<PredicateASP>) a.getPreListFromString("schuss");
 
 		for (PredicateASP p : pres) {
 			shots.add(new Shot((Integer) p.getParameterOfIndex(1), (Integer) p.getParameterOfIndex(0), shots));

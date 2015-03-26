@@ -12,9 +12,15 @@ public class DeadMenu extends Menu{
 	private static final int X_START = 300;
 	private static final int Y_START = 300;
 	
+	/** variable sichert dass das Score nur 1 mal gespeichert wird */
 	private boolean isSavedScore = false;
+	/** Submenue */
 	private final ScoreMenu scoreMenu = new ScoreMenu(this);
 
+	/*
+	 * (non-Javadoc)
+	 * @see de.kbgame.game.menu.Menu#updateMenu(de.kbgame.game.Game)
+	 */
 	@Override
 	protected void updateMenu(Game g) {
 		switch (menu) {
@@ -29,6 +35,10 @@ public class DeadMenu extends Menu{
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see de.kbgame.game.menu.Menu#draw(de.kbgame.game.Game)
+	 */
 	@Override
 	public void draw(Game g) {
 		switch (menu) {
@@ -43,6 +53,10 @@ public class DeadMenu extends Menu{
 		}
 	}
 
+	/**
+	 * Hilfmethode fuer draw(Game)-Methode
+	 * @param g Game Instance
+	 */
 	private void deadMenuDraw(Game g) {
 		final int score = g.player.getPoint(); 
 		if(!isSavedScore) {
@@ -73,6 +87,10 @@ public class DeadMenu extends Menu{
 		g.graphic.drawImage(sprite.getCurrent(), x, y, 30, 30, 0, false);
 	}
 	
+	/**
+	 * Hilfmethode fuer update(Game)-Methode
+	 * @param g Game Instance
+	 */
 	private void deadMenuUpdate(Game g) {
 		if (g.input.getKey(KeyEvent.VK_UP)){
 			menuPunkt = (menuPunkt == 1) ? 3 : menuPunkt -1;

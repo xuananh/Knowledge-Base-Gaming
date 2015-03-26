@@ -11,11 +11,18 @@ public class HauptMenu extends Menu{
 	
 	private static final int X_START = 250;
 	private static final int Y_START = 250;
-	private final AboutAndHelpMenu aboutAndHelp = new AboutAndHelpMenu(this);
-	private final ScoreMenu scoreMenu = new ScoreMenu(this);
 	
+	/** Submenue */
+	private final AboutAndHelpMenu aboutAndHelp = new AboutAndHelpMenu(this);
+	/** Submenue */
+	private final ScoreMenu scoreMenu = new ScoreMenu(this);
+	/** Wenn Game started ist, wird Menue als Pause-Menue angezeigt */
 	private boolean isPauseMenu = false;
 
+	/*
+	 * (non-Javadoc)
+	 * @see de.kbgame.game.menu.Menu#updateMenu(de.kbgame.game.Game)
+	 */
 	@Override
 	protected void updateMenu(Game g) {
 		switch (menu) {
@@ -37,6 +44,10 @@ public class HauptMenu extends Menu{
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see de.kbgame.game.menu.Menu#draw(de.kbgame.game.Game)
+	 */
 	@Override
 	public void draw(Game g) {
 		if(!isPauseMenu) {
@@ -61,6 +72,10 @@ public class HauptMenu extends Menu{
 		}
 	}
 	
+	/**
+	 * Hilfmethode fuer draw(Game)-Methode. Zeichnen die Hauptmenue von Anfang der Game 
+	 * @param g Game Instance
+	 */
 	private void normalMenu(Game g) {
 		gameLogo(X_START - 100, Y_START - 100, g, 1.2f);
 		
@@ -87,6 +102,10 @@ public class HauptMenu extends Menu{
 		g.graphic.drawImage(sprite.getCurrent(), x, y, 30, 30, 0, false);
 	}
 	
+	/**
+	 * Hilfmethode fuer update(Game)-Methode. Hauptmenue Handel
+	 * @param g Game Instance
+	 */
 	private void updateNormalMenu(Game g) {
 		if (g.input.getKey(KeyEvent.VK_UP)){
 			menuPunkt = (menuPunkt == 1) ? 4 : menuPunkt -1;
@@ -118,6 +137,10 @@ public class HauptMenu extends Menu{
 		}
 	}
 	
+	/**
+	 * Hilfmethode fuer draw(Game)-Methode. Zeichnen die Pause-Menue Waehrend des Games 
+	 * @param g Game Instance
+	 */
 	private void pauseMenu(Game g) {
 		gameLogo(X_START - 100, Y_START - 100, g, 1.2f);
 		
@@ -148,6 +171,10 @@ public class HauptMenu extends Menu{
 		g.graphic.drawImage(sprite.getCurrent(), x, y, 30, 30, 0, false);
 	}
 	
+	/**
+	 * Hilfmethode fuer update(Game)-Methode, Pause-Menue Handel
+	 * @param g Game Instance
+	 */
 	private void updatePauseMenu(Game g) {
 		if (g.input.getKey(KeyEvent.VK_UP)){
 			menuPunkt = (menuPunkt == 1) ? 5 : menuPunkt -1;

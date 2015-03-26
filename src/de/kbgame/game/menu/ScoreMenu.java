@@ -12,15 +12,26 @@ public class ScoreMenu extends Menu{
 
 	private static final int X_START = 200;
 	private static final int Y_START = 400;
+	/** Hauptmenue */
 	private final Menu hauptMenu;
 	
+	/** variable sichert dass das Score nur 1 mal bis zum Aenderung aus Datei aufgeruft */
 	private boolean isloadedScore = false;
+	/** List von 3 besten Score */
 	private List<Integer> score = new ArrayList<Integer>();
 	
+	/**
+	 * Konstruktor fuer Submenue high Score
+	 * @param hauptMenu Hauptmenue mit diesem Submenue
+	 */
 	public ScoreMenu(Menu hauptMenu) {
 		this.hauptMenu = hauptMenu;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see de.kbgame.game.menu.Menu#updateMenu(de.kbgame.game.Game)
+	 */
 	@Override
 	protected void updateMenu(Game g) {
 		if (g.input.getKey(KeyEvent.VK_UP) || g.input.getKey(KeyEvent.VK_DOWN)){
@@ -42,6 +53,10 @@ public class ScoreMenu extends Menu{
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see de.kbgame.game.menu.Menu#draw(de.kbgame.game.Game)
+	 */
 	@Override
 	public void draw(Game g) {
 		if(!isloadedScore) {

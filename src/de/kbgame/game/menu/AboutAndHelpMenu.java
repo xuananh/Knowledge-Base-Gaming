@@ -10,12 +10,21 @@ public class AboutAndHelpMenu extends Menu{
 	
 	private static final int X_START = 350;
 	private static final int Y_START = 350;
+	/** Hauptmenue */
 	private final Menu hauptMenu;
 
+	/**
+	 * Konstruktor fuer Submenue about
+	 * @param hauptMenu Hauptmenue mit diesem Submenue
+	 */
 	public AboutAndHelpMenu(Menu hauptMenu) {
 		this.hauptMenu = hauptMenu;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see de.kbgame.game.menu.Menu#updateMenu(de.kbgame.game.Game)
+	 */
 	@Override
 	protected void updateMenu(Game g) {
 		if (g.input.getKey(KeyEvent.VK_UP) || g.input.getKey(KeyEvent.VK_DOWN)){
@@ -36,6 +45,10 @@ public class AboutAndHelpMenu extends Menu{
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see de.kbgame.game.menu.Menu#draw(de.kbgame.game.Game)
+	 */
 	@Override
 	public void draw(Game g) {
 		gameLogo(50, 50, g, 0.5f);

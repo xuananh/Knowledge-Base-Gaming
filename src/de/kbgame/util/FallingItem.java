@@ -8,6 +8,8 @@ import de.kbgame.game.Player;
 import de.kbgame.map.Blocks;
 import de.kbgame.map.Level;
 
+
+// Herunterfallendes (toedliches) Objekt
 public class FallingItem {
 	
 	public static final int RADIUS = 20;
@@ -23,7 +25,15 @@ public class FallingItem {
 	
 	
 
-	
+	/**
+	 * Constructor
+	 *
+	 * @param x 		X-Wert der Ausgangskoordinate
+	 * @param y 		Y-Wert der Ausgangskoordinate
+	 * @param spaceX 	Abstand zum Objekt
+	 * @param velocity 	Geschwindigkeit des Objekts
+	 * @param player 	Spielerdaten
+	 */	
 	public FallingItem(int x, int y, int spaceX, int velocity, Player player) {
 		this.x = x;
 		this.y = y;
@@ -34,20 +44,37 @@ public class FallingItem {
 		this.player = player;
 	}
 	
-	
+	/**
+	 * Constructor 
+	 *
+	 * @param x 	X-Wert der Ausgangskoordinate
+	 * @param y 	Y-Wert der Ausgangskoordinate
+	 */	
 	public FallingItem(int x,int y) {
 		this.x = x;
 		this.y = y;
 	}
 	
-	// Test
+	/**
+	 * Constructor
+	 *
+	 * @param player 	Spielerdaten
+	 * @return 
+	 */
 	public FallingItem(Player player) {
 		this. player=player;
 	}
 	
+	/**
+	 * Update-Methode
+	 *
+	 * @param g 	Game-Datenobjekt
+	 */	
 	
 	public void update(Game g) {
 		
+		// Faellt herunter, wenn sich der Spieler unterhalb des Objekts befindet 
+		// und sich in der unmittelbaren Umgebung befindet
 		int spaceX = 30;
 		if ((g.player.x>x-spaceX) & (g.player.x<x+spaceX)) {
 			if (g.player.y>y) {
@@ -70,7 +97,11 @@ public class FallingItem {
 		}
 	}	
 	
-	
+	/**
+	 * Draw-Methode
+	 *
+	 * @param g 	Game-Datenobjekt
+	 */	
 	public void draw(Game g) {
 		if (time > 0) {
 			g.graphic.drawOval(x, y, RADIUS, RADIUS, Color.BLACK);

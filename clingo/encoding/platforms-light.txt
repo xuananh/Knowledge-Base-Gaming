@@ -1,3 +1,12 @@
+% Generierung von schwebenden Plattformen
+% Es wird eine Menge von Plattformen generiert, so dass dem Spieler ein Weg vom angegeben Start- zum Zielpunkt ermöglicht wird.
+% Sie koennen bei der Generierung unterschiedliche Ausbreitungen, die Positionen und Richtungen (vertical) sind hingegen festgelegt. Es ist auch einfach moeglich, es auf horizontale Bewegungen 
+% Es wird anschliessend ueberprueft, ob ein Weg vom Start zum Ziel vorhanden ist (ueber Nachbarschaftsbeziehungen). Dabei werden Toleranzbereiche (für Spruenge) genutzt.
+%
+
+
+
+% Start und Zielpunkte koennen als Parameter uebergeben werden.
 #const startx=2.
 #const starty=40.
 #const destx=19.
@@ -21,11 +30,10 @@ num(T) :- num1(T), startx<=T, T<=destx.
 num2(11..20).
 
 start(startx,starty).
-%dest(19,19).
 dest(destx,desty).
 
 
-
+% Erreichbarkeit des Ziels
 reachable(ID) :- dest(DX,DY), lineblock(X,Y,ID), DX+A=X, DY+B=Y, abs(A;B).
 reachable(ID) :- lineblock(DX,DY,ID), lineblock(X,Y,ID1), DX+A=X, DY+B=Y, abs(A;B), reachable(ID1).
 reachable(start) :- start(DX,DY), lineblock(X,Y,ID1), DX+A=X, DY+B=Y, abs(A;B), reachable(ID1).
@@ -36,19 +44,15 @@ abs(-1..2).
 plength(ID,L) :- line(X,Y,L,1,ID).
 :- plength(ID1,L), plength(ID2,L), ID1=ID2+2.
 
-%#minimize{1, X,Y,L,1,ID : line(X,Y,L,1,ID)}.
 
-%lineBlock(X1,Y,ID) :- line(X,Y,L,0,ID), block(X,Y), X<=X1, X1<=X+L, block(X1,Y).
-lineblock(X,Y1,ID) :- line(X,Y,L,1,ID), block(X,Y), Y<=Y1, Y1<=Y+L, block(X,Y1).
+
+
  
+ % Geniererung der Plattformen
 1{ line(ID,Y,L,1,ID) : block(X,Y), block(ID,Y), length(L)}1 :- num(ID).
 
-
-%0{ line(X,Y,L,0,ID) : block(X,Y), length(L)}1 :- num2(ID).
-
-%line(X,Y,L,0,ID) :- notnum(ID), X=ID-1, length(L), block(X,Y).
-%notnum(ID) :- num(ID), not line(_,_,_,1,ID).
-%#show notnum/1.
+% Bewegungsausbreitung der Plattformen als Bloecke
+lineblock(X,Y1,ID) :- line(X,Y,L,1,ID), block(X,Y), Y<=Y1, Y1<=Y+L, block(X,Y1).
 
 #show line/5.
 

@@ -1,39 +1,40 @@
-#const width=40.
-#const height=10.
+% Level mit typischen Jump and Run-Elementen
 
+
+
+
+
+#const width=50.
+#const height=10.
 #const jumpheight=2.
 #const jumpwidth=2. 
 
+
+% Schwierigkeitsgrad kann durch Eingabe-Parameter ueberschrieben werden
+#const difficulty = hard.
+difficulty(difficulty). 
+
+
+% Voreingestellte Anzahl bestimmter Objekte
+#const cannoncount = 2.
+#const firecount=4.
+#const firepixelcount=9.
 #const platform1Count = 5.
 #const platform2Count = 3.
+#const platformLength = 7.
 
-#show platform1/3.
-#show platform2/3.
-#show fire/2.
-#show cannon/2.
-#show wall/2.
-#show questionBox/2. 
-#show coin/2.
+#const wallcount=3.
+#const questionboxcount=7.
+#const enemycount=2.
 
 
-#show goalX/2.
-#show startX/2.
-#show height/1.
-#show width/1.
-#show block/3.
-
-#show start/1.
-#show end/1.
-
+% Groessenangaben
 
 start(1).
 end(30).
 startX(0,5).
 goalX(30,5).
 
-
-pFLength(platformLengthMin..platformLengthMax).
-wallheight(wallheightMin .. wallheightMax) :- h(wallheightMin; wallheightMax). 
 w(0..width).
 h(1..height). 
 
@@ -41,6 +42,26 @@ width(width).
 height(height).
 
 block(0..width-1, 0..height-1). 
+
+
+
+% Verschiedene Schwierigkeitsstufen
+% Abhgaengig von Anzahl der Feuerschluchten, Feinde und fallenden Objekten
+
+focount(0) :- difficulty(easy).
+enemycount(1) :- difficulty(easy).
+firecount(3) :- difficulty(easy).
+
+focount(2) :- difficulty(medium).
+enemycount(3) :- difficulty(medium).
+firecount(5) :- difficulty(medium).
+
+focount(5) :- difficulty(hard).
+enemycount(6) :- difficulty(hard).
+firecount(9) :- difficulty(hard).
+
+
+
 
 
 #const floorheight = 1.
@@ -52,26 +73,17 @@ floor(X,floorheight) :- w(X), not firepixel(X,_).
 
 
 % Platformen / platform1 erste Ebene, platform2 eine darueber. 
-#const platformLength = 7.
 pflength(2..X) :- X=platformLength.
 pf1height(jumpheight+floorheight..jumpheight+floorheight+1).
 platform1Count{ platform1(X, Y, Length) : pflength(Length), pf1height(Y), block(X, Y) }platform1Count.
 platform1Length(X,X2) :- platform1(X,Y,L), X2 = X+L. 
 :-  platform1Length(A,B),  platform1Length(C,D), A<C, C-1<B.
-%:-  platform1Length(A,B),  platform1Length(C,D), B!=D, A=C.
 platform1pixel(A,Y) :- platform1(X,Y,L), X<=A, A<=X+L, w(A).
 
 :- platform1pixel(X,Y), firepixel(X+1,Y).
 :- platform1pixel(X,Y), firepixel(X-1,Y).
-:- questionbox(X,Y1), firepixel(X-1,Y2), firepixel(X+1,Y2).
+:- questionBox(X,Y1), firepixel(X-1,Y2), firepixel(X+1,Y2).
 
-#const pf2count=4.
-%pf2height(jumpheight*2+floorheight-3..jumpheight*2+floorheight).
-%pf2count{ platform2(X, Y, Length) : pflength(Length), pf2height(Y), block(X, Y)}pf2count.
-%platform2Length(X,X2) :- platform2(X,Y,L), X2 = X+L. 
-%:-  platform2Length(A,B),  platform2Length(C,D), A<C, C-1<B.
-%:-  platform2Length(A,B),  platform2Length(C,D), B<D, A=C.
-%platform2pixel(A,Y) :- platform2(X,Y,L), X<=A, A<=X+L, w(A).
 
 
 platformpixel(X,Y) :- platform1pixel(X,Y).
@@ -81,18 +93,19 @@ platformpixel(X,Y) :- platform1pixel(X,Y).
 %%% FIRE %%%
 %%%%%%%%%%%%
 
-#const firecount=4.
-#const firepixelcount=9.
+% (Feuerschluchten)
+
 firelength(1..jumpwidth).
-firecount{ fire(X1,X2) : firelength(Length), w(X1), X2=X1+Length}firecount.
+{ fire(X1,X2) : firelength(Length), w(X1), X2=X1+Length, firecount(Firecount)}12.
+:- not Firecount{ fire(X1,X2) : firelength(Length), w(X1), X2=X1+Length, firecount(Firecount)}Firecount, firecount(Firecount).
 firepixel(X,floorheight) :- fire(X1,X2), X1<=X, X<=X2, w(X).
 
+
+% Ausschluesse / Wechselbeziehungen zu anderen Elementen
 fireground(X,floorheight) :- w(X).
-%fireground(X,Y) :- floor(X,Y).
-%fireground(X,Y) :- platformpixel(X,Y).
 :- firepixel(X,Y), platformpixel(X,Y+1).
 :- firepixel(X,Y), coin(X,Y+1).
-:- firepixel(X,Y), questionbox(X,Y+1).
+:- firepixel(X,Y), questionBox(X,Y+1).
 :- firepixel(X,Y), not fireground(X,Y).
 :- firepixel(X,Y), firepixel(X+1,Y), firepixel(X+2,Y), firepixel(X+3,Y).
 :- firepixel(X,Y), firepixel(X+1,Y), firepixel(X+2,Y), firepixel(X+3,Y), firepixel(X+5,Y).
@@ -108,19 +121,13 @@ fireground(X,floorheight) :- w(X).
 %:- platform1(X), hole(X).
 
 
-% Standorte für Kanonen:
-% auf Boden, auf Plattformen, auf Mauern 
-%surfacePlatformFloorWall(X,Y) :- block(X,Y), platformpixel(X,Y-1), Y=jumpheight+floorheight.
-%surfacePlatformFloorWall(X,Y) :- block(X,Y), wall(X,H,ID), Y=H+1, Y=jumpheight+floorheight.
-%surfacePlatformFloorWall(X,Y) :- block(X,Y), floor(X,Y-1).
-
 
 %%%%%%%%%%%%%%
 %%% CANNON %%%
 %%%%%%%%%%%%%%
 
 % Kanonen: Abstand von mindestens 10 Blöcken, Keine Mauer direkt davor. 
-#const cannoncount = 2.
+
 { cannon(X,Y) : floor(X,Y-1), block(X,Y)}cannoncount. 
 { cannon(X,Y) : platform1pixel(X,Y-1), block(X,Y) }cannoncount.
 :- not cannoncount{cannon(X,Y)}cannoncount. 
@@ -130,7 +137,8 @@ fireground(X,floorheight) :- w(X).
 :- cannon(X,Y), not floor(X,Y-1).
 :- cannon(X,Y), wallpixel(X,Y).
 :- cannon(X,Y), platformpixel(X,Y+2).
-:- cannon(X,Y), questionbox(X,Y+2).
+:- cannon(X,Y), questionBox(X,Y+2).
+:- cannon(X,Y), questionBox(X,Y+1).
 
 
 %%%%%%%%%%%%
@@ -138,14 +146,15 @@ fireground(X,floorheight) :- w(X).
 %%%%%%%%%%%%
 
 % Mauern
+
 wallheight(1+floorheight..jumpheight+floorheight).
-#const wallcount=3.
 wallid(1..wallcount).
+wallheight(wallheightMin .. wallheightMax) :- h(wallheightMin; wallheightMax). 
 1{ wall(X,Height,ID) : wallheight(Height), w(X) }1 :- wallid(ID).
 wall(X) :- wall(X,Height,ID).
 wallpixel(X,Y) :- wall(X,H,_), block(X,Y), floorheight<=Y, Y<=floorheight+H.
 :- wall(X), platform1pixel(X,_).
-:- wall(X1), wall(X2), X1<X2, X2+10<X1. % Abstand
+:- wall(X1), wall(X2), X1<X2, X2+10<X1. % Mindestabstand
 :- wall(X1), wall(X2), X1>X2, X2+10>X1.
 :- wall(X,Y,ID1), wall(X1,Y1,ID2),ID1!=ID2, X=X1.
 
@@ -159,7 +168,6 @@ wallpixel(X,Y) :- wall(X,H,_), block(X,Y), floorheight<=Y, Y<=floorheight+H.
 reachableitem(X,Y) :- Y=jumpheight+floorheight+1, block(X,Y).
 reachableitem(X,Y) :- Y=jumpheight+floorheight, block(X,Y).
 
-#const questionboxcount=7.
 questionboxcount{ questionBox(X,Y) : reachableitem(X,Y)}questionboxcount.
 :- questionBox(X1,Y1), questionBox(X2,Y2), Y1<Y2, X1=X2.
 :- questionBox(X,Y1), firepixel(X,Y), Y1=Y+1.
@@ -187,54 +195,47 @@ questionboxcount{ questionBox(X,Y) : reachableitem(X,Y)}questionboxcount.
 
 :- not coinscount{ coin(X,Y) }coinscount.
 
+% Groessere Flaechen von Muenzen
+#const coinsareacount=3.
+caa(1..coinsareacount).
+3{ coinsarea(X,Y,ID) : block(X,Y), not floor(X,Y), not coin(X,Y,ID1), ID1!=ID, caa(ID1) } :- caa(ID).
+coin(X1,Y1,ID) 	:- coinsarea(X,Y,ID), X1<=X, X<=X1+3, Y1<=Y, Y<=Y1+3, block(X1,Y1).
+coin(X1,Y1) :- coin(X1,Y1,ID).
 
 
 %%%%%%%%%%%%%
 %%% ENEMY %%%
 %%%%%%%%%%%%%
 
-#const enemycount=2.
-enemycount{ enemy(X,Y) : floor(X,Y-1)}enemycount. 
+
+{ enemy(X,Y) : floor(X,Y-1)}15. 
+
 :- enemy(X,Y), wallpixel(X,Y).
 :- enemy(X,Y), coin(X,Y).
 enemy(X) :- enemy(X,_).
+:- not Enemycount{ enemy(X,Y) }Enemycount, enemycount(Enemycount).
 :- enemy(X), enemy(Z), X<Z, X+7>Z.
 
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%
+%%% FALLING OBJECTS %%%
+%%%%%%%%%%%%%%%%%%%%%%%
 
-% platform1(X) :- platform1(X1,Y,L), X1<=X, X<=X+L, w(X).
-%platform1(X,Y) :- platform1(X,Y,L), platform1(X).
-
-#const platform2Length=4.
-%platform2Count{ platform2(X1,X2) : block(X,Y), block(X1,X2), X1<X2, pFLength(X2-X1), block(X1,X2) }platform2Count.
-%:- platform2(X1,X2), platform1(X), X1<=X2.
-
-#const coinsareacount=3.
-caa(1..coinsareacount).
-3{ coinsarea(X,Y,ID) : block(X,Y), not floor(X,Y), not coin(X,Y,ID1), ID1!=ID, caa(ID1) } :- caa(ID).
-coin(X1,Y1,ID) 	:- coinsarea(X,Y,ID), X1<=X, X<=X1+3, Y1<=Y, Y<=Y1+3, block(X1,Y1).
-coin(X1,Y1) :- coin(X1,Y1,ID).
-%:- coinsarea(X,Y), cmarked(X,Y).
-
-
-%{ coinsRect(X,Y,S) : coinsarea(X,Y), S=3 }.
-%coins(X,Y) :- coinsRect(XR,YR,S), XR<=X, X<=X+S, YR<=Y, Y<=Y+S. 
-
-
-%{ enemy(X,Y) : surfaceAll(X,Y)}.
-
-#const focount=5.
 { fallingObject(X,Y) : w(X), Y=1}.
-{ fallingObject(X,Y) : platform2pixel(X,Y+1)}.
-:- not focount{fallingObject(X,Y)}focount.
+:- not Focount{fallingObject(X,Y)}Focount, focount(Focount).
 fallingObject(X) :- fallingObject(X,Y).
 :- fallingObject(X), fallingObject(Z), X<Z, X+5>Z.
-%:- fallingObject(X,Y), fallingobject(X,Y1), X
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%
+%%% FREIER BEREICH %%%
+%%%%%%%%%%%%%%%%%%%%%%
+
+% Avatar soll nicht gleich zu Spielebeginn getoetet werden (Feuerschlucht)
+% Ausserdem soll ein guter Levelsegmentuebergang ermoeglicht werden
 
 frei(0..5; width-5..width).
 item(X) :- firepixel(X,_).
@@ -268,3 +269,19 @@ block(1..width-1,height,0).
 blockid(0..30).
 %:- not 0{ block(X,Y,ID)}1, blockid(ID).
 
+
+
+
+#show platform1/3.
+#show fire/2.
+#show cannon/2.
+#show questionBox/2. 
+#show coin/2.
+#show goalX/2.
+#show startX/2.
+#show height/1.
+#show width/1.
+#show block/3.
+
+#show start/1.
+#show end/1.

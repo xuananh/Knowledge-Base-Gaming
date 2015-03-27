@@ -1,5 +1,9 @@
+% Generierung einer Schusssequenz eines (End-)Gegners
+
+
 #show free/2.
 %#show freeblock/2.
+
 #show schuss/2.
 
 #const width = 30.
@@ -26,6 +30,7 @@ neighbor(X,2,X+1,2) :- w(X),w(X+1).
 :- not free(X,Y), start(X,Y).
 :- not free(X,Y), end(X,Y).
 
+% Freier Bereich, welche die moeglichen Sprungbewegungen des Spielers darstellt 
 1{free(X,Y) : block(X,Y)}1 :- w(X).
 
 :- free(X,Y), free(X+1, Y1), not neighbor(X,Y,X+1,Y1).
@@ -35,7 +40,7 @@ neighbor(X,2,X+1,2) :- w(X),w(X+1).
 :- free(X-2,1), free(X-1,2), not free(X,(2;3)).
 :- free(X-2,2), free(X-1,2), not free(X,1).
 
-
+% Toleranzbereiche um die Spruenge des Gegners herum
 freeblock(X,Y)     :- free(X,Y).
 freeblock(X,Y+1)   :- free(X,Y).
 freeblock(X+1,Y)   :- free(X,Y).
@@ -43,7 +48,7 @@ freeblock(X+1,Y+1) :- free(X,Y).
 schussblock(X,Y) :- blockall(X,Y), not freeblock(X,Y).
 
 
-
+% Nicht-sichere Bloecke werden mit Schuessen aufgefuellt
 % jeder Block kann bis zu 4 Schuesse enthalten.
 vier(1..4).
 1{ schuss(X*FX,Y*FY) : vier(FY), vier(FX) }4 :- schussblock(X,Y).

@@ -1,8 +1,10 @@
-% Generierung von Plattformen
-% 
+% Generierung von schwebenden Plattformen
+% Es wird eine Menge von Plattformen generiert, so dass dem Spieler ein Weg vom angegeben Start- zum Zielpunkt ermöglicht wird.
+% Sie koennen bei der Geniererung unterschiedliche Ausbreitungen, Laengen und Start/Endpositionen und Richtungen haben. 
+% Es wird anschliessend ueberprueft, ob ein Weg vom Start zum Ziel vorhanden ist (ueber Nachbarschaftsbeziehungen). Dabei werden Toleranzbereiche (für Spruenge) genutzt.
+% Aufgrund der langen Berechnungszeit wird diese Variante nicht genutzt. 
+%
 % TODO: abstand nach unten hin nicht so wichtig -> schwerkraft
-% TODO: ueberschneidungen verhindern (parea betrachten))
-
 
 #const width = 30.
 #const height = 30.
@@ -42,14 +44,10 @@ lMax(lMax).
 ausbreitung(4..6).
 
 1{ platform(X,Y,L,A,Dir,ID) : x(X), y(Y), lMax(L), dir(Dir), ausbreitung(A) }1 :- number(ID). 
-%#minimize { 1, X,Y,L,A,Dir,ID : platform(X,Y,L,A,Dir,ID) }.
+
 
 :- platform(X,Y,L,A,up,ID), not y(Y+A).
-%:- platform(X,Y,L,A,right,ID), not x(X+A).
-%:- platform(X,Y,L,A,right,ID), L>=A.
 
-%:- platform(X,Y,L,A,Dir,ID), platform(X,Y,_,_,Dir,ID2), ID!=ID2.
-%:- platform(X,Y,_,_,_,ID), platform(X,Y,_,_,_,ID2), ID!=ID2.
 
 parea(XA,YA) :- platform(X,Y,L,A,up,ID), Y<=YA, YA<=Y+A, X<=XA, XA<=X+L-1, block(XA,YA).
 parea(XA,YA) :- platform(X,Y,L,A,right,ID), X<=XA, XA<=X+A, Y<=YA, YA<=Y, block(XA,YA).
@@ -71,14 +69,5 @@ reached(X,Y) :- safe(X,Y), reached(A,B), neighbour(A,B,X,Y).
 
 :- start(X,Y), not reached(X,Y).
 
-%:- safe(X,Y), not block(X,Y).
-%reachable(ID1) :- crossing(ID1,ID2), reachable(ID2).
-
-% anpassen
-%reachable(start) :- platform(X,Y,L,A,Dir,ID), start(X,Y), reachable(ID).
-%reachable(start,ID) :- platform(X,Y,L,A,Dir,ID), start(X,Y), reachable(ID).
-
 % #show platform/6. #show parea/2. #show safe/2.
  #show platform/6.
-
-%:- not reachable(start).

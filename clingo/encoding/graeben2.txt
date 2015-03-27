@@ -1,3 +1,6 @@
+%% Welt aus sicheren Plattformen und dazuwischen liegenden toedlichen Feuerschluchten
+
+
 #program base.
 #const width=31.
 #const height=30.

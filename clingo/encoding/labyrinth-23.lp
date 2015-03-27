@@ -1,3 +1,6 @@
+% Konstruktion eine (vereinfachten) horiontalen Labyrinths. Es wird davon ausgegangen, dass die Etagen vorhanden sind und dann Zwischenwaende und Deckenluken neu eingefuegt werden.
+
+
 start(1,1). 
 goal(1,2). % Test: goal(8,8).
 field(1..width, 1..height).

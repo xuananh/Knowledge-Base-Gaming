@@ -122,7 +122,9 @@ public class Game extends Thread {
 	public void nextLevel() {
 		clearLists();
 		
-		level = builder.next();
+		do {
+			level = builder.next();
+		}while(level == null && builder.hasNext());
 		
 		init();
 	}

@@ -37,7 +37,7 @@ public class SuperEnemy extends Enemy {
 
 		String[] params = new String[3];
 		params[0] = "clingo";
-		params[1] = "clingo/encoding/schuesse-v0.1.txt";
+		params[1] = "clingo/encoding/schuesse-v0.1-beta.txt";
 		params[2] = "1";
 
 		AnswerASP a = ClingoFactory.getInstance().getAnswerASP(params);

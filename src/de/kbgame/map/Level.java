@@ -45,6 +45,12 @@ public class Level {
 		bottom = (int) (centerY + g.graphic.Height / 2 + 0.9) / BLOCK_HEIGHT + 1;
 	}
 
+	/**
+	 * Zeichnet Blöcke anhand ihrer jeweiliger Block-ID. Einige Blocke werden auch anhand von Spriteanimationen gezeichnet. Diese sind 
+	 * in Game statisch definiert.
+	 * 
+	 * @param g
+	 */
 	public void draw(Game g) {
 		for (int x = left; x < right; x++) {
 			for (int y = top; y < bottom; y++) {
@@ -106,6 +112,15 @@ public class Level {
 		}
 	}
 	
+	/**
+	 * Überschreibt einen bestimmten Block innerhalb eines Levelsegments. Wirkt sich ebenfalls
+	 * auf die allgmeine Map des gesamten Levels aus.
+	 * 
+	 * @param segment das Segment, dessen Map angepasst werden soll
+	 * @param x der x Block-Index
+	 * @param y der y Block-Index 
+	 * @param block die neue Block-ID für den gewählten Block
+	 */
 	public void setSegmentMap(LevelSegment segment, int x, int y, byte block) {
 		int xOffset = getOffsetByLevel(segment);
 		int yOffset = height - segment.getHeight();
@@ -113,6 +128,10 @@ public class Level {
 		setMap(xOffset + x, yOffset + y, block);
 	}
 
+	/**
+	 * Erstellt eine große Map, die die Maps der einzelnen Segmente – an den richtigen Positionen – enthält.
+	 * Level mit geringerer Höhe werden oben mit soliden Blöcken aufgefüllt.
+	 */
 	public void createMap() {
 		byte[][] map;
 		int offsetTop, offsetLeft = 0;
@@ -136,6 +155,7 @@ public class Level {
 				}
 			}
 			
+			// look for a goal in the last segment
 			if (level.equals(levelParts.get(levelParts.size() - 1))) {
 				Point goal = levelParts.get(levelParts.size() - 1).getGoal();
 				
@@ -152,6 +172,12 @@ public class Level {
 		levelParts.add(level);
 	}
 
+	/**
+	 * Ermittelt den Offset eines LevelSegments in der Liste.
+	 * 
+	 * @param level das Levelsegment, dessen Offset berechnet werden soll
+	 * @return der gewünschte Offset
+	 */
 	public int getOffsetByLevel(LevelSegment level) {
 		int offset = 0;
 
@@ -166,6 +192,12 @@ public class Level {
 		throw new ArrayIndexOutOfBoundsException();
 	}
 
+	/**
+	 * Liest die in den einzelnen Segmenten gepufferten Enemies und fügt sie an der richtigen Stelle 
+	 * im Spiel ein.
+	 * 
+	 * @param g
+	 */
 	private void insertEnemies(Game g) {
 		int offsetX = 0, offsetY;
 
@@ -182,6 +214,12 @@ public class Level {
 		}
 	}
 
+	/**
+	 * Liest die in den einzelnen Segmenten gepufferten FallingItems und fügt sie an der richtigen Stelle 
+	 * im Spiel ein.
+	 * 
+	 * @param g
+	 */
 	private void insertFallingItems(Game g) {
 		int offsetX = 0, offsetY;
 
@@ -199,20 +237,19 @@ public class Level {
 		
 	}
 	
-	
+	/**
+	 * Liest die in den einzelnen Segmenten gepufferten ShotCollections und fügt sie an der richtigen Stelle 
+	 * im Spiel ein.
+	 */
 	private void insertShotCollections(Game g) {
 		int offsetX = 0, offsetY=0;
-//        int x = 0, y = 0;
 		
 		for (LevelSegment segment : levelParts) {
 			offsetY = (height - segment.getHeight()) * Level.BLOCK_HEIGHT;
 			
 			for (ShotCollection sc : segment.getShotCollections()) {
-//				System.out.println("Level1: " + sc.origin.x +" - " + sc.origin.y);
 				sc.origin.x += offsetX;
 				sc.origin.y += offsetY;
-//				System.out.println("Level2: " + sc.origin.x +" - " + sc.origin.y);
-				//sc.origin = new Point(x,y);
 				sc.autofill();
 				g.shots.add(sc);
 			}
@@ -221,6 +258,12 @@ public class Level {
 		}
 	}
 	
+	/**
+	 * Liest die in den einzelnen Segmenten gepufferten Plattformen und fügt sie an der richtigen Stelle 
+	 * im Spiel ein.
+	 * 
+	 * @param g
+	 */
 	private void insertPlatforms(Game g) {
 		int offsetX = 0, offsetY;
 
@@ -239,6 +282,12 @@ public class Level {
 		}
 	}
 	
+	/**
+	 * Liest die in den einzelnen Segmenten gepufferten JumpBlocks und fügt sie an der richtigen Stelle 
+	 * im Spiel ein.
+	 * 
+	 * @param g
+	 */
 	private void insertJumpBlocks(Game g) {
 		int offsetX = 0, offsetY;
 
@@ -256,6 +305,12 @@ public class Level {
 		}
 	}
 	
+	/**
+	 * Liest die in den einzelnen Segmenten gepufferten zu überwachenden x Werte aus und meldet diese
+	 * beim Game an. Der Observer ist dabei immer das jeweilige Segment selbst.
+	 * 
+	 * @param g
+	 */
 	private void subscribeObservers(Game g) {
 		int offsetX = 0;
 
@@ -271,11 +326,16 @@ public class Level {
 			offsetX += segment.getWidth() * Level.BLOCK_WIDTH;
 		}
 	}
-	
-	public boolean inViewport(int x, int y) {
-		return x >= left && x <= right && y >= top && y <= bottom;
-	}
 
+	/**
+	 * Erstellt aus einzelnen Segmenten ein neues Level.
+	 * 
+	 * @param levelParts die einzelnen Segmente, die zusammengesetzt werden sollen
+	 * @param g
+	 * @param playerStart die Methode überschreibt diesen Punkt mit den Koordinaten, an welchen der Spieler starten soll
+	 * @param levelSettings definiert Eigenschaften, die für das gesamte Level gelten
+	 * @return gibt das Level zurück, welches aus den Levelsegmenten zusammengesetzt wurde
+	 */
 	public static Level createLevel(List<LevelSegment> levelParts, Game g, Point playerStart, String[] levelSettings) {
 		int width = 0;
 		int height = 0;
@@ -292,11 +352,14 @@ public class Level {
 		}
 
 		newLevel.createMap();
+		
+		// insert all buffered level elements at their translated location
 		newLevel.insertEnemies(g);
 		newLevel.insertFallingItems(g);
 		newLevel.insertShotCollections(g);
 		newLevel.insertPlatforms(g);
 		newLevel.insertJumpBlocks(g);
+		
 		newLevel.subscribeObservers(g);
 
 		if (levelParts.get(0).getPlayerStart() != null) {
@@ -322,10 +385,10 @@ public class Level {
 	public Point getGoal() {
 		return goal;
 	}
-	
+
 	public void setCoin(int x, int y) {
-		byte val = getMap(x, y-1);
-		if(val == Blocks.Empty) {
+		byte val = getMap(x, y - 1);
+		if (val == Blocks.Empty) {
 			setMap(x, y, Blocks.COIN);
 		}
 	}

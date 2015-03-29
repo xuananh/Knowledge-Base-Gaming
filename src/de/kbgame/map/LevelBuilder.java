@@ -25,6 +25,14 @@ public class LevelBuilder implements Iterator<Level> {
 	public final static String CONFIG_REG_EX = "(\\w+)\\((.*)\\)";
 	public final static String LEVEL_SEGMENT_PACKAGE = "de.kbgame.game.level";
 
+	/**
+	 * Erstellt anhand einer Konfigurationsdatei Level.
+	 * 
+	 * @param config die Konfigurationsdatei, welche die Beschreibung der Level und deren Segmente enthält
+	 * @param g
+	 * @param playerStart wird während des Levelaufbaus mit einem Startpunkt überschrieben
+	 * @throws IOException
+	 */
 	public LevelBuilder(File config, Game g, Point playerStart) throws IOException {
 		readConfig(config);
 
@@ -32,6 +40,13 @@ public class LevelBuilder implements Iterator<Level> {
 		this.playerStart = playerStart;
 	}
 
+	/**
+	 * Liest die übergebene Kongiuration zeilenweise ein und speichert diese für die
+	 * weitere Verarbeitung.
+	 * 
+	 * @param config die Konfigurationsdatei
+	 * @throws IOException
+	 */
 	private void readConfig(File config) throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(config));
 		String line;
@@ -43,11 +58,19 @@ public class LevelBuilder implements Iterator<Level> {
 		reader.close();
 	}
 	
+	/**
+	 * Erstellt und gibt das aktuelle Level zurück.
+	 * 
+	 * @return das aktuelle Level
+	 */
 	public Level current() {
 		currentIndex--;
 		return next();
 	}
 	
+	/**
+	 * Beginnt mit dem Erstellen der Levels von vorne.
+	 */
 	public void restartGame() {
 		currentIndex = 0;
 	}
@@ -57,6 +80,9 @@ public class LevelBuilder implements Iterator<Level> {
 		return currentIndex - 1 < configLines.size();
 	}
 
+	/**
+	 * Erstellt das nächste Level aus der Konfiguration und liefert diese zurück.
+	 */
 	@Override
 	public Level next() {
 		if (currentIndex >= configLines.size()) {
@@ -95,6 +121,13 @@ public class LevelBuilder implements Iterator<Level> {
 		return level;
 	}
 
+	/**
+	 * Erstellt ein einzelndes Segment aus dessen Beschreibung in der Konfigurationsdatei.
+	 * 
+	 * @param segmentString die Beschreibung des Segments
+	 * @param g
+	 * @return die Java Repräsentation des Segments
+	 */
 	private static LevelSegment parseSegment(String segmentString, Game g) {
 		Class<?> levelSegmentCl;
 
@@ -131,6 +164,12 @@ public class LevelBuilder implements Iterator<Level> {
 		return level;
 	}
 	
+	/**
+	 * Spaltet die Leveleinstellungen in dessen Komponenten.
+	 * 
+	 * @param tupel durch Kommas getrennte Einstellungen
+	 * @return die Einstellungen
+	 */
 	private String[] parseLevelSettings(String tupel) {
 		return tupel.replaceAll("\\(|\\)", "").split(",");
 	}

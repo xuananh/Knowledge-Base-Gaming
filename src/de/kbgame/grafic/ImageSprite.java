@@ -17,12 +17,24 @@ public class ImageSprite {
 	
 	public boolean noUpdate = false;
 
+	/**
+	 * Teilt ein Bild in Teilbilder, die nach einander abgespielt eine Animaation ergeben.
+	 * 
+	 * @param imagePath der Pfad zum Bild, welches die Spriteanimation enthält
+	 * @param rows die Anzahl an Zeilen im Bild
+	 * @param cols die Anzahl an Spalten im Bild
+	 */
 	public ImageSprite(String imagePath, int rows, int cols) {
 		this.rows = rows;
 		this.cols = cols;
 		setImagePathToSprite(imagePath);
 	}
 
+	/**
+	 * Teilt ein Bild anhand von definierter Zeilen- und Spaltenanzahl in eine Menge von Teilbildern.
+	 * 
+	 * @param imagePath der Pfad zum Bild, welches die Spriteanimation enthält
+	 */
 	private void setImagePathToSprite(String imagePath) {
 		try {
 			final BufferedImage image = ImageIO.read(new File(imagePath));
@@ -51,10 +63,18 @@ public class ImageSprite {
 		}
 	}
 
+	/**
+	 * @return die Methode gibt das aktuelle Teilbild der Animation zurück
+	 */
 	public BufferedImage getCurrent() {
 		return sprites.get(index);
 	}
 
+	/**
+	 * Die Methode legt die aktuell betrachtete Zeile fest.
+	 * 
+	 * @param row die Zeile, die die gewünschte Animation enthält
+	 */
 	public void setCurrentRow(int row) {
 		if (row >= 0 && row < rows && row != currentRow) {
 			currentRow = row;
@@ -62,10 +82,17 @@ public class ImageSprite {
 		}
 	}
 
+	/**
+	 * Rückt den internen Zeiger auf das nächste Bild. Nach dem letzten Bild einer Zeile wird wieder das erste Teilbild
+	 * der Zeile ausgewählt.
+	 */
 	public void next() {
 		index = currentRow * cols + (index + 1) % cols;
 	}
 	
+	/**
+	 * Sofern die noUpdate Variable nicht entsprechend gesetzt ist, wird das nächste Teilbild ausgewählt.
+	 */
 	public void update() {
 		if (!noUpdate) {
 			next();

@@ -14,6 +14,15 @@ public class Background {
 	private int height;
 	private float targetWidth;
 	
+	/**
+	 * Die Klasse zeichnet Hintergrundbilder abhängig von der Spielerposition. Dabei kann die
+	 * Position des Hintergrundbilders mittels Faktoren beeinflusst werden.
+	 * 
+	 * @param img identifiziert das zu verwendende Hintergrundbild
+	 * @param xFactor beschleunigt/verzögert die Bewegung des Hintergrundbildes in x Richtung
+	 * @param yFactor beschleunigt/verzögert die Bewegung des Hintergrundbildes in y Richtung
+	 * @param g Referenz auf das Spiel
+	 */
 	public Background(ImageKey img, float xFactor, float yFactor, Game g) {
 		ImageLoader imageLoader = ImageLoader.getInstance();
 		
@@ -30,6 +39,11 @@ public class Background {
 		this.yFactor = yFactor;
 	}
 	
+	/**
+	 * Die Methode zeichnet das Hintergrundbild an die gewünschte Position. Das Bild wird mehrmals gezeichnet (Kachelung).
+	 * 
+	 * @param g
+	 */
 	public void draw(Game g) {
 		if (background != null) {			
 			int start = (int) (g.graphic.viewX / targetWidth);

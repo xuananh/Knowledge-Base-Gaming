@@ -21,6 +21,6 @@ public final class Blocks {
 	public final static byte COIN = 14;
 	public final static byte CAVE = 15;
 	
-	public final static int NON_BLOCKING_BITMAP = (int) (Math.pow(2, Empty) + Math.pow(2, GOAL) + Math.pow(2, FireBlock) + Math.pow(2, COIN) + Math.pow(2, CAVE));
-	public final static int KILLING_BITMAP = (int) Math.pow(2, FireBlock);
+	public final static int NON_BLOCKING_BITMASK = (int) (Math.pow(2, Empty) + Math.pow(2, GOAL) + Math.pow(2, FireBlock) + Math.pow(2, COIN) + Math.pow(2, CAVE));
+	public final static int KILLING_BITMASK = (int) Math.pow(2, FireBlock);
 }

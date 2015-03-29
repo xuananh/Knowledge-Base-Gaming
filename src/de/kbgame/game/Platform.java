@@ -15,6 +15,20 @@ public class Platform extends Entity {
 
 	public int speed = 1;
 
+	/**
+	 * Erstellt eine Plattform an einer bestimmten Pixelposition mit eine bestimmten Breite und Höhe. Die Plattform
+	 * bewegt sich von einem Block zu einem anderen. Dabei kann sich eine Plattform entweder vertikal oder horizontal
+	 * bewegen.
+	 * 
+	 * @param g
+	 * @param x der x Wert der Startposition
+	 * @param y der y Wert der Startposition
+	 * @param width die Breite der Plattform
+	 * @param height die Höhe der Plattform
+	 * @param fromBlockIndex die Plattform bewegt sich abwechselnd zum und vom Block mit diesem Index
+	 * @param toBlockIndex die Plattform bewegt sich abwechselnd zum und vom Block mit diesem Index
+	 * @param verticalMove die Plattform kann sich entweder vertikal oder horizontal bewegen
+	 */
 	public Platform(Game g, int x, int y, int width, int height, int fromBlockIndex, int toBlockIndex, boolean verticalMove) {
 		super(x, y, width, height);
 
@@ -65,6 +79,9 @@ public class Platform extends Entity {
 		g.graphic.drawImage(ImageKey.BLOCK, x, y, width, height, 0);
 	}
 	
+	/**
+	 * @return gibt den Punkt zurück an welchem sich die Plattform im vorherigen Frame befand
+	 */
 	public Point getOldPoint() {
 		return oldPoint;
 	}

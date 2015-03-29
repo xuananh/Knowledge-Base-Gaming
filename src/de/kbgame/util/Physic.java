@@ -82,9 +82,6 @@ public final class Physic {
 			ovx -= vx; // Remove the currently calculated move from the "movepool"
 			ovy -= vy;
 
-			// if (Math.abs(vx) > blockwidth) vx = blockwidth*Math.signum(vx); // Max Speed = 1 Block per Cycle
-			// if (Math.abs(vy) > blockheight) vy = blockheight*Math.signum(vy); // Max Speed = 1 Block per Cycle
-
 			// current position
 			int currentBlockIndexX = (int) (result.x / blockwidth);
 			int currentBlockIndexY = (int) (result.y / blockheight);
@@ -96,10 +93,8 @@ public final class Physic {
 			}
 			newBlockIndexX = (int) (hlp / blockwidth);
 			if (hlp < 0) {
-				newBlockIndexX -= 1;// Sonst gibt es zwischen 0 und -1 einen
-									// Rundungsfehler... ( (int)1.6 == 1;
-									// (int)0.6 == 0; (int)-0.6 == 0 statt -1).
-									// Daher -1
+				newBlockIndexX -= 1;// Sonst gibt es zwischen 0 und -1 einen Rundungsfehler... ( (int)1.6 == 1;
+									// (int)0.6 == 0; (int)-0.6 == 0 statt -1). Daher -1
 			}
 
 			// LEFT <- -> RIGHT PHYSIC
@@ -249,6 +244,17 @@ public final class Physic {
 		return result;
 	}
 
+	/**
+	 * Berechnet mögliche Kollisionen von Plattformen mit dem Spieler. Eine Kollision wird erst ganz allgemein mit 
+	 * einer Überlagerung der umschließenden Rechtecke ermittelt. Sollte eine Kollision stattgefunden haben, wird
+	 * mittels der vorherigen und der neuen Positionen von Spieler und entsprechender Plattform die Richtung der
+	 * Kollision bestimmt. Wenn der Spieler von oben auf die Plattform trifft, wird diese ihm zugeordnet.
+	 * 
+	 * @param g
+	 * @param player
+	 * @param result die aktuelle Bewegung des Spielers, die evtl. innerhalb der Methode verändert werden müssen
+	 * @return ggf. eine überarbeitete Bewegung des Spielers
+	 */
 	public static PhysicResult platformPhysics(Game g, Player player, PhysicResult result) {
 		Rectangle predictedRect = new Rectangle(result.lx, result.uy, result.wi, result.hi);
 		Rectangle rect;
@@ -264,6 +270,7 @@ public final class Physic {
 				int oldPlatformUy = oldPlatformLocation.y - platform.height / 2;
 				int oldPlatformDy = oldPlatformUy + platform.height - 1;
 				
+				// compare old positions with the new ones
 				boolean collidedFromLeft = player.rx <= oldPlatformLx && result.rx >= platform.lx;
 				boolean collidedFromRight = player.lx >= oldPlatformRx && result.lx < platform.rx;
 				boolean collidedFromTop = player.dy < oldPlatformUy && result.dy >= platform.uy;
@@ -294,6 +301,13 @@ public final class Physic {
 		return result;
 	}
 
+	/**
+	 * Ermittelt ob sich 2 Rechtecke überschneiden. 
+	 * 
+	 * @param r1 Rechteck 1
+	 * @param r2 Rechteck 2
+	 * @return gibt an ob eine Überschneidung existiert.
+	 */
 	public static boolean rectangleOverlap(Rectangle r1, Rectangle r2) {
 		return r1.intersects(r2);
 	}
@@ -304,11 +318,28 @@ public final class Physic {
 		}
 	}
 
+	/**
+	 * Ermittelt anhand der in de.kbgame.map.Blocks definierten Bitmask, ob ein Block undurchlässig ist.
+	 * 
+	 * @param g
+	 * @param x der x Index des Blocks
+	 * @param y der y Index des Blocks
+	 * @return gibt true zurück, sollte der gegebene Block undurchlässig sein
+	 */
 	public final static boolean isBlocking(Game g, int x, int y) {
-		return ((int) Math.pow(2, g.level.getMap(x, y)) & Blocks.NON_BLOCKING_BITMAP) == 0;
+		return ((int) Math.pow(2, g.level.getMap(x, y)) & Blocks.NON_BLOCKING_BITMASK) == 0;
 	}
 
+
+	/**
+	 * Ermittelt anhand der in de.kbgame.map.Blocks definierten Bitmask, ob ein Block tötlich ist.
+	 * 
+	 * @param g
+	 * @param x der x Index des Blocks
+	 * @param y der y Index des Blocks
+	 * @return gibt true zurück, wenn der gegebene Block tötlich ist
+	 */
 	public final static boolean isKilling(Game g, int x, int y) {
-		return ((int) Math.pow(2, g.level.getMap(x, y)) & Blocks.KILLING_BITMAP) != 0;
+		return ((int) Math.pow(2, g.level.getMap(x, y)) & Blocks.KILLING_BITMASK) != 0;
 	}
 }

@@ -5,8 +5,9 @@ import de.kbgame.game.Game;
 public interface HUDElement {
 
 	/**
-	 * zeichnen Element mit Hilfe von Objekt Graphic der Game
-	 * @param g Game Instance
+	 * HUDElemente müssen dieses Interface implementieren und somit eine öffentliche draw Methode bereitstellen.
+	 * 
+	 * @param g
 	 */
 	public void draw(Game g);
 

@@ -8,6 +8,15 @@ public class JumpEvent extends Event {
 	int steps;
 	MyPoint point;
 
+	/**
+	 * Ein Jump Event bewegt eine Entity ihrer aktuellen Position auf einer vorberechneten Bahn zu einem definierten Zielpunkt.
+	 * 
+	 * @param e die Entity auf die das Event angewendet werden soll
+	 * @param dvy dieser Betrag wird in jedem Schritt von der akutellen y-Geschwindigkeit abgezogen
+	 * @param vy die Geschwindigkeit in y Richtung
+	 * @param steps die Anzahl an Schritte, in welcher das Event ausgeführt werden soll
+	 * @param point der Zielpunkt, zu welchem die Entity gelangen soll
+	 */
 	public JumpEvent(Entity e, double dvy, double vy, int steps, MyPoint point) {
 		super(e);
 
@@ -20,6 +29,13 @@ public class JumpEvent extends Event {
 		this.dx = (point.x - e.x) / steps;
 	}
 
+	/**
+	 * 
+	 * @param dvy dieser Betrag wird in jedem Schritt von der akutellen y-Geschwindigkeit abgezogen
+	 * @param vy die Geschwindigkeit in y Richtung
+	 * @param steps die Anzahl an Schritte, in welcher das Event ausgeführt werden soll
+	 * @param point der Zielpunkt, zu welchem die Entity gelangen soll
+	 */
 	public JumpEvent(double dvy, double vy, int steps, MyPoint point) {
 		this.dvy = dvy;
 		this.vy = vy;
@@ -35,6 +51,11 @@ public class JumpEvent extends Event {
 		this.dx = (point.x - e.x) / steps;
 	}
 
+	/**
+	 * Die Methode bewegt die Entity (owner) schrittweise auf einer vorberechneten Flugbahn zum gewählten Zielpunkt.
+	 * Die eigentliche „Kurve“ wird durch die Schrittanzahl, die anfägnliche Geschwindigkeit in y-Richtung (vy) und die
+	 * spezielle Gravitation (dvy) bestimmt.
+	 */
 	void update() {
 		if (owner != null) {
 			if (steps <= 0) {

@@ -8,8 +8,9 @@ import de.kbgame.game.Game;
 public class HUD extends Vector<HUDElement> {
 
 	/**
-	 * zeichnen alle Element mit Hilfe von Objekt Graphic der Game
-	 * @param g Game Instance
+	 * Speichert und löst das Zeichnen von HUD Elemente aus
+	 * 
+	 * @param g Game Instanz
 	 * @see HUDElement#draw(Game)
 	 */
 	public void draw(Game g) {

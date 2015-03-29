@@ -15,16 +15,37 @@ public class Shot {
 	private int yBlock;
 	private int yOffset;
 
+	/**
+	 * 
+	 * @param yOffset der y Offset vom Ursprungspunkt aus, welcher in der ShotCollection definiert ist
+	 * @param timeOffset ein timeOffset größer 0 bewirkt, dass ein Schuss erst zu einem späteren Zeitpunkt abgefeuert wird
+	 * @param shots die ShotCollection, die verwandte Schüsse gruppiert und zusätzliche Informationen zur Verfügung stellt
+	 * 
+	 * @see de.kbgame.util.ShotCollection
+	 */
 	public Shot(int yOffset, int timeOffset, ShotCollection shots) {
 		this.timeOffset = timeOffset;
 		this.shots = shots;
 		this.yOffset = yOffset;
 	}
 	
+	/**
+	 * Kopierkonstruktor.
+	 * 
+	 * @param s eine andere Shot-Instanz
+	 */
 	public Shot(Shot s) {
 		this(s.yOffset, s.timeOffset, s.shots);
 	}
 
+	/**
+	 * Ist ein timeOffset größer 0 angegeben, wird dieser zuerst in jedem Aufruf um 1 reduziert. 
+	 * Die Geschwindigkeit der Schüsse wird in der gemeinsamen ShotCollection definiert. Ebenso der
+	 * Ausgangspunkt. 
+	 * Die Methode prüft auch Kollisionen mit dem Spieler und mit undurchdringlichen Blöcken.
+	 * 
+	 * @param g
+	 */
 	public void update(Game g) {
 		if (timeOffset == 0) {
 			x = shots.origin.x;

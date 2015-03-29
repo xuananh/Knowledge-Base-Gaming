@@ -18,6 +18,13 @@ public class PlayerShot {
 	private int lifeTime;
 	public static int velocity = 8;
 
+	/**
+	 * Der Spieler hat die Möglichkeit Schüsse abzufeuern.
+	 * 
+	 * @param start definiert den Ausgangspunkt für den abgefeuerten Schuss
+	 * @param factor sollte den Wert 1 oder -1 bekommen, um die Richtung des Schusses anzugeben
+	 * @param lifeTime die Anzahl an Frames, die der Schuss vorhanden ist
+	 */
 	public PlayerShot(Point start, int factor, int lifeTime) {
 		x = start.x;
 		y = start.y;
@@ -26,6 +33,13 @@ public class PlayerShot {
 		this.lifeTime = lifeTime;
 	}
 
+	/**
+	 * Die Methode berechnet die nächste x Position anhand des vorherigen Wertes, der Richtung (factor), der Geschwindgkeit und ggf.
+	 * des gaFactors (künstliche Beschleunigung bei geringerer FPS Anzahl). Sie berechnet weiterhin Kollisionen mit undurchdringlichen
+	 * Blöcken und Feinden. Normale Feinde werden bei einem Treffen sofort getötet.
+	 * 
+	 * @param g
+	 */
 	public void update(Game g) {
 		x += factor * velocity * g.gaFactor;
 		

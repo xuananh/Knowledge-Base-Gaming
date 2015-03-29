@@ -26,15 +26,16 @@ public class LifeHearts implements HUDElement {
 	}
 
 	/**
-	 * Herzanzahl erhoeht um ein
+	 * Herzanzahl wird um 1 erhoeht
 	 */
 	public void add() {
 		hearts++;
 	}
 
-	/*
-	 * Zeichen Heart im ober-links der Bildschirm. Jeder Zeile bestehlt 6 Herzen
-	 * (non-Javadoc)
+	/**
+	 * Zeichnet Herzen im oberen-linken Bereich des Bildschirms. Eine Zeile besteht aus 6 Herzen.
+	 * 
+	 * @param g die Game Instanz
 	 * @see de.kbgame.util.hud.HUDElement#draw(de.kbgame.game.Game)
 	 */
 	public void draw(Game g) {

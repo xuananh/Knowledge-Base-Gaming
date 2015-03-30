@@ -126,7 +126,7 @@ fireground(X,floorheight) :- w(X).
 %%% CANNON %%%
 %%%%%%%%%%%%%%
 
-% Kanonen: Abstand von mindestens 10 Blöcken, Keine Mauer direkt davor. 
+% Kanonen: Abstand von mindestens 10 Blöcken, Keine Mauer direkt davor, keine weitere storenden Objekte in der Naehe. 
 
 { cannon(X,Y) : floor(X,Y-1), block(X,Y)}cannoncount. 
 { cannon(X,Y) : platform1pixel(X,Y-1), block(X,Y) }cannoncount.
@@ -202,6 +202,11 @@ caa(1..coinsareacount).
 coin(X1,Y1,ID) 	:- coinsarea(X,Y,ID), X1<=X, X<=X1+3, Y1<=Y, Y<=Y1+3, block(X1,Y1).
 coin(X1,Y1) :- coin(X1,Y1,ID).
 
+% Verhindern, dass die Muenzen zu weit oben platziert werden
+:- coin(X,Y), Y<height-9.
+
+
+
 
 %%%%%%%%%%%%%
 %%% ENEMY %%%
@@ -222,6 +227,9 @@ enemy(X) :- enemy(X,_).
 %%%%%%%%%%%%%%%%%%%%%%%
 %%% FALLING OBJECTS %%%
 %%%%%%%%%%%%%%%%%%%%%%%
+
+% Fallende verletzende Objekte
+% Muessen mindestens 5 Blocks voneinander entfernt sein. 
 
 { fallingObject(X,Y) : w(X), Y=1}.
 :- not Focount{fallingObject(X,Y)}Focount, focount(Focount).

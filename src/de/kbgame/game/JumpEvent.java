@@ -4,8 +4,10 @@ import de.kbgame.geometry.MyPoint;
 
 public class JumpEvent extends Event {
 
-	double dvy, vy, y, lastY, dx;
-	int steps;
+	private final double dvy, vyBackUp;
+	private double vy, y, lastY, dx, lastYBackUp;
+	private int steps;
+	private final int stepsBackUp;
 	MyPoint point;
 
 	/**
@@ -27,6 +29,10 @@ public class JumpEvent extends Event {
 		this.lastY = e.y;
 		this.y = e.y;
 		this.dx = (point.x - e.x) / steps;
+		
+		stepsBackUp = steps;
+		vyBackUp = vy;
+		lastYBackUp = e.y;
 	}
 
 	/**
@@ -41,6 +47,17 @@ public class JumpEvent extends Event {
 		this.vy = vy;
 		this.steps = steps;
 		this.point = point;
+
+		stepsBackUp = steps;
+		vyBackUp = vy;
+	}
+	
+	public MyPoint getPoint() {
+		return point;
+	}
+	
+	public void setPoint(MyPoint point) {
+		this.point = point;
 	}
 
 	@Override
@@ -49,6 +66,8 @@ public class JumpEvent extends Event {
 		this.lastY = e.y;
 		this.y = e.y;
 		this.dx = (point.x - e.x) / steps;
+		
+		lastYBackUp = e.y;
 	}
 
 	/**
@@ -61,10 +80,13 @@ public class JumpEvent extends Event {
 			if (steps <= 0) {
 				owner.y = (int) point.y;
 				owner.x = (int) point.x;
-				System.out.println(owner.x + " " + owner.y + " - " + ((int) point.x) + " " + ((int) point.y));
 				owner.event = null;
 				owner.vx = dx;
 				owner.vy = vy;
+				
+				steps = stepsBackUp + 1;
+				vy = vyBackUp;
+				lastY = lastYBackUp;
 			} else {
 				double delta = (lastY + (point.y - lastY) / (double) steps);
 				y += vy - lastY + delta;

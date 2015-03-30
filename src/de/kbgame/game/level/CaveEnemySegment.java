@@ -43,7 +43,7 @@ public class CaveEnemySegment extends LevelSegment implements UpdateDraw, XValue
 		height = map[0].length;
 
 		// the cave enemy is only reached by a jump block
-		JumpEvent jEvent = new JumpEvent(-0.4, -20, 100, new MyPoint(10 * 50, 28 * 50));
+		JumpEvent jEvent = new JumpEvent(-0.4, -20, 100, new MyPoint(10 * Level.BLOCK_WIDTH, 28 * Level.BLOCK_HEIGHT));
 		JumpBlock jumper = new JumpBlock(1, height - 2, jEvent);
 		jumpBlocks.add(jumper);
 
@@ -68,7 +68,7 @@ public class CaveEnemySegment extends LevelSegment implements UpdateDraw, XValue
 
 		String[] params = new String[3];
 		params[0] = "clingo";
-		params[1] = "clingo/encoding/schuesse-v0.1-beta.txt";
+		params[1] = "clingo/encoding/shots.txt";
 		params[2] = "1";
 
 		AnswerASP a = ClingoFactory.getInstance().getAnswerASP(params);

@@ -8,9 +8,11 @@ import java.util.List;
 import de.kbgame.game.Enemy;
 import de.kbgame.game.Game;
 import de.kbgame.game.JumpBlock;
+import de.kbgame.game.JumpEvent;
 import de.kbgame.game.Platform;
 import de.kbgame.game.level.LevelSegment;
 import de.kbgame.geometry.ImageKey;
+import de.kbgame.geometry.MyPoint;
 import de.kbgame.util.FallingItem;
 import de.kbgame.util.ShotCollection;
 import de.kbgame.util.XValueObserver;
@@ -290,14 +292,22 @@ public class Level {
 	 */
 	private void insertJumpBlocks(Game g) {
 		int offsetX = 0, offsetY;
+		JumpEvent e;
+		MyPoint p;
 
 		for (LevelSegment segment : levelParts) {
 			offsetY = (height - segment.getHeight()) * Level.BLOCK_HEIGHT;
 
 			for (JumpBlock j : segment.getJumpBlock()) {
-				j.x += offsetX;
-				j.y += offsetY;
+				j.x += offsetX / Level.BLOCK_WIDTH;
+				j.y += offsetY / Level.BLOCK_HEIGHT;
 				j.setMap(this);
+				
+				e = j.getJumpEvent();
+				p = e.getPoint();
+				p.x += offsetX;
+				p.y += offsetY;
+				
 				g.jumpBlocks.put(new Point(j.x, j.y), j);
 			}
 

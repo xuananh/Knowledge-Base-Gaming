@@ -64,7 +64,7 @@ public class ScoreMenu extends Menu{
 			isloadedScore = true;
 		}
 		gameLogo(50, 50, g, 0.5f);
-		g.graphic.drawText("Hight Score: ", 200, 150, Color.yellow, false, new Font("Arial", Font.PLAIN, 40));
+		g.graphic.drawText("High Score: ", 200, 150, Color.yellow, false, new Font("Arial", Font.PLAIN, 40));
 		g.graphic.drawText("1st: 	" + score.get(0), 250, 200, Color.yellow, false, new Font("Arial", Font.PLAIN, 30));
 		g.graphic.drawText("2nd: 	" + score.get(1), 250, 250, Color.yellow, false, new Font("Arial", Font.PLAIN, 30));
 		g.graphic.drawText("3rd: 	" + score.get(2), 250, 300, Color.yellow, false, new Font("Arial", Font.PLAIN, 30));

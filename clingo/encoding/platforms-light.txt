@@ -48,8 +48,11 @@ plength(ID,L) :- line(X,Y,L,1,ID).
 
 
  
- % Geniererung der Plattformen
+ % Generierung der Plattformen
 1{ line(ID,Y,L,1,ID) : block(X,Y), block(ID,Y), length(L)}1 :- num(ID).
+
+% Benachbarte mit unterschiedlicher Ausbreitung, damit sie jeweils erreichbar sind (verhinderung paralleler Bewegungen, die einen Übergang zwischen zwei benachbarten Plattformen verhindern koennten)
+:- line(X,_,L,1,ID), line(X1,_,L1,1,ID), X=X1+1, L = L1.
 
 % Bewegungsausbreitung der Plattformen als Bloecke
 lineblock(X,Y1,ID) :- line(X,Y,L,1,ID), block(X,Y), Y<=Y1, Y1<=Y+L, block(X,Y1).
@@ -59,4 +62,3 @@ lineblock(X,Y1,ID) :- line(X,Y,L,1,ID), block(X,Y), Y<=Y1, Y1<=Y+L, block(X,Y1).
 
 platform(X,Y,1,L,1) :- line(X,Y,L,1,ID).
 #show platform/5.
-platform(5,39,3,10,1).

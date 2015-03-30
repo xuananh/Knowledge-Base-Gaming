@@ -1,5 +1,4 @@
-(cloud);StandardSegment(Levels/testmap.bmp)
-(summer);GraebenSegment(clingo/encoding/graeben2.txt,medium,0);StandardSegment(Levels/testmap2.bmp)
-(winter);PlatformSegment(Levels/platform.bmp,6,40,15,20,6);GeneratedLevelSegment(clingo/encoding/level.txt,medium,0);StandardSegment(Levels/testmap_small.bmp);
+(cloud);GraebenSegment(clingo/encoding/graeben2.txt,easy,0);StandardSegment(Levels/testmap_small.bmp);GraebenSegment(clingo/encoding/level.txt,medium,0)
+(winter);GraebenSegment(clingo/encoding/graeben2.txt,hard,0);PlatformSegment(Levels/platform.bmp,1,40,18,20,6);StandardSegment(Levels/testmap2.bmp)
 (cloud);CaveEnemySegment(Levels/cave_enemy.bmp)
 (summer);EndbossSegment(clingo/encoding/endboss.lp)
